@@ -1,0 +1,47 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+.title {
+  margin: 2.5em auto;
+  text-align: center;
+  font-size: 3.75em;
+  font-weight: 500;
+  color: var(--font-color);
+}
+
+.imageSide {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.loginLink, .registerLink {
+  text-align: center;
+  display: block;
+  margin-top: 2em;
+
+  font-size: .8em;
+}
+
+.loginLinkEmphasis, .registerLinkEmphasis {
+  color: var(--project-color);
+  font-weight: 500;
+  transition: .15s;
+}
+
+.loginLinkEmphasis:hover, .registerLinkEmphasis:hover {
+  color: var(--project-light-color);
+}

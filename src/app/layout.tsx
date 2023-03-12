@@ -6,8 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReactElement } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Home',
-  description: 'Home description',
+  title: {
+    default: 'My Finances',
+    template: '%s | My Finances',
+  },
+  description: 'Controle suas financas facilmente',
   authors: { name: 'João Victor' },
 };
 

@@ -3,20 +3,12 @@
 import api from '@/services/api';
 import { IClientUserObject } from '@/types/User';
 import { useRouter } from 'next/navigation';
-import {
-  createContext,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export type AuthContextType = {
   user: IClientUserObject | null;
-  signin: (email: string, password: string) => Promise<boolean>;
+  signin: (token: string, user?: IClientUserObject) => void;
   signout: () => void;
-  setToken: (token: string) => void;
-  setUser: Dispatch<SetStateAction<IClientUserObject | null>>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -30,21 +22,12 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     localStorage.setItem('authToken', token);
   };
 
-  const signin = async (email: string, password: string) => {
-    return await api
-      .post('auth', { email, password })
-      .then(({ data }) => {
-        if (data.user && data.token) {
-          setUser(data.user);
-          setToken(data.token);
-          return true;
-        }
-        return false;
-      })
-      .catch(() => false);
+  const signin = (token: string, user?: IClientUserObject) => {
+    setToken(token);
+    user && setUser(user);
   };
 
-  const signout = async () => {
+  const signout = () => {
     setUser(null);
     setToken('');
   };
@@ -72,7 +55,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, signin, signout, setToken }}>
+    <AuthContext.Provider value={{ user, signin, signout }}>
       {children}
     </AuthContext.Provider>
   );

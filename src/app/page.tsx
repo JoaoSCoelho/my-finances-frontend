@@ -5,6 +5,10 @@ import { FaInfo, FaPiggyBank } from 'react-icons/fa';
 import styles from './Home.module.css';
 import LandingImageSvg from './LandingImageSvg';
 
+export const metadata = {
+  title: 'Home',
+};
+
 export default function Home() {
   return (
     <>
@@ -24,7 +28,7 @@ export default function Home() {
                   <FaInfo />
                   <span>Tutorial</span>
                 </Link>
-                <Link href="/register">
+                <Link href="/auth/register">
                   <FaPiggyBank />
                   <span>Começar</span>
                 </Link>

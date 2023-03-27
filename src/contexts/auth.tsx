@@ -9,6 +9,7 @@ export type AuthContextType = {
   user: IClientUserObject | null;
   signin: (token: string, user?: IClientUserObject) => void;
   signout: () => void;
+  getToken: () => string | null;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -32,9 +33,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     setToken('');
   };
 
+  const getToken = () => localStorage.getItem('authToken');
+
   useEffect(() => {
     const validateToken = async () => {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = getToken();
       if (authToken) {
         await api
           .get('users/me', {
@@ -47,7 +50,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
           })
           .catch(() => {
             signout();
-            router.push('/login');
+            router.push('/auth/login');
           });
       }
     };
@@ -55,7 +58,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signin, signout }}>
+    <AuthContext.Provider value={{ user, signin, signout, getToken }}>
       {children}
     </AuthContext.Provider>
   );

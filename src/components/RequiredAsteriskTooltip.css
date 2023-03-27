@@ -1,0 +1,13 @@
+.required-tooltip-arrow {
+  color: var(--light-silver);
+}
+
+.required-tooltip-content {
+  background-color: var(--light-silver);
+  padding: .1em .3em;
+}
+
+.required-tooltip-content .required-text {
+  font-size: .7em;
+  color: var(--font-color);
+}

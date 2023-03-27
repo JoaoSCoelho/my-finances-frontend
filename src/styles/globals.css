@@ -118,22 +118,8 @@ body {
   line-height: 1;
 }
 
-ol,
 ul {
   list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: '';
-  content: none;
 }
 
 table {
@@ -177,6 +163,10 @@ body::-webkit-scrollbar-thumb:hover {
   --project-light-color: #93C96D;
   --font-color: #444;
   --gray: #666;
+  --light-gray: #999;
+  --silver: #d6d6d6;
+  --light-silver: #eaeaea;
   --error: #da565d;
+  --error-dark: #bd494f;
   --max-content-width: 1440px;
 }

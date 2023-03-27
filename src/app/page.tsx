@@ -2,8 +2,8 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { FaInfo, FaPiggyBank } from 'react-icons/fa';
 
+import LandingImageSvg from '../components/pages/home/LandingImageSvg';
 import styles from './Home.module.css';
-import LandingImageSvg from './LandingImageSvg';
 
 export const metadata = {
   title: 'Home',

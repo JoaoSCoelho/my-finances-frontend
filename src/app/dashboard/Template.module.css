@@ -1,0 +1,17 @@
+.container {
+  background-color: #f0f0f0;
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 80px 1fr;
+}
+
+.main {
+  grid-row: 2;
+  grid-column: 2;
+  padding: 2em;
+  width: calc(100vw - 88px);
+  max-width: 1440px;
+  margin: 0 auto;
+}

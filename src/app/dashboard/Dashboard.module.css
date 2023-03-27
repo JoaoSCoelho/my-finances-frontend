@@ -1,0 +1,84 @@
+
+
+
+
+.sliderArrow {
+  color: var(--gray);
+  font-size: 1.5em;
+}
+
+
+
+.accountsSection .sectionHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1em;
+}
+
+.accountsSection .sectionHeader .centerLine {
+  border-bottom: 2px solid var(--silver);
+  width: 100%;
+}
+
+.accountsSection .sectionTitle {
+  font-size: 2em;
+  color: var(--font-color);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.accountsSection .sectionHeader .newAccountBtn {
+  white-space: nowrap;
+}
+
+.accountsSection .sliderContainer {
+  position: relative;
+  width: calc(100% - 24px);
+}
+
+.accountsSection .sliderContainer .sliderArrowBtn {
+  position: absolute;
+  top: 50%;
+}
+
+.accountsSection .sliderContainer .sliderArrowBtn.prev {
+  transform: translate(-100%, -50%);
+}
+
+.accountsSection .sliderContainer .sliderArrowBtn.next {
+  transform: translate(calc(100% + 16px), -50%);
+  right: 0;
+}
+
+.accountsSection .accountCardWrapper {
+  padding: 1em;
+}
+
+.accountsSection .newAccountCard {
+  background-color: white;
+  box-shadow: 0 1px 4px #00000040;
+  border-radius: 8px;
+  padding: 0 1.25em;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: .5em;
+  transition: .15s;
+}
+
+.accountsSection .newAccountCard:hover {
+  opacity: .8;
+  box-shadow: 0 1px 2px #00000020;
+}
+
+.accountsSection .newAccountCard .newAccountText {
+  color: var(--font-color);
+}
+
+.accountsSection .newAccountCard .newAccountSymbol {
+  font-size: 2.5em;
+  color: var(--project-light-color);
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import LoginForm from '@/components/LoginForm';
+import LoginForm from '@/components/pages/auth/login/LoginForm';
 import Link from 'next/link';
 
 import layoutStyles from '../Layout.module.css';

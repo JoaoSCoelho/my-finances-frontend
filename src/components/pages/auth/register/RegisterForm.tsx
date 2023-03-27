@@ -4,22 +4,28 @@ import { defaultToastOptions } from '@/services/toast';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-import AuthForm from './AuthForm';
+import AuthForm from '../AuthForm';
 
-interface ILoginForm {
+interface IRegisterForm {
+  username: string;
   email: string;
   password: string;
 }
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const form = useForm<ILoginForm>();
+  const form = useForm<IRegisterForm>();
   const { setError } = form;
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
+  const onSubmit: SubmitHandler<IRegisterForm> = (data) => {
+    if (data.username.length < 3 || data.username.length > 30)
+      return setError('username', {
+        message: 'O nome de usuário deve ter entre 3 e 30 caracteres!',
+      });
+
     if (data.email.length > 128)
       return setError('email', {
         message: 'O email deve ser menor ou igual 128 caracteres!',
@@ -31,7 +37,7 @@ export default function LoginForm() {
       });
 
     api
-      .post('login', data)
+      .post('users', data)
       .then(({ data: resData }) => {
         auth.signin(resData.token, resData.user);
         router.push('/dashboard');
@@ -45,20 +51,17 @@ export default function LoginForm() {
           setError(error.paramName, { message: 'Caracteres inválidos' });
         if (error.reason === 'incorrect structure')
           setError(error.paramName, { message: 'Estrutura incorreta' });
-        if (error.name === 'Invalid credentials')
-          return toast.error('Email ou senha inválidos', defaultToastOptions);
         toast.error(error.error, defaultToastOptions);
       });
   };
-  const onSubmitError: SubmitErrorHandler<ILoginForm> = () =>
+  const onSubmitError: SubmitErrorHandler<IRegisterForm> = () =>
     toast.warn('Você deve preencher todos os campos!', defaultToastOptions);
 
   return (
     <>
-      <ToastContainer />
       <AuthForm
         form={form}
-        type="login"
+        type="register"
         onFormSubmit={onSubmit}
         onFormSubmitError={onSubmitError}
       />

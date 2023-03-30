@@ -36,3 +36,9 @@
 .accountModal .inputContainer .input {
   background-color: white;
 }
+
+.accountModal .buttonsContainer {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}

@@ -11,11 +11,13 @@ import AccountModal, { AccountForm } from './AccountModal';
 
 interface INewAccountModalProps {
   setBankAccounts: Dispatch<SetStateAction<IBankAccountObject[] | undefined>>;
-  modalState: [boolean, Dispatch<SetStateAction<boolean>>];
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function NewAccountModal({
-  modalState: [modalOpen, setModalOpen],
+  modalOpen,
+  setModalOpen,
   setBankAccounts,
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);

@@ -18,10 +18,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function DashBoard() {
-  const newAccountModalState = useState<boolean>(false);
-  const [, setNewAccountModalOpen] = newAccountModalState;
-  const existingAccountModalState = useState<boolean>(false);
-  const [, setExistingAccountModalOpen] = existingAccountModalState;
+  const [newAccountModalOpen, setNewAccountModalOpen] =
+    useState<boolean>(false);
+  const [existingAccountModalOpen, setExistingAccountModalOpen] =
+    useState<boolean>(false);
   const [bankAccounts, setBankAccounts] = useState<IBankAccountObject[]>();
   const auth = useContext(AuthContext);
   const slider = useRef<Slider>(null);
@@ -42,7 +42,8 @@ export default function DashBoard() {
   return (
     <>
       <NewAccountModal
-        modalState={newAccountModalState}
+        modalOpen={newAccountModalOpen}
+        setModalOpen={setNewAccountModalOpen}
         setBankAccounts={setBankAccounts}
       />
 
@@ -98,9 +99,11 @@ export default function DashBoard() {
                         />
                       </button>
                     }
-                    modalState={existingAccountModalState}
+                    modalOpen={existingAccountModalOpen}
+                    setModalOpen={setExistingAccountModalOpen}
                     key={bankAccount.id}
                     bankAccount={bankAccount}
+                    setBankAccounts={setBankAccounts}
                   />
                 ))}
                 <div className={styles.accountCardWrapper}>

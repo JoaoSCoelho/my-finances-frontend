@@ -23,7 +23,7 @@ interface IAccountModalProps {
   modalOpen: boolean;
   closeModal: () => void;
   popupClassName?: string;
-  onSubmit: SubmitHandler<AccountForm>;
+  onSubmit: (data: AccountForm, close: () => any) => any;
   form: UseFormReturn<AccountForm>;
   modalTitle: string;
   inputNameLabel?: string;
@@ -108,7 +108,11 @@ export default function AccountModal({
             <strong className={styles.modalTitle}>{modalTitle}</strong>
 
             <form
-              onSubmit={handleSubmit(onSubmit, onSubmitError)}
+              onSubmit={(e) => {
+                const onSubmitClose: SubmitHandler<AccountForm> = (data) =>
+                  onSubmit(data, close);
+                return handleSubmit(onSubmitClose, onSubmitError)(e);
+              }}
               className={styles.accountForm}
             >
               <div className={styles.inputsContainer}>

@@ -103,6 +103,7 @@ export default function DashBoard() {
                     setModalOpen={setExistingAccountModalOpen}
                     key={bankAccount.id}
                     bankAccount={bankAccount}
+                    bankAccounts={bankAccounts}
                     setBankAccounts={setBankAccounts}
                   />
                 ))}

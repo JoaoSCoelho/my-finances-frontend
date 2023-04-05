@@ -2,7 +2,7 @@ import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
@@ -16,6 +16,7 @@ interface IExistingAccountModalProps {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
   bankAccount: IBankAccountObject;
+  bankAccounts: IBankAccountObject[] | undefined;
   setBankAccounts: Dispatch<SetStateAction<IBankAccountObject[] | undefined>>;
 }
 
@@ -24,6 +25,7 @@ export default function ExistingAccountModal({
   setModalOpen,
   trigger,
   bankAccount,
+  bankAccounts,
   setBankAccounts,
 }: IExistingAccountModalProps) {
   const form = useForm<AccountForm>({
@@ -33,7 +35,7 @@ export default function ExistingAccountModal({
       name: bankAccount.name,
     },
   });
-  const { setError } = form;
+  const { setError, setValue, handleSubmit } = form;
   const auth = useContext(AuthContext);
 
   const closeModal = () => {
@@ -73,6 +75,33 @@ export default function ExistingAccountModal({
       });
   };
 
+  const deleteBankAccount = (close: () => any) => {
+    api
+      .delete(`bankaccounts/${bankAccount.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.getToken()}`,
+        },
+      })
+      .then(async () => {
+        setBankAccounts((values) =>
+          values?.filter((value) => value.id !== bankAccount.id),
+        );
+        /* const thisIndex = bankAccounts?.findIndex(
+          (value) => value.id === bankAccount.id,
+        );
+        const aheadBankAccount = bankAccounts?.[thisIndex! + 1];
+        if (aheadBankAccount) {
+          setValue('name', aheadBankAccount.name);
+          setValue('amount', aheadBankAccount.amount);
+          setValue('imageURL', aheadBankAccount.imageURL);
+        } */
+        await handleSubmit(console.log)();
+        close();
+      });
+  };
+
+  useEffect(() => console.log(bankAccount), []);
+
   return (
     <AccountModal
       onSubmit={onSubmit}
@@ -85,8 +114,13 @@ export default function ExistingAccountModal({
       }}
       modalOpen={modalOpen}
       trigger={trigger}
-      otherButtons={[
-        <Button symbol={<BsFillTrashFill />} className={styles.deleteBtn}>
+      otherButtons={(close) => [
+        <Button
+          onClick={() => deleteBankAccount(close)}
+          symbol={<BsFillTrashFill />}
+          className={styles.deleteBtn}
+          key={`delete-button-${bankAccount.id}`}
+        >
           Excluir
         </Button>,
       ]}

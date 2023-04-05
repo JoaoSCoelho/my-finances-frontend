@@ -33,7 +33,7 @@ interface IAccountModalProps {
     value: string;
     symbol?: ReactNode;
   };
-  otherButtons?: ReactNode[];
+  otherButtons?: (close: () => any) => ReactNode[];
   trigger?: JSX.Element | ((isOpen: boolean) => JSX.Element);
 }
 
@@ -173,7 +173,7 @@ export default function AccountModal({
                 <Button type="submit" symbol={submitButton.symbol}>
                   {submitButton.value}
                 </Button>
-                {otherButtons}
+                {otherButtons?.(close)}
               </div>
             </form>
 

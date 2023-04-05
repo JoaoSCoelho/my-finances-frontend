@@ -3,7 +3,7 @@ import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
 import { Dispatch, SetStateAction, useContext } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
@@ -30,7 +30,7 @@ export default function NewAccountModal({
     reset();
   };
 
-  const onSubmit: SubmitHandler<AccountForm> = (data) => {
+  const onSubmit = (data: AccountForm) => {
     console.log(data);
 
     if (data.name.length < 3 || data.name.length > 30)

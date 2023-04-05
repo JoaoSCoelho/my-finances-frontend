@@ -30,14 +30,15 @@ export default function DashBoard() {
   const openExistingAccountModal = () => setExistingAccountModalOpen(true);
 
   useEffect(() => {
-    api
-      .get('bankaccounts/my', {
-        headers: { Authorization: `Bearer ${auth.getToken()}` },
-      })
-      .then(({ data: { bankAccounts } }) => {
-        bankAccounts && setBankAccounts(bankAccounts);
-      });
-  }, []);
+    if (bankAccounts === undefined)
+      api
+        .get('bankaccounts/my', {
+          headers: { Authorization: `Bearer ${auth.getToken()}` },
+        })
+        .then(({ data: { bankAccounts } }) => {
+          bankAccounts && setBankAccounts(bankAccounts);
+        });
+  }, [bankAccounts]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
@@ -25,7 +25,6 @@ export default function ExistingAccountModal({
   setModalOpen,
   trigger,
   bankAccount,
-  bankAccounts,
   setBankAccounts,
 }: IExistingAccountModalProps) {
   const form = useForm<AccountForm>({
@@ -35,7 +34,7 @@ export default function ExistingAccountModal({
       name: bankAccount.name,
     },
   });
-  const { setError, setValue, handleSubmit } = form;
+  const { setError } = form;
   const auth = useContext(AuthContext);
 
   const closeModal = () => {
@@ -83,24 +82,10 @@ export default function ExistingAccountModal({
         },
       })
       .then(async () => {
-        setBankAccounts((values) =>
-          values?.filter((value) => value.id !== bankAccount.id),
-        );
-        /* const thisIndex = bankAccounts?.findIndex(
-          (value) => value.id === bankAccount.id,
-        );
-        const aheadBankAccount = bankAccounts?.[thisIndex! + 1];
-        if (aheadBankAccount) {
-          setValue('name', aheadBankAccount.name);
-          setValue('amount', aheadBankAccount.amount);
-          setValue('imageURL', aheadBankAccount.imageURL);
-        } */
-        await handleSubmit(console.log)();
+        setBankAccounts(undefined);
         close();
       });
   };
-
-  useEffect(() => console.log(bankAccount), []);
 
   return (
     <AccountModal

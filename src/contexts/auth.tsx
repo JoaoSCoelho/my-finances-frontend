@@ -52,6 +52,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
             signout();
             router.push('/auth/login');
           });
+      } else {
+        router.push('/auth/login');
       }
     };
     validateToken();

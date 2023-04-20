@@ -1,27 +1,57 @@
 import { AuthContext } from '@/contexts/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
-import { AiFillHome } from 'react-icons/ai';
+import { useContext, ReactNode, useState, useEffect } from 'react';
+import { AiFillHome, AiOutlineUnorderedList } from 'react-icons/ai';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 import styles from './AsideMenu.module.css';
 
+type Button = {
+  href: string;
+  icon: ReactNode;
+};
+
 export default function AsideMenu() {
   const auth = useContext(AuthContext);
   const router = useRouter();
+  const [pathname, setPathname] = useState<string>();
 
   const signout = () => {
     auth.signout();
     router.push('/');
   };
 
+  const buttons: Button[] = [
+    {
+      href: '/dashboard',
+      icon: <AiFillHome />,
+    },
+    {
+      href: '/dashboard/transactions',
+      icon: <AiOutlineUnorderedList />,
+    },
+  ];
+
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  });
+
   return (
     <aside className={styles.asideMenu}>
       <div className={styles.buttons}>
-        <Link href="/dashboard" className={`${styles.button} ${styles.active}`}>
-          <AiFillHome />
-        </Link>
+        {buttons.map((button) => (
+          <Link
+            onClick={() => setPathname(button.href)}
+            key={button.href}
+            href={button.href}
+            className={`${styles.button} ${
+              pathname === button.href && styles.active
+            }`}
+          >
+            {button.icon}
+          </Link>
+        ))}
       </div>
 
       <div className={styles.bottomButtons}>

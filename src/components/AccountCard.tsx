@@ -7,7 +7,7 @@ import BRLFormat from './BRLFormat';
 
 interface IAccountCardProps {
   isTotal?: boolean;
-  imageSrc?: string;
+  imageSrc?: string | null;
   name?: string;
   amount: number | string;
 }

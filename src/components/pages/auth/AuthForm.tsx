@@ -14,7 +14,7 @@ export interface IAuthFormProps<FormData extends FieldValues> {
   form: UseFormReturn<FormData>;
   type: 'login' | 'register';
   onFormSubmit: SubmitHandler<FormData>;
-  onFormSubmitError: SubmitErrorHandler<FormData>;
+  onFormSubmitError?: SubmitErrorHandler<FormData>;
 }
 
 export default function AuthForm<FormData extends FieldValues>({

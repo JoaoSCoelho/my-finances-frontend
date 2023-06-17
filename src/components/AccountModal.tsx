@@ -10,6 +10,7 @@ import {
 import { IoClose } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { Popup } from 'reactjs-popup';
+import * as yup from 'yup';
 
 import AccountCard from './AccountCard';
 import styles from './AccountModal.module.css';
@@ -37,11 +38,28 @@ interface IAccountModalProps {
   trigger?: JSX.Element | ((isOpen: boolean) => JSX.Element);
 }
 
-export type AccountForm = {
-  name: string;
-  amount: number;
-  imageURL?: string;
-};
+export const accountSchema = yup
+  .object({
+    name: yup
+      .string()
+      .required()
+      .min(3)
+      .max(30)
+      .matches(
+        /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
+        'Alguns caracteres não são permitidos',
+      ),
+    amount: yup.number().required().min(-999999999999).max(999999999999),
+    imageURL: yup
+      .string()
+      .matches(/^((http)|(https)):\/\/.+\..+(\/.+)?$/gi, {
+        excludeEmptyString: true,
+      })
+      .notRequired(),
+  })
+  .required();
+
+export type AccountForm = yup.InferType<typeof accountSchema>;
 
 export default function AccountModal({
   modalOpen,
@@ -72,6 +90,7 @@ export default function AccountModal({
     toast.warn('Preencha todos os campos', defaultToastOptions);
   };
 
+  // Set data when formData changes
   useEffect(() => {
     const subscription = watch((data) => {
       debounce(() => {
@@ -82,6 +101,7 @@ export default function AccountModal({
     return subscription.unsubscribe;
   }, [watch()]);
 
+  // Set data on first rendering
   useEffect(() => {
     setData(watch());
   }, []);

@@ -1,35 +1,53 @@
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
 
 import AuthForm from '../AuthForm';
 
-interface ILoginForm {
-  email: string;
-  password: string;
-}
+export const emailSchema = yup
+  .string()
+  .required()
+  .email('Deve ser um email válido')
+  .max(128)
+  .matches(/^[^@]+@[^@]+$/g)
+  .matches(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@/gi)
+  .matches(
+    /@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/gi,
+  )
+  .matches(
+    /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/gi,
+  );
+
+export const passwordSchema = yup
+  .string()
+  .required()
+  .min(6)
+  .max(100)
+  .matches(/[a-zÀ-ÿ]+/gi)
+  .matches(/\d+/g);
+
+const loginSchema = yup
+  .object({
+    email: emailSchema,
+    password: passwordSchema,
+  })
+  .required();
+
+type LoginForm = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm() {
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const form = useForm<ILoginForm>();
+  const form = useForm<LoginForm>({ resolver: yupResolver(loginSchema) });
   const { setError } = form;
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    if (data.email.length > 128)
-      return setError('email', {
-        message: 'O email deve ser menor ou igual 128 caracteres!',
-      });
-
-    if (data.password.length < 6 || data.password.length > 100)
-      return setError('password', {
-        message: 'A senha deve ter entre 6 e 100 caracteres!',
-      });
-
+  const onSubmit: SubmitHandler<LoginForm> = (data) => {
     api
       .post('login', data)
       .then(({ data: resData }) => {
@@ -50,17 +68,10 @@ export default function LoginForm() {
         toast.error(error.error, defaultToastOptions);
       });
   };
-  const onSubmitError: SubmitErrorHandler<ILoginForm> = () =>
-    toast.warn('Você deve preencher todos os campos!', defaultToastOptions);
 
   return (
     <>
-      <AuthForm
-        form={form}
-        type="login"
-        onFormSubmit={onSubmit}
-        onFormSubmitError={onSubmitError}
-      />
+      <AuthForm form={form} type="login" onFormSubmit={onSubmit} />
     </>
   );
 }

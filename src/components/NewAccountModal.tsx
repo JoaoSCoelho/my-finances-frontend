@@ -2,12 +2,13 @@ import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-import AccountModal, { AccountForm } from './AccountModal';
+import AccountModal, { AccountForm, accountSchema } from './AccountModal';
 
 interface INewAccountModalProps {
   setBankAccounts: Dispatch<SetStateAction<IBankAccountObject[] | undefined>>;
@@ -22,7 +23,7 @@ export default function NewAccountModal({
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);
 
-  const form = useForm<AccountForm>();
+  const form = useForm<AccountForm>({ resolver: yupResolver(accountSchema) });
   const { setError, reset } = form;
 
   const closeModal = () => {
@@ -31,19 +32,6 @@ export default function NewAccountModal({
   };
 
   const onSubmit = (data: AccountForm) => {
-    console.log(data);
-
-    if (data.name.length < 3 || data.name.length > 30)
-      return setError('name', { message: 'Deve ter entre 3 e 30 caracteres' });
-    if (
-      data.amount < -999999999999 ||
-      data.amount > 999999999999 ||
-      !Number.isSafeInteger(Math.round(data.amount))
-    )
-      return setError('amount', {
-        message: 'Deve ser menor que um trilhão',
-      });
-
     api
       .post('bankaccounts', data, {
         headers: { Authorization: `Bearer ${auth.getToken()}` },

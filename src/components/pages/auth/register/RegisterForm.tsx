@@ -1,41 +1,40 @@
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
 
 import AuthForm from '../AuthForm';
+import { emailSchema, passwordSchema } from '../login/LoginForm';
 
-interface IRegisterForm {
-  username: string;
-  email: string;
-  password: string;
-}
+const registerSchema = yup
+  .object({
+    username: yup
+      .string()
+      .required()
+      .min(3)
+      .max(30)
+      .matches(
+        /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
+      ),
+    email: emailSchema,
+    password: passwordSchema,
+  })
+  .required();
+
+type RegisterForm = yup.InferType<typeof registerSchema>;
 
 export default function RegisterForm() {
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const form = useForm<IRegisterForm>();
+  const form = useForm<RegisterForm>({ resolver: yupResolver(registerSchema) });
   const { setError } = form;
 
-  const onSubmit: SubmitHandler<IRegisterForm> = (data) => {
-    if (data.username.length < 3 || data.username.length > 30)
-      return setError('username', {
-        message: 'O nome de usuário deve ter entre 3 e 30 caracteres!',
-      });
-
-    if (data.email.length > 128)
-      return setError('email', {
-        message: 'O email deve ser menor ou igual 128 caracteres!',
-      });
-
-    if (data.password.length < 6 || data.password.length > 100)
-      return setError('password', {
-        message: 'A senha deve ter entre 6 e 100 caracteres!',
-      });
-
+  const onSubmit: SubmitHandler<RegisterForm> = (data) => {
     api
       .post('users', data)
       .then(({ data: resData }) => {
@@ -54,17 +53,10 @@ export default function RegisterForm() {
         toast.error(error.error, defaultToastOptions);
       });
   };
-  const onSubmitError: SubmitErrorHandler<IRegisterForm> = () =>
-    toast.warn('Você deve preencher todos os campos!', defaultToastOptions);
 
   return (
     <>
-      <AuthForm
-        form={form}
-        type="register"
-        onFormSubmit={onSubmit}
-        onFormSubmitError={onSubmitError}
-      />
+      <AuthForm form={form} type="register" onFormSubmit={onSubmit} />
     </>
   );
 }

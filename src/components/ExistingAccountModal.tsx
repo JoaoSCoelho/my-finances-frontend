@@ -2,12 +2,13 @@ import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
-import AccountModal, { AccountForm } from './AccountModal';
+import AccountModal, { AccountForm, accountSchema } from './AccountModal';
 import Button from './Button';
 import styles from './ExistingAccountModal.module.css';
 
@@ -33,6 +34,7 @@ export default function ExistingAccountModal({
       imageURL: bankAccount.imageURL,
       name: bankAccount.name,
     },
+    resolver: yupResolver(accountSchema),
   });
   const { setError } = form;
   const auth = useContext(AuthContext);
@@ -42,8 +44,6 @@ export default function ExistingAccountModal({
   };
 
   const onSubmit = async (data: AccountForm, close: () => any) => {
-    console.log(data);
-
     await api
       .put(`bankaccounts/${bankAccount.id}`, data, {
         headers: {

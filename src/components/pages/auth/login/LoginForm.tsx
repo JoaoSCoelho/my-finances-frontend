@@ -12,25 +12,30 @@ import AuthForm from '../AuthForm';
 
 export const emailSchema = yup
   .string()
-  .required()
-  .email('Deve ser um email válido')
-  .max(128)
-  .matches(/^[^@]+@[^@]+$/g)
-  .matches(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@/gi)
+  .required('Campo obrigatório')
+  .email('Email inválido')
+  .max(128, 'Máximo de 128 caracteres')
+  .matches(/^[^@]+@[^@]+$/g, 'Deve possuir apenas um arroba "@"')
+  .matches(
+    /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@/gi,
+    'Antes do "@" apenas letras, números e alguns caracteres especiais',
+  )
   .matches(
     /@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/gi,
+    'Depois do "@" apenas caracteres alfanuméricos, hífens e um ponto "." separador do TLD',
   )
   .matches(
     /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/gi,
+    'Estrutura incorreta',
   );
 
 export const passwordSchema = yup
   .string()
-  .required()
-  .min(6)
-  .max(100)
-  .matches(/[a-zÀ-ÿ]+/gi)
-  .matches(/\d+/g);
+  .required('Campo obrigatório')
+  .min(6, 'Mínimo de 6 caracteres')
+  .max(100, 'Máximo de 100 caracteres')
+  .matches(/[a-zÀ-ÿ]+/gi, 'Deve ter pelo menos uma letra')
+  .matches(/\d+/g, 'Deve ter pelo menos um número');
 
 const loginSchema = yup
   .object({

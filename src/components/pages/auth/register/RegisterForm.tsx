@@ -15,11 +15,12 @@ const registerSchema = yup
   .object({
     username: yup
       .string()
-      .required()
-      .min(3)
-      .max(30)
+      .required('Campo obrigatório')
+      .min(3, 'Mínimo de 3 caracteres')
+      .max(30, 'Máximo de 30 caracteres')
       .matches(
         /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
+        'Pode ter apenas caracteres alfanuméricos (alguns deles acentuados), espaços, underlines e alguns caracteres especiais',
       ),
     email: emailSchema,
     password: passwordSchema,

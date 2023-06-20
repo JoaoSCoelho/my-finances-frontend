@@ -33,7 +33,7 @@
   gap: 1em;
 }
 
-.accountModal .inputContainer .input {
+.accountModal .inputWrapper .inputContainer {
   background-color: white;
 }
 

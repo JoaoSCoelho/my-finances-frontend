@@ -151,7 +151,8 @@ export default function AccountModal({
                   label
                   labelValue={inputNameLabel}
                   name="name"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
                 <Input
@@ -178,7 +179,8 @@ export default function AccountModal({
                   label
                   labelValue={inputAmountLabel}
                   name="amount"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
                 <Input
@@ -189,7 +191,8 @@ export default function AccountModal({
                   label
                   labelValue={inputImageURLLabel}
                   name="imageURL"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
               </div>

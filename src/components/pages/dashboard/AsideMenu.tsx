@@ -62,7 +62,10 @@ export default function AsideMenu() {
       <div className={styles.bottomButtons}>
         <button
           type="button"
-          onClick={signout}
+          onClick={() => {
+            setLoading('Saindo...');
+            signout();
+          }}
           className={`${styles.button} ${styles.logout}`}
         >
           <FaSignOutAlt />

@@ -19,7 +19,7 @@
 }
 
 .loadingContainer .text {
-  font-size: 2em;
+  font-size: 1.8em;
   color: var(--light-silver);
-  font-weight: 700;
+  font-weight: 500;
 }

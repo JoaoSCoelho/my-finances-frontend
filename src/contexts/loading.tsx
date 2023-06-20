@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { createContext, useEffect, useState } from 'react';
 
 export type LoadingContextType = {
   isLoading: boolean;
@@ -15,6 +16,8 @@ export const LoadingProvider = ({ children }: { children: JSX.Element }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingText, setLoadingText] = useState<string>('');
 
+  const pathname = usePathname();
+
   const setLoading = (param?: string | boolean) => {
     if (typeof param === 'string') {
       setIsLoading(true);
@@ -23,6 +26,8 @@ export const LoadingProvider = ({ children }: { children: JSX.Element }) => {
       setIsLoading(!!param);
     }
   };
+
+  useEffect(() => setLoading(), [pathname]);
 
   return (
     <LoadingContext.Provider value={{ isLoading, loadingText, setLoading }}>

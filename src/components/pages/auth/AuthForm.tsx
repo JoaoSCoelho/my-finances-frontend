@@ -46,7 +46,7 @@ export default function AuthForm<FormData extends FieldValues>({
               placeholder="Nome de usuário"
               errors={errors}
               className={styles.input}
-              containerclassName={styles.inputContainer}
+              containerClassName={styles.inputContainer}
             />
           )}
           <Input
@@ -57,7 +57,7 @@ export default function AuthForm<FormData extends FieldValues>({
             placeholder="Email"
             errors={errors}
             className={styles.input}
-            containerclassName={styles.inputContainer}
+            containerClassName={styles.inputContainer}
           />
           <Input
             {...register('password' as Path<FormData>, { required: true })}
@@ -67,8 +67,8 @@ export default function AuthForm<FormData extends FieldValues>({
             placeholder="Senha"
             errors={errors}
             className={styles.input}
-            containerclassName={styles.inputContainer}
-            haveeye
+            containerClassName={styles.inputContainer}
+            haveEye
           />
         </div>
         <button className={styles.submitBtn} type="submit">

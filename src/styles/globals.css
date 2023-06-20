@@ -133,11 +133,6 @@ input[type='submit'] {
   cursor: pointer;
 }
 
-input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear {
-  display: none;
-}
-
 a {
   color: inherit;
   text-decoration: none;

@@ -20,7 +20,13 @@ export default function AccountCard({
 }: IAccountCardProps) {
   return (
     <div className={styles.accountCardWrapper}>
-      <div className={`${styles.accountCard} ${isTotal && styles.total}`}>
+      <div
+        className={`
+          ${styles.accountCard}
+          ${isTotal && styles.total}
+          ${amount < 0 && styles.negative}
+        `}
+      >
         <div className={styles.accountImage}>
           {isTotal ? (
             <FaHandHoldingUsd />

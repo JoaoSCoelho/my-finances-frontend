@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { LoadingContext } from '@/contexts/loading';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useContext, ReactNode, useState, useEffect } from 'react';
@@ -16,6 +17,7 @@ export default function AsideMenu() {
   const auth = useContext(AuthContext);
   const router = useRouter();
   const [pathname, setPathname] = useState<string>();
+  const { setLoading } = useContext(LoadingContext);
 
   const signout = () => {
     auth.signout();
@@ -37,12 +39,17 @@ export default function AsideMenu() {
     setPathname(window.location.pathname);
   });
 
+  useEffect(() => setLoading(), []);
+
   return (
     <aside className={styles.asideMenu}>
       <div className={styles.buttons}>
         {buttons.map((button) => (
           <Link
-            onClick={() => setPathname(button.href)}
+            onClick={() => {
+              setPathname(button.href);
+              setLoading('');
+            }}
             key={button.href}
             href={button.href}
             className={`${styles.button} ${

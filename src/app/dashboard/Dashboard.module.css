@@ -82,3 +82,11 @@
   font-size: 2.5em;
   color: var(--project-light-color);
 }
+
+.skeletonAccountCardContainer {
+  display: flex;
+  gap: 2em;
+  overflow: hidden;
+  width: 100%;
+  padding: 1em 0;
+}

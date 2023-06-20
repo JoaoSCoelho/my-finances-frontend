@@ -18,14 +18,14 @@ interface IInputProps<FormData extends FieldValues>
   wrapperClassName?: string;
   errorClassName?: string;
   labelClassName?: string;
-  containerclassName?: string;
+  containerClassName?: string;
   eyeBtnClassName?: string;
   label?: boolean;
   labelValue?: ReactNode;
   inputEl?: (
     props: Omit<IInputProps<FormData>, 'inputEl'> & { ref: Ref<HTMLElement> },
   ) => ReactNode;
-  haveeye?: boolean;
+  haveEye?: boolean;
 }
 
 const Input = forwardRef(
@@ -50,44 +50,46 @@ const Input = forwardRef(
             {props.required && <RequiredAsteriskTooltip />}
           </label>
         )}
-        {inputEl ? (
-          inputEl({
-            ...props,
-            className: inputClassName,
-            ref,
-          })
-        ) : (
-          <div
-            className={`
+        <div
+          className={`
               ${styles.inputContainer}
-              ${props.haveeye && styles.haveEye}
-              ${props.containerclassName}
+              ${props.haveEye && styles.haveEye}
+              ${props.containerClassName}
             `}
-          >
-            <input
-              {...props}
-              type={
-                props.haveeye ? (eyeOpen ? 'text' : props.type) : props.type
-              }
-              name={props.name}
-              className={inputClassName}
-              ref={ref}
-            />
-            {props.haveeye && (
-              <button
-                className={`${styles.eyeBtn} ${props.eyeBtnClassName}`}
-                type="button"
-                onClick={() => setEyeOpen((curr) => !curr)}
-              >
-                {eyeOpen ? (
-                  <AiOutlineEyeInvisible color="var(--gray)" size={25} />
-                ) : (
-                  <AiOutlineEye color="var(--gray)" size={25} />
-                )}
-              </button>
-            )}
-          </div>
-        )}
+        >
+          {inputEl ? (
+            inputEl({
+              ...props,
+              className: inputClassName,
+              ref,
+            })
+          ) : (
+            <>
+              <input
+                {...props}
+                type={
+                  props.haveEye ? (eyeOpen ? 'text' : props.type) : props.type
+                }
+                name={props.name}
+                className={inputClassName}
+                ref={ref}
+              />
+              {props.haveEye && (
+                <button
+                  className={`${styles.eyeBtn} ${props.eyeBtnClassName}`}
+                  type="button"
+                  onClick={() => setEyeOpen((curr) => !curr)}
+                >
+                  {eyeOpen ? (
+                    <AiOutlineEyeInvisible color="var(--gray)" size={25} />
+                  ) : (
+                    <AiOutlineEye color="var(--gray)" size={25} />
+                  )}
+                </button>
+              )}
+            </>
+          )}
+        </div>
         {props.errors[props.name] && (
           <span className={`${styles.inputError} ${props.errorClassName}`}>
             {props.errors[props.name]?.message as string}

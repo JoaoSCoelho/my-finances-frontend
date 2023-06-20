@@ -1,0 +1,51 @@
+
+svg.money-loading-svg {
+  filter: grayscale(1) brightness(1.1);
+}
+
+.money-loading-svg .coin {
+  animation: 1.5s infinite cubic-bezier(0,0,0,0);
+}
+
+.money-loading-svg .coin-2 {
+  animation-name: coin-2;
+}
+.money-loading-svg .coin-1 {
+  animation-name: coin-1;
+}
+.money-loading-svg .coin-3 {
+  animation-name: coin-3;
+}
+
+@keyframes coin-1 {
+  50% {
+    transform: translate(-48px, -63.18px);
+  }
+
+  to {
+    transform: translate(40px, -83.18px);
+  }
+}
+@keyframes coin-2 {
+  50% {
+    transform: translate(88px, -20px);
+  }
+
+  to {
+    transform: translate(48px, 63.18px);
+  }
+}
+@keyframes coin-3 {
+  50% {
+    transform: translate(-40px, 83.18px);
+  }
+
+  to {
+    transform: translate(-88px, 20px);
+  }
+}
+@keyframes hand {
+  from {
+
+  }
+}

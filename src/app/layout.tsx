@@ -1,4 +1,5 @@
 import { AuthProvider } from '@/contexts/auth';
+import { LoadingProvider } from '@/contexts/loading';
 import '@/styles/globals.css';
 import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: { children: ReactElement }) {
   return (
     <html lang="pt-br">
       <body className={poppins.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <LoadingProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

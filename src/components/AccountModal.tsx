@@ -1,14 +1,7 @@
 import useDebounce from '@/hooks/useDebounce';
-import { defaultToastOptions } from '@/services/toast';
 import { ReactNode, useEffect, useState } from 'react';
-import {
-  Control,
-  SubmitErrorHandler,
-  SubmitHandler,
-  UseFormReturn,
-} from 'react-hook-form';
+import { Control, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { IoClose } from 'react-icons/io5';
-import { toast } from 'react-toastify';
 import { Popup } from 'reactjs-popup';
 import * as yup from 'yup';
 
@@ -90,11 +83,6 @@ export default function AccountModal({
 
   const debounce = useDebounce();
 
-  const onSubmitError: SubmitErrorHandler<AccountForm> = (errors) => {
-    console.log(errors);
-    toast.warn('Preencha todos os campos', defaultToastOptions);
-  };
-
   // Set data when formData changes
   useEffect(() => {
     const subscription = watch((data) => {
@@ -115,6 +103,13 @@ export default function AccountModal({
     <Popup
       open={modalOpen}
       onClose={closeModal}
+      onOpen={() => {
+        (
+          document.querySelector('.account-modal form input#account-name') as
+            | HTMLInputElement
+            | undefined
+        )?.focus();
+      }}
       modal
       nested
       lockScroll
@@ -123,7 +118,7 @@ export default function AccountModal({
     >
       {
         ((close: () => any) => (
-          <div className={styles.accountModal}>
+          <div className={`account-modal ${styles.accountModal}`}>
             <header className={styles.modalHeader}>
               <button className={styles.closeBtn} type="button" onClick={close}>
                 <IoClose />
@@ -136,7 +131,7 @@ export default function AccountModal({
               onSubmit={(e) => {
                 const onSubmitClose: SubmitHandler<AccountForm> = (data) =>
                   onSubmit(data, close);
-                return handleSubmit(onSubmitClose, onSubmitError)(e);
+                return handleSubmit(onSubmitClose)(e);
               }}
               className={styles.accountForm}
             >
@@ -151,7 +146,8 @@ export default function AccountModal({
                   label
                   labelValue={inputNameLabel}
                   name="name"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
                 <Input
@@ -178,7 +174,8 @@ export default function AccountModal({
                   label
                   labelValue={inputAmountLabel}
                   name="amount"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
                 <Input
@@ -189,7 +186,8 @@ export default function AccountModal({
                   label
                   labelValue={inputImageURLLabel}
                   name="imageURL"
-                  wrapperClassName={styles.inputContainer}
+                  wrapperClassName={styles.inputWrapper}
+                  containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
               </div>

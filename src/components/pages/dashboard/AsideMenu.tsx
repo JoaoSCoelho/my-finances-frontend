@@ -39,8 +39,6 @@ export default function AsideMenu() {
     setPathname(window.location.pathname);
   });
 
-  useEffect(() => setLoading(), []);
-
   return (
     <aside className={styles.asideMenu}>
       <div className={styles.buttons}>

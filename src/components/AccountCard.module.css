@@ -17,6 +17,10 @@
   border-left: 4px solid var(--project-light-color);
 }
 
+.accountCard.total.negative {
+  border-left: 4px solid var(--error);
+}
+
 .accountCard .accountImage {
   font-size: 2.75em;
   color: var(--gray);
@@ -30,6 +34,10 @@
 
 .accountCard.total .accountImage {
   color: var(--project-light-color);
+}
+
+.accountCard.total.negative .accountImage {
+  color: var(--error);
 }
 
 .accountCard .accountImage img {
@@ -58,4 +66,8 @@
 .accountCard .accountInfo .accountAmount {
   font-weight: bold;
   min-width: 178px;
+}
+
+.accountCard.negative .accountInfo .accountAmount {
+  color: var(--error);
 }

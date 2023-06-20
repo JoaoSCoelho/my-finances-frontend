@@ -10,12 +10,14 @@ import { IBankAccountObject } from '@/types/BankAccount';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import Slider from 'react-slick';
 
 import styles from './Dashboard.module.css';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function DashBoard() {
   const [newAccountModalOpen, setNewAccountModalOpen] =
@@ -78,7 +80,7 @@ export default function DashBoard() {
                 draggable
                 speed={500}
                 infinite={false}
-                slidesToScroll={3}
+                slidesToScroll={1}
                 variableWidth
               >
                 <AccountCard
@@ -128,7 +130,20 @@ export default function DashBoard() {
               </button>
             </div>
           ) : (
-            <span>Carregando...</span>
+            <SkeletonTheme
+              width={283}
+              height={100}
+              inline
+              borderRadius="8px"
+              baseColor="#e4e4e4"
+            >
+              <div className={styles.skeletonAccountCardContainer}>
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+              </div>
+            </SkeletonTheme>
           )}
         </div>
       </section>

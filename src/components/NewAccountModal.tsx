@@ -34,7 +34,7 @@ export default function NewAccountModal({
   const onSubmit = (data: AccountForm) => {
     api
       .post('bankaccounts', data, {
-        headers: { Authorization: `Bearer ${auth.getToken()}` },
+        headers: { Authorization: `Bearer ${auth.getAccessToken()}` },
       })
       .then((response) => {
         setBankAccounts((values) => [

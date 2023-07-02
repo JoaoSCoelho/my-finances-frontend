@@ -35,7 +35,7 @@ export default function DashBoard() {
     if (bankAccounts === undefined)
       api
         .get('bankaccounts/my', {
-          headers: { Authorization: `Bearer ${auth.getToken()}` },
+          headers: { Authorization: `Bearer ${auth.getAccessToken()}` },
         })
         .then(({ data: { bankAccounts } }) => {
           bankAccounts && setBankAccounts(bankAccounts);

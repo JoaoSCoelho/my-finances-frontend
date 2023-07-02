@@ -47,7 +47,7 @@ export default function ExistingAccountModal({
     await api
       .put(`bankaccounts/${bankAccount.id}`, data, {
         headers: {
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${auth.getAccessToken()}`,
         },
       })
       .then((response) => {
@@ -78,7 +78,7 @@ export default function ExistingAccountModal({
     api
       .delete(`bankaccounts/${bankAccount.id}`, {
         headers: {
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${auth.getAccessToken()}`,
         },
       })
       .then(async () => {

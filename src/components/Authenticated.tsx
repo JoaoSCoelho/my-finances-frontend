@@ -10,25 +10,23 @@ interface IAuthenticatedProps {
 }
 
 export default function Authenticated({ children }: IAuthenticatedProps) {
-  const { user, getToken, setUser, signout } = useContext(AuthContext);
+  const { user, getAccessToken, setUser, signout } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    const validateToken = async () => {
-      const authToken = getToken();
-      if (authToken) {
+    const validateAccessToken = async () => {
+      const accessToken = getAccessToken();
+      if (accessToken) {
         await api
           .get('users/me', {
-            headers: { Authorization: `Bearer ${authToken}` },
+            headers: { Authorization: `Bearer ${accessToken}` },
           })
           .then(({ data }) => {
-            console.log('then');
             if (data.user) {
               setUser(data.user);
             }
           })
           .catch(() => {
-            console.log('catch');
             signout();
             router.push('/auth/login');
           });
@@ -36,7 +34,7 @@ export default function Authenticated({ children }: IAuthenticatedProps) {
         router.push('/auth/login');
       }
     };
-    validateToken();
+    validateAccessToken();
   }, []);
 
   return user ? children : <Loading />;

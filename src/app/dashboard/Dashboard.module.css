@@ -8,27 +8,7 @@
 }
 
 
-
-.accountsSection .sectionHeader {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  gap: 1em;
-}
-
-.accountsSection .sectionHeader .centerLine {
-  border-bottom: 2px solid var(--silver);
-  width: 100%;
-}
-
-.accountsSection .sectionTitle {
-  font-size: 2em;
-  color: var(--font-color);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.accountsSection .sectionHeader .newAccountBtn {
+.accountsSection .headerNewAccountBtn {
   white-space: nowrap;
 }
 

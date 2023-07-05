@@ -1,6 +1,7 @@
 'use client';
 
 import NewTransactionBtn from '@/components/pages/dashboard/transactions/NewTransactionBtn';
+import SectionHeader from '@/components/SectionHeader';
 import TransactionCard from '@/components/TransactionCard';
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
@@ -88,6 +89,7 @@ export default function Transactions() {
 
   return (
     <>
+      <SectionHeader title="Transferências" />
       <div className={styles.newTransactionButtonsContainer}>
         <NewTransactionBtn
           buttonType="income"

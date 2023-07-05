@@ -1,5 +1,12 @@
 import { ITransactionObject } from '@/types/Transaction';
 import { Dispatch, SetStateAction } from 'react';
+import {
+  BiArrowFromBottom,
+  BiArrowToBottom,
+  BiTransferAlt,
+} from 'react-icons/bi';
+
+import styles from './NewTransactionBtn.module.css';
 
 interface INewTransactionBtnProps {
   newTransaction?: Omit<ITransactionObject, 'id'>;
@@ -16,6 +23,7 @@ export default function NewTransactionBtn({
 }: INewTransactionBtnProps) {
   return (
     <button
+      className={`${styles.button} ${styles[buttonType]}`}
       onClick={() =>
         setNewTransaction({
           type: buttonType,
@@ -32,11 +40,19 @@ export default function NewTransactionBtn({
       type="button"
       disabled={!!newTransaction}
     >
-      {buttonType === 'income'
-        ? '+ Receita'
-        : buttonType === 'expense'
-        ? '- Despesa'
-        : '⇌ Transferência'}
+      {buttonType === 'income' ? (
+        <>
+          <BiArrowToBottom /> Receita
+        </>
+      ) : buttonType === 'expense' ? (
+        <>
+          <BiArrowFromBottom /> Despesa
+        </>
+      ) : (
+        <>
+          <BiTransferAlt /> Transferência
+        </>
+      )}
     </button>
   );
 }

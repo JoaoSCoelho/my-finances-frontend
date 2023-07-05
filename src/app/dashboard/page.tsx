@@ -4,6 +4,7 @@ import AccountCard from '@/components/AccountCard';
 import DiscreetButton from '@/components/DiscreetButton';
 import ExistingAccountModal from '@/components/ExistingAccountModal';
 import NewAccountModal from '@/components/NewAccountModal';
+import SectionHeader from '@/components/SectionHeader';
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -51,18 +52,19 @@ export default function DashBoard() {
       />
 
       <section className={styles.accountsSection}>
-        <header className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Suas contas</h2>
-          <div className={styles.centerLine} />
-          <DiscreetButton
-            className={styles.newAccountBtn}
-            type="button"
-            onClick={openNewAccountModal}
-            symbol={<AiFillPlusCircle />}
-          >
-            Criar conta
-          </DiscreetButton>
-        </header>
+        <SectionHeader
+          title="Suas contas"
+          button={
+            <DiscreetButton
+              className={styles.headerNewAccountBtn}
+              type="button"
+              onClick={openNewAccountModal}
+              symbol={<AiFillPlusCircle />}
+            >
+              Criar conta
+            </DiscreetButton>
+          }
+        />
 
         <div className={styles.accountsContainer}>
           {bankAccounts ? (

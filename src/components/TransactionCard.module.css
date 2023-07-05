@@ -40,7 +40,7 @@
 }
 
 .container.transfer .typeSymbol {
-  color: #634c81;
+  color: var(--transfer-color);
 }
 
 .error {

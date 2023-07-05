@@ -1,8 +1,7 @@
+export type TransactionTypes = 'expense' | 'income' | 'transfer';
+
 export interface ITransactionObject<
-  T extends 'expense' | 'income' | 'transfer' =
-    | 'expense'
-    | 'income'
-    | 'transfer',
+  T extends TransactionTypes = TransactionTypes,
 > {
   type: T;
   id: string;

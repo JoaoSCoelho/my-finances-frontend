@@ -7,7 +7,7 @@ interface IControlledBRLFormatProps extends IBRLFormatProps {
   name: string;
 }
 
-export default function ControllerBRLFormat(props: IControlledBRLFormatProps) {
+export default function ControlledBRLFormat(props: IControlledBRLFormatProps) {
   return (
     <Controller
       name={props.name}

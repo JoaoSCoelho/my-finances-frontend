@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import AccountCard from './AccountCard';
 import styles from './AccountModal.module.css';
 import Button from './Button';
-import ControllerBRLFormat from './ControlledBRLFormat';
+import ControlledBRLFormat from './ControlledBRLFormat';
 import Input from './Input';
 
 import './AccountModal.css';
@@ -159,7 +159,7 @@ export default function AccountModal({
                     defaultValue: _defaultValue,
                     ...props
                   }) => (
-                    <ControllerBRLFormat
+                    <ControlledBRLFormat
                       {...props}
                       control={control as unknown as Control}
                       name="amount"

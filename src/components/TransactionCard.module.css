@@ -1,21 +1,27 @@
 .container {
-  padding: .5em;
+  display: flex;
   margin: .5em 0;
+}
+
+.container.income .contentContainer {
+  box-shadow: 0 4px #93C96D20;
+}
+.container.expense .contentContainer {
+  box-shadow: 0 4px #da565d20;
+}
+.container.transfer .contentContainer {
+  box-shadow: 0 4px #634c8120;
+}
+
+.contentContainer {
+  width: 100%;
+  padding: .5em;
   border-radius: 8px;
   color: var(--font-color);
   background-color: white;
   display: grid;
   grid-template-columns: 80px 1fr;
-}
-
-.container.income {
-  box-shadow: 0 4px #93C96D20;
-}
-.container.expense {
-  box-shadow: 0 4px #da565d20;
-}
-.container.transfer {
-  box-shadow: 0 4px #634c8120;
+  z-index: 1;
 }
 
 .typeSymbol {
@@ -37,8 +43,18 @@
   color: #634c81;
 }
 
+.error {
+  font-size: .6em;
+  color: var(--error-dark);
+}
+
 .title {
   font-size: 1.15em;
+}
+
+.title.input {
+  border-bottom: 1px solid var(--light-silver);
+  width: 100%;
 }
 
 .container .contentInfo {
@@ -50,7 +66,8 @@
 .moneyValue {
   font-weight: 500;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   font-size: 1.1em;
 }
 
@@ -58,6 +75,16 @@
   display: flex;
   align-items: center;
   gap: 0.1em;
+}
+
+.bankAccountInfo select {
+  border-radius: 4px;
+  padding: 0 .1em;
+  background-color: #00000010;
+}
+
+.bankAccountInfo select:invalid {
+  color: var(--gray);
 }
 
 .bankAccountInfo .transferDirectionArrow {
@@ -85,4 +112,61 @@
   display: flex;
   align-items: end;
   justify-content: right;
+}
+
+.saveButtonContainer, .deleteButtonContainer, .editButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  transition: .2s;
+}
+
+.saveButtonContainer {
+  margin-left: -10px;
+  background-color: var(--project-light-color);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.saveButtonContainer:hover {
+  background-color: var(--project-color);
+}
+
+.deleteButtonContainer {
+  margin-right: -10px;
+  background-color: var(--error);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.deleteButtonContainer:hover {
+  background-color: var(--error-dark);
+}
+
+.editButtonContainer {
+  margin-left: -10px;
+  background-color: var(--light-gray);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.editButtonContainer:hover {
+  background-color: var(--gray);
+}
+
+.saveButtonContainer button, .deleteButtonContainer button, .editButtonContainer button {
+  height: 100%;
+}
+
+.saveButtonContainer button, .editButtonContainer button {
+  padding: 0 .5em 0 calc(.5em + 10px);
+}
+
+.deleteButtonContainer button {
+  padding: 0 calc(.5em + 10px) 0 .5em;
+}
+
+.saveButtonContainer svg, .deleteButtonContainer svg, .editButtonContainer button {
+  color: white;
 }

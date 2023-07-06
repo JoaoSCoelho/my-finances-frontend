@@ -18,7 +18,9 @@ interface IExistingAccountModalProps {
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
   bankAccount: IBankAccountObject;
   bankAccounts: IBankAccountObject[] | undefined;
-  setBankAccounts: Dispatch<SetStateAction<IBankAccountObject[] | undefined>>;
+  setBankAccounts: Dispatch<
+    SetStateAction<(IBankAccountObject & { totalAmount: number })[] | undefined>
+  >;
 }
 
 export default function ExistingAccountModal({

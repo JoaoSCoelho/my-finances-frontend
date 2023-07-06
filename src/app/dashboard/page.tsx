@@ -25,7 +25,8 @@ export default function DashBoard() {
     useState<boolean>(false);
   const [existingAccountModalOpen, setExistingAccountModalOpen] =
     useState<boolean>(false);
-  const [bankAccounts, setBankAccounts] = useState<IBankAccountObject[]>();
+  const [bankAccounts, setBankAccounts] =
+    useState<(IBankAccountObject & { totalAmount: number })[]>();
   const auth = useContext(AuthContext);
   const slider = useRef<Slider>(null);
 
@@ -88,7 +89,7 @@ export default function DashBoard() {
                 <AccountCard
                   isTotal
                   amount={bankAccounts.reduce(
-                    (prev, curr) => prev + curr.amount,
+                    (prev, curr) => prev + curr.totalAmount,
                     0,
                   )}
                 />
@@ -98,7 +99,7 @@ export default function DashBoard() {
                       <button type="button" onClick={openExistingAccountModal}>
                         <AccountCard
                           key={bankAccount.id}
-                          amount={bankAccount.amount}
+                          amount={bankAccount.totalAmount}
                           imageSrc={bankAccount.imageURL}
                           name={bankAccount.name}
                         />

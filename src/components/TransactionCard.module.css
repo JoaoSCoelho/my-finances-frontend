@@ -74,7 +74,7 @@
 .bankAccountInfo {
   display: flex;
   align-items: center;
-  gap: 0.1em;
+  gap: 0.2em;
 }
 
 .bankAccountInfo select {
@@ -94,6 +94,7 @@
 
 .bankAccountInfo img {
   height: 1em;
+  border-radius: 2px;
 }
 
 .bankAccount {

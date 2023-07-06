@@ -39,7 +39,7 @@ export default function RegisterForm() {
     api
       .post('users', data)
       .then(({ data: resData }) => {
-        auth.signin(resData.token, resData.user);
+        auth.signin(resData.accessToken, resData.user);
         router.push('/dashboard');
       })
       .catch((err) => {

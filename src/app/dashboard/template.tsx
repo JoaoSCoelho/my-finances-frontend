@@ -1,5 +1,6 @@
 'use client';
 
+import Authenticated from '@/components/Authenticated';
 import AsideMenu from '@/components/pages/dashboard/AsideMenu';
 import Header from '@/components/pages/dashboard/Header';
 import { ReactNode } from 'react';
@@ -12,12 +13,14 @@ export default function DashboardTemplate({
   children: ReactNode;
 }) {
   return (
-    <div className={styles.container}>
-      <AsideMenu />
+    <Authenticated>
+      <div className={styles.container}>
+        <AsideMenu />
 
-      <Header />
+        <Header />
 
-      <main className={styles.main}>{children}</main>
-    </div>
+        <main className={styles.main}>{children}</main>
+      </div>
+    </Authenticated>
   );
 }

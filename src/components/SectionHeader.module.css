@@ -1,0 +1,18 @@
+.sectionHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1em;
+}
+
+.sectionHeader .centerLine {
+  border-bottom: 2px solid var(--silver);
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: 2em;
+  color: var(--font-color);
+  font-weight: 500;
+  white-space: nowrap;
+}

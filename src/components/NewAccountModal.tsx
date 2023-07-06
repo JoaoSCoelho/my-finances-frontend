@@ -11,7 +11,9 @@ import { toast } from 'react-toastify';
 import AccountModal, { AccountForm, accountSchema } from './AccountModal';
 
 interface INewAccountModalProps {
-  setBankAccounts: Dispatch<SetStateAction<IBankAccountObject[] | undefined>>;
+  setBankAccounts: Dispatch<
+    SetStateAction<(IBankAccountObject & { totalAmount: number })[] | undefined>
+  >;
   modalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -34,12 +36,15 @@ export default function NewAccountModal({
   const onSubmit = (data: AccountForm) => {
     api
       .post('bankaccounts', data, {
-        headers: { Authorization: `Bearer ${auth.getToken()}` },
+        headers: { Authorization: `Bearer ${auth.getAccessToken()}` },
       })
       .then((response) => {
         setBankAccounts((values) => [
           ...(values || []),
-          response.data.bankAccount,
+          {
+            ...response.data.bankAccount,
+            totalAmount: response.data.bankAccount.amount,
+          },
         ]);
         closeModal();
       })

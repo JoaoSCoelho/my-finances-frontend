@@ -1,0 +1,40 @@
+.button {
+  border-radius: 8px;
+  background-color: white;
+  padding: 1em;
+  font-size: 1.1em;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+  transition: .2s;
+}
+
+.button.income {
+  color: var(--project-light-color);
+  box-shadow: 2px 3px var(--project-light-color);
+}
+.button.expense {
+  color: var(--error);
+  box-shadow: 2px 3px var(--error);
+}
+.button.transfer {
+  color: var(--transfer-color);
+  box-shadow: 2px 3px var(--transfer-color);
+}
+
+.button:hover {
+  box-shadow: none;
+  box-shadow: 1px 1px;
+}
+
+.button:disabled {
+  color: var(--gray);
+  box-shadow: 1px 1px var(--gray);
+  cursor: not-allowed;
+}
+
+.button svg {
+  font-size: 1.5em;
+}

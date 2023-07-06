@@ -4,6 +4,7 @@ import AccountCard from '@/components/AccountCard';
 import DiscreetButton from '@/components/DiscreetButton';
 import ExistingAccountModal from '@/components/ExistingAccountModal';
 import NewAccountModal from '@/components/NewAccountModal';
+import SectionHeader from '@/components/SectionHeader';
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -24,7 +25,8 @@ export default function DashBoard() {
     useState<boolean>(false);
   const [existingAccountModalOpen, setExistingAccountModalOpen] =
     useState<boolean>(false);
-  const [bankAccounts, setBankAccounts] = useState<IBankAccountObject[]>();
+  const [bankAccounts, setBankAccounts] =
+    useState<(IBankAccountObject & { totalAmount: number })[]>();
   const auth = useContext(AuthContext);
   const slider = useRef<Slider>(null);
 
@@ -35,7 +37,7 @@ export default function DashBoard() {
     if (bankAccounts === undefined)
       api
         .get('bankaccounts/my', {
-          headers: { Authorization: `Bearer ${auth.getToken()}` },
+          headers: { Authorization: `Bearer ${auth.getAccessToken()}` },
         })
         .then(({ data: { bankAccounts } }) => {
           bankAccounts && setBankAccounts(bankAccounts);
@@ -51,18 +53,19 @@ export default function DashBoard() {
       />
 
       <section className={styles.accountsSection}>
-        <header className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Suas contas</h2>
-          <div className={styles.centerLine} />
-          <DiscreetButton
-            className={styles.newAccountBtn}
-            type="button"
-            onClick={openNewAccountModal}
-            symbol={<AiFillPlusCircle />}
-          >
-            Criar conta
-          </DiscreetButton>
-        </header>
+        <SectionHeader
+          title="Suas contas"
+          button={
+            <DiscreetButton
+              className={styles.headerNewAccountBtn}
+              type="button"
+              onClick={openNewAccountModal}
+              symbol={<AiFillPlusCircle />}
+            >
+              Criar conta
+            </DiscreetButton>
+          }
+        />
 
         <div className={styles.accountsContainer}>
           {bankAccounts ? (
@@ -86,7 +89,7 @@ export default function DashBoard() {
                 <AccountCard
                   isTotal
                   amount={bankAccounts.reduce(
-                    (prev, curr) => prev + curr.amount,
+                    (prev, curr) => prev + curr.totalAmount,
                     0,
                   )}
                 />
@@ -96,7 +99,7 @@ export default function DashBoard() {
                       <button type="button" onClick={openExistingAccountModal}>
                         <AccountCard
                           key={bankAccount.id}
-                          amount={bankAccount.amount}
+                          amount={bankAccount.totalAmount}
                           imageSrc={bankAccount.imageURL}
                           name={bankAccount.name}
                         />

@@ -56,7 +56,7 @@ export default function LoginForm() {
     api
       .post('login', data)
       .then(({ data: resData }) => {
-        auth.signin(resData.token, resData.user);
+        auth.signin(resData.accessToken, resData.user);
         router.push('/dashboard');
       })
       .catch((err) => {

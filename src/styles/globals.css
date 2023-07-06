@@ -173,5 +173,6 @@ body::-webkit-scrollbar-thumb:hover {
   --light-silver: #eaeaea;
   --error: #da565d;
   --error-dark: #bd494f;
+  --transfer-color: #634c81;
   --max-content-width: 1440px;
 }

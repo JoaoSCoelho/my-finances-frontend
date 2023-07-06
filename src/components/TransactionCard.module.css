@@ -1,0 +1,173 @@
+.container {
+  display: flex;
+  margin: .5em 0;
+}
+
+.container.income .contentContainer {
+  box-shadow: 0 4px #93C96D20;
+}
+.container.expense .contentContainer {
+  box-shadow: 0 4px #da565d20;
+}
+.container.transfer .contentContainer {
+  box-shadow: 0 4px #634c8120;
+}
+
+.contentContainer {
+  width: 100%;
+  padding: .5em;
+  border-radius: 8px;
+  color: var(--font-color);
+  background-color: white;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  z-index: 1;
+}
+
+.typeSymbol {
+  font-size: 1.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container.income .typeSymbol {
+  color: var(--project-light-color);
+}
+
+.container.expense .typeSymbol {
+  color: var(--error);
+}
+
+.container.transfer .typeSymbol {
+  color: var(--transfer-color);
+}
+
+.error {
+  font-size: .6em;
+  color: var(--error-dark);
+}
+
+.title {
+  font-size: 1.15em;
+}
+
+.title.input {
+  border-bottom: 1px solid var(--light-silver);
+  width: 100%;
+}
+
+.container .contentInfo {
+  margin-top: .5em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.moneyValue {
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.1em;
+}
+
+.bankAccountInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.bankAccountInfo select {
+  border-radius: 4px;
+  padding: 0 .1em;
+  background-color: #00000010;
+}
+
+.bankAccountInfo select:invalid {
+  color: var(--gray);
+}
+
+.bankAccountInfo .transferDirectionArrow {
+  color: var(--light-gray);
+  font-size: 1.2em;
+}
+
+.bankAccountInfo img {
+  height: 1em;
+  border-radius: 2px;
+}
+
+.bankAccount {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  padding: 0.2em .3em;
+  background-color: #00000010;
+  border-radius: 4px;
+}
+
+.date {
+  font-size: .8em;
+  text-align: right;
+  color: var(--gray);
+  display: flex;
+  align-items: end;
+  justify-content: right;
+}
+
+.saveButtonContainer, .deleteButtonContainer, .editButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  transition: .2s;
+}
+
+.saveButtonContainer {
+  margin-left: -10px;
+  background-color: var(--project-light-color);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.saveButtonContainer:hover {
+  background-color: var(--project-color);
+}
+
+.deleteButtonContainer {
+  margin-right: -10px;
+  background-color: var(--error);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.deleteButtonContainer:hover {
+  background-color: var(--error-dark);
+}
+
+.editButtonContainer {
+  margin-left: -10px;
+  background-color: var(--light-gray);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.editButtonContainer:hover {
+  background-color: var(--gray);
+}
+
+.saveButtonContainer button, .deleteButtonContainer button, .editButtonContainer button {
+  height: 100%;
+}
+
+.saveButtonContainer button, .editButtonContainer button {
+  padding: 0 .5em 0 calc(.5em + 10px);
+}
+
+.deleteButtonContainer button {
+  padding: 0 calc(.5em + 10px) 0 .5em;
+}
+
+.saveButtonContainer svg, .deleteButtonContainer svg, .editButtonContainer button {
+  color: white;
+}

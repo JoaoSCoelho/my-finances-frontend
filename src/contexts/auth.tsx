@@ -6,9 +6,9 @@ import { createContext, useState, Dispatch, SetStateAction } from 'react';
 export type AuthContextType = {
   user: IClientUserObject | null;
   setUser: Dispatch<SetStateAction<AuthContextType['user']>>;
-  signin: (token: string, user?: IClientUserObject) => void;
+  signin: (accessToken: string, user?: IClientUserObject) => void;
   signout: () => void;
-  getToken: () => string | null;
+  getAccessToken: () => string | null;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -17,24 +17,26 @@ export const AuthContext = createContext<AuthContextType>(null!);
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<IClientUserObject | null>(null);
 
-  const setToken = (token: string) => {
-    localStorage.setItem('authToken', token);
+  const setAccessToken = (token: string) => {
+    localStorage.setItem('accessToken', token);
   };
 
-  const signin = (token: string, user?: IClientUserObject) => {
-    setToken(token);
+  const signin = (accessToken: string, user?: IClientUserObject) => {
+    setAccessToken(accessToken);
     user && setUser(user);
   };
 
   const signout = () => {
     setUser(null);
-    setToken('');
+    setAccessToken('');
   };
 
-  const getToken = () => localStorage.getItem('authToken');
+  const getAccessToken = () => localStorage.getItem('accessToken');
 
   return (
-    <AuthContext.Provider value={{ user, setUser, signin, signout, getToken }}>
+    <AuthContext.Provider
+      value={{ user, setUser, signin, signout, getAccessToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

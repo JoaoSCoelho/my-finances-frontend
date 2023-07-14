@@ -16,8 +16,8 @@ interface IExistingAccountModalProps {
   modalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
-  bankAccount: IBankAccountObject;
-  bankAccounts: IBankAccountObject[] | undefined;
+  bankAccount: IBankAccountObject & { totalAmount: number };
+  bankAccounts: (IBankAccountObject & { totalAmount: number })[] | undefined;
   setBankAccounts: Dispatch<
     SetStateAction<(IBankAccountObject & { totalAmount: number })[] | undefined>
   >;
@@ -32,7 +32,8 @@ export default function ExistingAccountModal({
 }: IExistingAccountModalProps) {
   const form = useForm<AccountForm>({
     defaultValues: {
-      amount: bankAccount.amount,
+      totalAmount: bankAccount.totalAmount,
+      initialAmount: bankAccount.amount,
       imageURL: bankAccount.imageURL,
       name: bankAccount.name,
     },
@@ -46,12 +47,70 @@ export default function ExistingAccountModal({
   };
 
   const onSubmit = async (data: AccountForm, close: () => any) => {
+    const accessToken = auth.getAccessToken();
+    const differenceBetweenInitialAmountAndOldInitialAmount =
+      data.initialAmount - bankAccount.amount;
+    const transactionType =
+      data.totalAmount >
+      bankAccount.totalAmount +
+        differenceBetweenInitialAmountAndOldInitialAmount
+        ? 'income'
+        : data.totalAmount <
+          bankAccount.totalAmount +
+            differenceBetweenInitialAmountAndOldInitialAmount
+        ? 'expense'
+        : undefined;
+
+    transactionType &&
+      (await api
+        .post(
+          `/transactions/${transactionType}s`,
+          {
+            bankAccountId: bankAccount.id,
+            [transactionType === 'income' ? 'gain' : 'spent']:
+              transactionType === 'income'
+                ? data.totalAmount -
+                  (bankAccount.totalAmount +
+                    differenceBetweenInitialAmountAndOldInitialAmount)
+                : bankAccount.totalAmount +
+                  differenceBetweenInitialAmountAndOldInitialAmount -
+                  data.totalAmount,
+            title: '-- REAJUSTE --',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        )
+        .then(() =>
+          toast.info(
+            'Uma nova transação foi criada para suprir o reajuste monetário',
+            defaultToastOptions,
+          ),
+        )
+        .catch((err) => {
+          console.error(err);
+          toast.error('Erro inesperado!');
+          close();
+        }));
+
     await api
-      .put(`bankaccounts/${bankAccount.id}`, data, {
-        headers: {
-          Authorization: `Bearer ${auth.getAccessToken()}`,
+      .put(
+        `bankaccounts/${bankAccount.id}`,
+        {
+          ...data,
+          imageURL: data.imageURL || null,
+          amount: data.initialAmount,
+          initialAmount: undefined,
+          totalAmount: undefined,
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
       .then((response) => {
         setBankAccounts((values) =>
           values?.map((bankAccount) => {
@@ -91,6 +150,7 @@ export default function ExistingAccountModal({
 
   return (
     <AccountModal
+      inputTotalAmountVisible
       onSubmit={onSubmit}
       closeModal={closeModal}
       form={form}

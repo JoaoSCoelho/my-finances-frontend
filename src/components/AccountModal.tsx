@@ -21,7 +21,9 @@ interface IAccountModalProps {
   form: UseFormReturn<AccountForm>;
   modalTitle: string;
   inputNameLabel?: string;
-  inputAmountLabel?: string;
+  inputTotalAmountLabel?: string;
+  inputTotalAmountVisible?: boolean;
+  inputInitialAmountLabel?: string;
   inputImageURLLabel?: string;
   submitButton: {
     value: string;
@@ -42,7 +44,12 @@ export const accountSchema = yup
         /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
         'Pode ter apenas caracteres alfanuméricos (alguns deles acentuados), espaços, underlines e alguns caracteres especiais',
       ),
-    amount: yup
+    totalAmount: yup
+      .number()
+      .required('Campo obrigatório')
+      .min(-999999999999, 'Mínimo: -1 trilhão')
+      .max(999999999999, 'Máximo: 1 trilhão'),
+    initialAmount: yup
       .number()
       .required('Campo obrigatório')
       .min(-999999999999, 'Mínimo: -1 trilhão')
@@ -70,16 +77,23 @@ export default function AccountModal({
     formState: { errors },
     control,
     watch,
+    setValue,
   },
   modalTitle,
-  inputAmountLabel = 'Montante',
+  inputTotalAmountLabel = 'Montante total',
+  inputInitialAmountLabel = 'Montante inicial',
   inputImageURLLabel = 'URL da imagem',
   inputNameLabel = 'Nome da conta',
   submitButton,
   otherButtons,
   trigger,
+  inputTotalAmountVisible,
 }: IAccountModalProps) {
   const [data, setData] = useState<Partial<AccountForm>>();
+  const [
+    differenceBetweenTotalAmountAndInitialAmount,
+    setDifferenceBetweenTotalAmountAndInitialAmount,
+  ] = useState<number>(0);
 
   const debounce = useDebounce();
 
@@ -96,7 +110,11 @@ export default function AccountModal({
 
   // Set data on first rendering
   useEffect(() => {
-    setData(watch());
+    const watched = watch();
+    setData(watched);
+    setDifferenceBetweenTotalAmountAndInitialAmount(
+      watched.totalAmount - watched.initialAmount,
+    );
   }, []);
 
   return (
@@ -162,22 +180,72 @@ export default function AccountModal({
                     <ControlledBRLFormat
                       {...props}
                       control={control as unknown as Control}
-                      name="amount"
-                      id="account-amount"
+                      name="initialAmount"
+                      id="initial-account-amount"
                       placeholder="R$ 0,00"
                       max={1000000000000}
                       min={-1000000000000}
                       maxLength={24}
+                      onValueChangeExec={
+                        inputTotalAmountVisible
+                          ? (v) =>
+                              setValue(
+                                'totalAmount',
+                                v.floatValue! +
+                                  differenceBetweenTotalAmountAndInitialAmount,
+                              )
+                          : (v) => setValue('totalAmount', v.floatValue!)
+                      }
                     />
                   )}
-                  id="account-amount"
+                  id="initial-account-amount"
                   label
-                  labelValue={inputAmountLabel}
-                  name="amount"
+                  labelValue={inputInitialAmountLabel}
+                  name="initialAmount"
                   wrapperClassName={styles.inputWrapper}
                   containerClassName={styles.inputContainer}
                   className={styles.input}
                 />
+                {inputTotalAmountVisible && (
+                  <Input
+                    errors={errors}
+                    required
+                    inputEl={({
+                      type: _type,
+                      value: _value,
+                      defaultValue: _defaultValue,
+                      ...props
+                    }) => (
+                      <ControlledBRLFormat
+                        {...props}
+                        control={control as unknown as Control}
+                        name="totalAmount"
+                        id="total-account-amount"
+                        placeholder="R$ 0,00"
+                        max={1000000000000}
+                        min={-1000000000000}
+                        maxLength={24}
+                        onValueChangeExec={(v) =>
+                          v.floatValue &&
+                          data?.initialAmount !== undefined &&
+                          setDifferenceBetweenTotalAmountAndInitialAmount(
+                            v.floatValue -
+                              (isNaN(data.initialAmount)
+                                ? 0
+                                : data.initialAmount),
+                          )
+                        }
+                      />
+                    )}
+                    id="total-account-amount"
+                    label
+                    labelValue={inputTotalAmountLabel}
+                    name="total-amount"
+                    wrapperClassName={styles.inputWrapper}
+                    containerClassName={styles.inputContainer}
+                    className={styles.input}
+                  />
+                )}
                 <Input
                   {...register('imageURL')}
                   errors={errors}
@@ -201,7 +269,7 @@ export default function AccountModal({
             </form>
 
             <AccountCard
-              amount={data?.amount || 0}
+              amount={data?.totalAmount || 0}
               name={data?.name || 'Nome da conta'}
               imageSrc={data?.imageURL}
             />

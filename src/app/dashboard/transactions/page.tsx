@@ -16,7 +16,9 @@ import styles from './Transactions.module.css';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<ITransactionObject[]>([]);
-  const [bankAccounts, setBankAccounts] = useState<IBankAccountObject[]>([]);
+  const [bankAccounts, setBankAccounts] = useState<
+    (IBankAccountObject & { totalAmount: number })[]
+  >([]);
   const [newTransaction, setNewTransaction] =
     useState<Omit<ITransactionObject, 'id'>>();
 

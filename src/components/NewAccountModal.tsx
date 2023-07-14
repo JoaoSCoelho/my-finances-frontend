@@ -68,7 +68,6 @@ export default function NewAccountModal({
       closeModal={closeModal}
       form={form}
       modalTitle="Nova conta"
-      inputAmountLabel="Montante inicial"
       submitButton={{
         value: 'Criar',
         symbol: <AiFillPlusCircle />,

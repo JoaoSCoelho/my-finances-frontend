@@ -43,7 +43,7 @@ export default function NewAccountModal({
           ...(values || []),
           {
             ...response.data.bankAccount,
-            totalAmount: response.data.bankAccount.amount,
+            totalAmount: response.data.bankAccount.initialAmount,
           },
         ]);
         closeModal();

@@ -33,7 +33,7 @@ export default function ExistingAccountModal({
   const form = useForm<AccountForm>({
     defaultValues: {
       totalAmount: bankAccount.totalAmount,
-      initialAmount: bankAccount.amount,
+      initialAmount: bankAccount.initialAmount,
       imageURL: bankAccount.imageURL,
       name: bankAccount.name,
     },
@@ -49,7 +49,7 @@ export default function ExistingAccountModal({
   const onSubmit = async (data: AccountForm, close: () => any) => {
     const accessToken = auth.getAccessToken();
     const differenceBetweenInitialAmountAndOldInitialAmount =
-      data.initialAmount - bankAccount.amount;
+      data.initialAmount - bankAccount.initialAmount;
     const transactionType =
       data.totalAmount >
       bankAccount.totalAmount +
@@ -101,8 +101,6 @@ export default function ExistingAccountModal({
         {
           ...data,
           imageURL: data.imageURL || null,
-          amount: data.initialAmount,
-          initialAmount: undefined,
           totalAmount: undefined,
         },
         {

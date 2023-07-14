@@ -3,6 +3,6 @@ export interface IBankAccountObject {
   userId: string;
   createdTimestamp: number;
   name: string;
-  amount: number;
+  initialAmount: number;
   imageURL?: string;
 }

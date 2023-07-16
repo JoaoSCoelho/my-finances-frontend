@@ -4,6 +4,7 @@ import NewTransactionBtn from '@/components/pages/dashboard/transactions/NewTran
 import SectionHeader from '@/components/SectionHeader';
 import TransactionCard from '@/components/TransactionCard';
 import { AuthContext } from '@/contexts/auth';
+import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { IBankAccountObject } from '@/types/BankAccount';
 import { IExpenseObject } from '@/types/Expense';
@@ -25,6 +26,8 @@ export default function Transactions() {
   const { getAccessToken } = useContext(AuthContext);
 
   const accessToken = getAccessToken();
+
+  const { setLoading } = useContext(LoadingContext);
 
   async function setDbTransactions() {
     const newTransactions: ITransactionObject[] = [];
@@ -78,18 +81,23 @@ export default function Transactions() {
   }
 
   useEffect(() => {
+    setLoading('', true);
+
     api
       .get('bankaccounts/my', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response) => setBankAccounts(response.data.bankAccounts));
+      .then((response) => {
+        setBankAccounts(response.data.bankAccounts);
+        setLoading();
+      });
 
     setDbTransactions();
   }, []);
 
-  return (
+  return bankAccounts.length ? (
     <>
       <SectionHeader title="Transferências" />
       <div className={styles.newTransactionButtonsContainer}>
@@ -136,5 +144,7 @@ export default function Transactions() {
           ))}
       </ul>
     </>
+  ) : (
+    <></>
   );
 }

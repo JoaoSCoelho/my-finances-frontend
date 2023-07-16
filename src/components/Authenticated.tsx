@@ -37,5 +37,5 @@ export default function Authenticated({ children }: IAuthenticatedProps) {
     validateAccessToken();
   }, []);
 
-  return user ? children : setLoading('');
+  return user ? children : setLoading('')! || <></>;
 }

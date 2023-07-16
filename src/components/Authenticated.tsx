@@ -1,9 +1,8 @@
 import { AuthContext } from '@/contexts/auth';
+import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
-
-import Loading from './Loading';
 
 interface IAuthenticatedProps {
   children: JSX.Element;
@@ -11,6 +10,7 @@ interface IAuthenticatedProps {
 
 export default function Authenticated({ children }: IAuthenticatedProps) {
   const { user, getAccessToken, setUser, signout } = useContext(AuthContext);
+  const { setLoading } = useContext(LoadingContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,5 +37,5 @@ export default function Authenticated({ children }: IAuthenticatedProps) {
     validateAccessToken();
   }, []);
 
-  return user ? children : <Loading />;
+  return user ? children : setLoading('');
 }

@@ -6,7 +6,7 @@ import { createContext, useEffect, useState } from 'react';
 export type LoadingContextType = {
   isLoading: boolean;
   loadingText: string;
-  setLoading: (param?: string | boolean) => void;
+  setLoading: (param?: string | boolean, bypass?: boolean) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -18,10 +18,12 @@ export const LoadingProvider = ({ children }: { children: JSX.Element }) => {
 
   const pathname = usePathname();
 
-  const setLoading = (param?: string | boolean) => {
+  const setLoading = (param?: string | boolean, bypass = false) => {
     if (typeof param === 'string') {
-      setIsLoading(true);
-      setLoadingText(param);
+      if (!isLoading || bypass) {
+        setIsLoading(true);
+        setLoadingText(param);
+      }
     } else {
       setIsLoading(!!param);
     }

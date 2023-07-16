@@ -1,8 +1,8 @@
 import { AuthContext } from '@/contexts/auth';
 import { LoadingContext } from '@/contexts/loading';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useContext, ReactNode, useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useContext, ReactNode } from 'react';
 import { AiFillHome, AiOutlineUnorderedList } from 'react-icons/ai';
 import { FaSignOutAlt } from 'react-icons/fa';
 
@@ -16,7 +16,7 @@ type Button = {
 export default function AsideMenu() {
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const [pathname, setPathname] = useState<string>();
+  const pathname = usePathname();
   const { setLoading } = useContext(LoadingContext);
 
   const signout = () => {
@@ -35,18 +35,13 @@ export default function AsideMenu() {
     },
   ];
 
-  useEffect(() => {
-    setPathname(window.location.pathname);
-  });
-
   return (
     <aside className={styles.asideMenu}>
       <div className={styles.buttons}>
         {buttons.map((button) => (
           <Link
             onClick={() => {
-              setPathname(button.href);
-              setLoading('');
+              pathname !== button.href && setLoading('');
             }}
             key={button.href}
             href={button.href}
@@ -63,7 +58,7 @@ export default function AsideMenu() {
         <button
           type="button"
           onClick={() => {
-            setLoading('Saindo...');
+            setLoading('Saindo...', true);
             signout();
           }}
           className={`${styles.button} ${styles.logout}`}

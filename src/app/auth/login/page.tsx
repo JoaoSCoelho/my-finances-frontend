@@ -1,6 +1,6 @@
 'use client';
 
-import LoginForm from '@/components/pages/auth/login/LoginForm';
+import LoginForm from '@/components/LoginForm/LoginForm';
 import Link from 'next/link';
 
 import layoutStyles from '../Layout.module.css';
@@ -13,8 +13,7 @@ export default function Login() {
       <LoginForm />
 
       <Link href="/auth/register" className={layoutStyles.registerLink}>
-        Ainda não tem conta?{' '}
-        <span className={layoutStyles.registerLinkEmphasis}>Criar conta</span>
+        Ainda não tem conta? <span className={layoutStyles.registerLinkEmphasis}>Criar conta</span>
       </Link>
     </>
   );

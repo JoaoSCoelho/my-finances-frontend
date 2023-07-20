@@ -1,5 +1,5 @@
+import { MoneyLoadingSvg } from '../images/MoneyLoadingSvg/MoneyLoadingSvg';
 import styles from './Loading.module.css';
-import { MoneyLoadingSvg } from './MoneyLoadingSvg';
 
 interface ILoadingProps {
   text?: string;

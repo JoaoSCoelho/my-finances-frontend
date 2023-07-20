@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-import AccountModal, { AccountForm, accountSchema } from './AccountModal';
+import AccountModal, { AccountForm, accountSchema } from '../AccountModal';
 
 interface INewAccountModalProps {
   setBankAccounts: Dispatch<

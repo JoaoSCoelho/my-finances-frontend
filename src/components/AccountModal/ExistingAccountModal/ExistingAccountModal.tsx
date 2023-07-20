@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
-import AccountModal, { AccountForm, accountSchema } from './AccountModal';
-import Button from './Button';
+import Button from '../../Button/Button';
+import AccountModal, { AccountForm, accountSchema } from '../AccountModal';
 import styles from './ExistingAccountModal.module.css';
 
 interface IExistingAccountModalProps {
@@ -51,13 +51,10 @@ export default function ExistingAccountModal({
     const differenceBetweenInitialAmountAndOldInitialAmount =
       data.initialAmount - bankAccount.initialAmount;
     const transactionType =
-      data.totalAmount >
-      bankAccount.totalAmount +
-        differenceBetweenInitialAmountAndOldInitialAmount
+      data.totalAmount > bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount
         ? 'income'
         : data.totalAmount <
-          bankAccount.totalAmount +
-            differenceBetweenInitialAmountAndOldInitialAmount
+          bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount
         ? 'expense'
         : undefined;
 
@@ -70,8 +67,7 @@ export default function ExistingAccountModal({
             [transactionType === 'income' ? 'gain' : 'spent']:
               transactionType === 'income'
                 ? data.totalAmount -
-                  (bankAccount.totalAmount +
-                    differenceBetweenInitialAmountAndOldInitialAmount)
+                  (bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount)
                 : bankAccount.totalAmount +
                   differenceBetweenInitialAmountAndOldInitialAmount -
                   data.totalAmount,

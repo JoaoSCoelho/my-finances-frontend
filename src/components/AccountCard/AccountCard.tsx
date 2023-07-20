@@ -1,9 +1,9 @@
 import { FaHandHoldingUsd } from 'react-icons/fa';
 import { ImLibrary } from 'react-icons/im';
 
-import defaultBankImage from '../assets/building-columns-solid.svg';
+import defaultBankImage from '../../assets/building-columns-solid.svg';
+import BRLFormat from '../BRLFormat/BRLFormat';
 import styles from './AccountCard.module.css';
-import BRLFormat from './BRLFormat';
 
 interface IAccountCardProps {
   isTotal?: boolean;

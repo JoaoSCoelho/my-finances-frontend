@@ -1,8 +1,8 @@
 'use client';
 
-import NewTransactionBtn from '@/components/pages/dashboard/transactions/NewTransactionBtn';
-import SectionHeader from '@/components/SectionHeader';
-import TransactionCard from '@/components/TransactionCard';
+import NewTransactionBtn from '@/components/NewTransactionBtn/NewTransactionBtn';
+import SectionHeader from '@/components/SectionHeader/SectionHeader';
+import TransactionCard from '@/components/TransactionCard/TransactionCard';
 import { AuthContext } from '@/contexts/auth';
 import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
@@ -20,8 +20,7 @@ export default function Transactions() {
   const [bankAccounts, setBankAccounts] = useState<
     (IBankAccountObject & { totalAmount: number })[]
   >([]);
-  const [newTransaction, setNewTransaction] =
-    useState<Omit<ITransactionObject, 'id'>>();
+  const [newTransaction, setNewTransaction] = useState<Omit<ITransactionObject, 'id'>>();
 
   const { getAccessToken } = useContext(AuthContext);
 

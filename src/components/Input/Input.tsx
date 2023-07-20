@@ -1,18 +1,11 @@
-import {
-  forwardRef,
-  InputHTMLAttributes,
-  ReactNode,
-  Ref,
-  useState,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode, Ref, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
+import RequiredAsteriskTooltip from '../RequiredAsteriskTooltip/RequiredAsteriskTooltip';
 import styles from './Input.module.css';
-import RequiredAsteriskTooltip from './RequiredAsteriskTooltip';
 
-interface IInputProps<FormData extends FieldValues>
-  extends InputHTMLAttributes<HTMLInputElement> {
+interface IInputProps<FormData extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   errors: FieldErrors<FormData>;
   name: string;
   wrapperClassName?: string;
@@ -33,19 +26,16 @@ const Input = forwardRef(
     { inputEl, ...props }: IInputProps<FormData>,
     ref: Ref<HTMLInputElement>,
   ) => {
-    const inputClassName = `${styles.input} ${
-      props.errors[props.name] && styles.error
-    } ${props.className}`;
+    const inputClassName = `${styles.input} ${props.errors[props.name] && styles.error} ${
+      props.className
+    }`;
 
     const [eyeOpen, setEyeOpen] = useState<boolean>(false);
 
     return (
       <div className={`${styles.inputWrapper} ${props.wrapperClassName}`}>
         {props.label && (
-          <label
-            className={`${styles.label} ${props.labelClassName}`}
-            htmlFor={props.id}
-          >
+          <label className={`${styles.label} ${props.labelClassName}`} htmlFor={props.id}>
             {props.labelValue}
             {props.required && <RequiredAsteriskTooltip />}
           </label>
@@ -67,9 +57,7 @@ const Input = forwardRef(
             <>
               <input
                 {...props}
-                type={
-                  props.haveEye ? (eyeOpen ? 'text' : props.type) : props.type
-                }
+                type={props.haveEye ? (eyeOpen ? 'text' : props.type) : props.type}
                 name={props.name}
                 className={inputClassName}
                 ref={ref}

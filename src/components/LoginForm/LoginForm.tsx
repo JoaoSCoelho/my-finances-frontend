@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
-import AuthForm from '../AuthForm';
+import AuthForm from '../AuthForm/AuthForm';
 
 export const emailSchema = yup
   .string()
@@ -60,7 +60,7 @@ export default function LoginForm() {
     api
       .post('login', data)
       .then(({ data: resData }) => {
-        auth.signin(resData.accessToken, resData.user);
+        auth.signin(resData.accessToken, resData.refreshToken, resData.user);
         router.push('/dashboard');
       })
       .catch((err) => {
@@ -75,8 +75,7 @@ export default function LoginForm() {
         if (error.name === 'Invalid credentials')
           return toast.error('Email ou senha inválidos', defaultToastOptions);
         toast.error(error.error, defaultToastOptions);
-      })
-      .finally(() => setLoading());
+      });
   };
 
   return (

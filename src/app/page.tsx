@@ -1,8 +1,8 @@
-import Footer from '@/components/Footer';
+import Footer from '@/components/Footer/Footer';
 import Link from 'next/link';
 import { FaInfo, FaPiggyBank } from 'react-icons/fa';
 
-import LandingImageSvg from '../components/pages/home/LandingImageSvg';
+import LandingImageSvg from '../components/images/LandingImageSvg/LandingImageSvg';
 import styles from './Home.module.css';
 
 export const metadata = {
@@ -19,9 +19,7 @@ export default function Home() {
           </div>
           <div className={styles.contentContainer}>
             <div className={styles.callerAndButtonsContainer}>
-              <p className={styles.caller}>
-                Organize-se financeiramente e evite apertos
-              </p>
+              <p className={styles.caller}>Organize-se financeiramente e evite apertos</p>
 
               <div className={styles.buttonsContainer}>
                 <Link href="/tutorial">

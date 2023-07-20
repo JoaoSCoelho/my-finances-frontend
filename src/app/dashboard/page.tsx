@@ -1,10 +1,10 @@
 'use client';
 
-import AccountCard from '@/components/AccountCard';
-import DiscreetButton from '@/components/DiscreetButton';
-import ExistingAccountModal from '@/components/ExistingAccountModal';
-import NewAccountModal from '@/components/NewAccountModal';
-import SectionHeader from '@/components/SectionHeader';
+import AccountCard from '@/components/AccountCard/AccountCard';
+import ExistingAccountModal from '@/components/AccountModal/ExistingAccountModal/ExistingAccountModal';
+import NewAccountModal from '@/components/AccountModal/NewAccountModal/NewAccountModal';
+import DiscreetButton from '@/components/DiscreetButton/DiscreetButton';
+import SectionHeader from '@/components/SectionHeader/SectionHeader';
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -21,10 +21,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function DashBoard() {
-  const [newAccountModalOpen, setNewAccountModalOpen] =
-    useState<boolean>(false);
-  const [existingAccountModalOpen, setExistingAccountModalOpen] =
-    useState<boolean>(false);
+  const [newAccountModalOpen, setNewAccountModalOpen] = useState<boolean>(false);
+  const [existingAccountModalOpen, setExistingAccountModalOpen] = useState<boolean>(false);
   const [bankAccounts, setBankAccounts] =
     useState<(IBankAccountObject & { totalAmount: number })[]>();
   const auth = useContext(AuthContext);
@@ -88,10 +86,7 @@ export default function DashBoard() {
               >
                 <AccountCard
                   isTotal
-                  amount={bankAccounts.reduce(
-                    (prev, curr) => prev + curr.totalAmount,
-                    0,
-                  )}
+                  amount={bankAccounts.reduce((prev, curr) => prev + curr.totalAmount, 0)}
                 />
                 {bankAccounts.map((bankAccount) => (
                   <ExistingAccountModal
@@ -133,13 +128,7 @@ export default function DashBoard() {
               </button>
             </div>
           ) : (
-            <SkeletonTheme
-              width={283}
-              height={100}
-              inline
-              borderRadius="8px"
-              baseColor="#e4e4e4"
-            >
+            <SkeletonTheme width={283} height={100} inline borderRadius="8px" baseColor="#e4e4e4">
               <div className={styles.skeletonAccountCardContainer}>
                 <Skeleton />
                 <Skeleton />

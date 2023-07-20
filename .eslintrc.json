@@ -96,11 +96,17 @@
     ],
     "import/no-extraneous-dependencies": "error",
     "prettier/prettier": [
-      "error"
+      "error",
+      {
+        "printWidth": 100
+      }
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": [
-      "error"
+      "error",
+      {
+        "functions": false
+      }
     ]
   }
 }

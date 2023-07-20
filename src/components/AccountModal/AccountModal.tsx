@@ -5,11 +5,11 @@ import { IoClose } from 'react-icons/io5';
 import { Popup } from 'reactjs-popup';
 import * as yup from 'yup';
 
-import AccountCard from './AccountCard';
+import AccountCard from '../AccountCard/AccountCard';
+import ControlledBRLFormat from '../BRLFormat/ControlledBRLFormat';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 import styles from './AccountModal.module.css';
-import Button from './Button';
-import ControlledBRLFormat from './ControlledBRLFormat';
-import Input from './Input';
 
 import './AccountModal.css';
 
@@ -112,9 +112,7 @@ export default function AccountModal({
   useEffect(() => {
     const watched = watch();
     setData(watched);
-    setDifferenceBetweenTotalAmountAndInitialAmount(
-      watched.totalAmount - watched.initialAmount,
-    );
+    setDifferenceBetweenTotalAmountAndInitialAmount(watched.totalAmount - watched.initialAmount);
   }, []);
 
   return (
@@ -147,8 +145,7 @@ export default function AccountModal({
 
             <form
               onSubmit={(e) => {
-                const onSubmitClose: SubmitHandler<AccountForm> = (data) =>
-                  onSubmit(data, close);
+                const onSubmitClose: SubmitHandler<AccountForm> = (data) => onSubmit(data, close);
                 return handleSubmit(onSubmitClose)(e);
               }}
               className={styles.accountForm}
@@ -191,8 +188,7 @@ export default function AccountModal({
                           ? (v) =>
                               setValue(
                                 'totalAmount',
-                                v.floatValue! +
-                                  differenceBetweenTotalAmountAndInitialAmount,
+                                v.floatValue! + differenceBetweenTotalAmountAndInitialAmount,
                               )
                           : (v) => setValue('totalAmount', v.floatValue!)
                       }
@@ -229,10 +225,7 @@ export default function AccountModal({
                           v.floatValue &&
                           data?.initialAmount !== undefined &&
                           setDifferenceBetweenTotalAmountAndInitialAmount(
-                            v.floatValue -
-                              (isNaN(data.initialAmount)
-                                ? 0
-                                : data.initialAmount),
+                            v.floatValue - (isNaN(data.initialAmount) ? 0 : data.initialAmount),
                           )
                         }
                       />

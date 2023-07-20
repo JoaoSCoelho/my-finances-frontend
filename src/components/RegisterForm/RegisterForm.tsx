@@ -9,8 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
-import AuthForm from '../AuthForm';
-import { emailSchema, passwordSchema } from '../login/LoginForm';
+import { emailSchema, passwordSchema } from '../LoginForm/LoginForm';
+import AuthForm from '../AuthForm/AuthForm';
 
 const registerSchema = yup
   .object({
@@ -43,7 +43,7 @@ export default function RegisterForm() {
     api
       .post('users', data)
       .then(({ data: resData }) => {
-        auth.signin(resData.accessToken, resData.user);
+        auth.signin(resData.accessToken, resData.refreshToken, resData.user);
         router.push('/dashboard');
       })
       .catch((err) => {

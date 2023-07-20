@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,8 +35,11 @@ export default function RegisterForm() {
   const router = useRouter();
   const form = useForm<RegisterForm>({ resolver: yupResolver(registerSchema) });
   const { setError } = form;
+  const { setLoading } = useContext(LoadingContext);
 
   const onSubmit: SubmitHandler<RegisterForm> = (data) => {
+    setLoading('Criando novo usuário');
+
     api
       .post('users', data)
       .then(({ data: resData }) => {
@@ -52,7 +56,8 @@ export default function RegisterForm() {
         if (error.reason === 'incorrect structure')
           setError(error.paramName, { message: 'Estrutura incorreta' });
         toast.error(error.error, defaultToastOptions);
-      });
+      })
+      .finally(() => setLoading());
   };
 
   return (

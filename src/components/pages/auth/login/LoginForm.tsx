@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -51,8 +52,11 @@ export default function LoginForm() {
   const router = useRouter();
   const form = useForm<LoginForm>({ resolver: yupResolver(loginSchema) });
   const { setError } = form;
+  const { setLoading } = useContext(LoadingContext);
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
+    setLoading('Autenticando...');
+
     api
       .post('login', data)
       .then(({ data: resData }) => {
@@ -71,7 +75,8 @@ export default function LoginForm() {
         if (error.name === 'Invalid credentials')
           return toast.error('Email ou senha inválidos', defaultToastOptions);
         toast.error(error.error, defaultToastOptions);
-      });
+      })
+      .finally(() => setLoading());
   };
 
   return (

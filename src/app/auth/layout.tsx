@@ -1,8 +1,8 @@
-import { ReactElement } from 'react';
+import { PropsWithChildren } from 'react';
 
 import styles from './Layout.module.css';
 
-export default function AuthLayout({ children }: { children: ReactElement }) {
+export default function AuthLayout({ children }: PropsWithChildren) {
   return (
     <>
       <main className={styles.main}>

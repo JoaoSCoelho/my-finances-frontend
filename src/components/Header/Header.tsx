@@ -1,13 +1,12 @@
-import { AuthContext } from '@/contexts/auth';
+import { useMe } from '@/hooks/useMe';
 import Image from 'next/image';
-import { useContext } from 'react';
 import { Popup } from 'reactjs-popup';
 
 import defaultUser from '../../assets/default-user.png';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const auth = useContext(AuthContext);
+  const { user } = useMe();
 
   return (
     <header className={styles.header}>
@@ -15,15 +14,15 @@ export default function Header() {
         <div className={styles.profile}>
           <div className={styles.profileImage}>
             <Image
-              src={(auth.user?.profileImageURL as string | undefined) || defaultUser}
-              alt={`Imagem de perfil de ${auth.user?.username}`}
+              src={(user?.profileImageURL as string | undefined) || defaultUser}
+              alt={`Imagem de perfil de ${user?.username}`}
               width={50}
               height={50}
             />
           </div>
 
           <Popup
-            trigger={<div className={styles.username}>{auth.user?.username}</div>}
+            trigger={<div className={styles.username}>{user?.username}</div>}
             on="hover"
             position="bottom center"
             arrow
@@ -34,7 +33,7 @@ export default function Header() {
               padding: '.5em .8em',
             }}
           >
-            {auth.user?.username}
+            {user?.username}
           </Popup>
         </div>
       </div>

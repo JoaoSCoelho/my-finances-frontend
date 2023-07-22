@@ -14,41 +14,63 @@ export default function Home() {
     <>
       <div className={styles.wrapper}>
         <main className={styles.main}>
-          <div className={styles.titleContainer}>
-            <h1 className={styles.appName}>My Finances</h1>
-          </div>
+          <Title_Local />
+
           <div className={styles.contentContainer}>
             <div className={styles.callerAndButtonsContainer}>
               <p className={styles.caller}>Organize-se financeiramente e evite apertos</p>
 
-              <div className={styles.buttonsContainer}>
-                <Link href="/tutorial">
-                  <FaInfo />
-                  <span>Tutorial</span>
-                </Link>
-                <Link href="/auth/register">
-                  <FaPiggyBank />
-                  <span>Começar</span>
-                </Link>
-              </div>
+              <Buttons_Local />
             </div>
 
-            <div className={styles.artContainer}>
-              <div className={styles.art}>
-                <LandingImageSvg />
-              </div>
-              <a
-                className={styles.artAttribution}
-                target="_blank"
-                href="https://storyset.com/business"
-              >
-                Business illustrations by Storyset
-              </a>
-            </div>
+            <Art_Local />
           </div>
         </main>
       </div>
+
       <Footer />
     </>
   );
+
+  // local components
+
+  function Title_Local() {
+    return (
+      <div className={styles.titleContainer}>
+        <h1 className={styles.appName}>My Finances</h1>
+      </div>
+    );
+  }
+
+  function Buttons_Local() {
+    return (
+      <div className={styles.buttonsContainer}>
+        <Link href="/tutorial">
+          <FaInfo />
+          <span>Tutorial</span>
+        </Link>
+        <Link href="/auth/register">
+          <FaPiggyBank />
+          <span>Começar</span>
+        </Link>
+      </div>
+    );
+  }
+
+  function Art_Local() {
+    return (
+      <div className={styles.artContainer}>
+        <div className={styles.art}>
+          <LandingImageSvg />
+        </div>
+        <a
+          className={styles.artAttribution}
+          target="_blank"
+          href="https://storyset.com/business"
+        >
+          Business illustrations by Storyset
+        </a>
+      </div>
+    );
+  }
 }

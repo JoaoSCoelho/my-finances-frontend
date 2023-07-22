@@ -1,45 +1,25 @@
 import { AuthContext } from '@/contexts/auth';
 import { LoadingContext } from '@/contexts/loading';
-import api from '@/services/api';
+import { useMe } from '@/hooks/useMe';
 import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { PropsWithChildren, ReactElement, useContext } from 'react';
 
-interface IAuthenticatedProps {
-  children: JSX.Element;
-}
-
-export default function Authenticated({ children }: IAuthenticatedProps) {
-  const { user, getAccessToken, setUser, signout, getAuthConfig } =
-    useContext(AuthContext);
+export default function Authenticated({ children }: PropsWithChildren): ReactElement {
+  const { getAccessToken, signout } = useContext(AuthContext);
   const { setLoading } = useContext(LoadingContext);
   const router = useRouter();
+  const { user, isLoading, error } = useMe();
+  const accessToken = getAccessToken();
 
-  useEffect(() => {
-    validateAccessToken();
-  }, []);
+  if (!accessToken || error) {
+    signout();
+    router.push('/auth/login');
+  }
 
-  if (user) {
-    return children;
-  } else {
+  if (isLoading || !user) {
     setLoading('');
     return <></>;
   }
 
-  async function validateAccessToken() {
-    const accessToken = getAccessToken();
-
-    if (accessToken) {
-      try {
-        const { data } = await api.get('users/me', getAuthConfig());
-
-        if (data.user) setUser(data.user);
-      } catch (err) {
-        console.error(err);
-        signout();
-        router.push('/auth/login');
-      }
-    } else {
-      router.push('/auth/login');
-    }
-  }
+  return children as ReactElement;
 }

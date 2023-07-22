@@ -20,7 +20,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function DashBoard() {
+export default function Dashboard() {
   const [newAccountModalOpen, setNewAccountModalOpen] = useState<boolean>(false);
   const [existingAccountModalOpen, setExistingAccountModalOpen] =
     useState<boolean>(false);
@@ -67,7 +67,8 @@ export default function DashBoard() {
   }
 
   function AccountsSlider_Local() {
-    const { bankAccounts, isLoading, error } = useMyBankAccounts();
+    const swrBankAccounts = useMyBankAccounts();
+    const { bankAccounts, isLoading, error } = swrBankAccounts;
 
     if (error) {
       toast.error(
@@ -81,6 +82,8 @@ export default function DashBoard() {
     }
 
     if (isLoading || error) return <AccountsSkeleton_Local />;
+
+    console.log(swrBankAccounts);
 
     return (
       <div className={styles.sliderContainer}>

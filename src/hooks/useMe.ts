@@ -1,21 +1,21 @@
 import { AuthContext } from '@/contexts/auth';
 import api from '@/services/api';
 import { IGeneralApiError } from '@/types/IGeneralApiError';
-import { ITransactionObject } from '@/types/Transaction';
+import { IUserObject } from '@/types/User';
 import { useContext } from 'react';
 
 import { useSWR } from './useSWR';
 
-export function useMyTransactions<
-  Data extends ITransactionObject[] = ITransactionObject[],
+export function useMe<
+  Data extends IUserObject = IUserObject,
   Error extends IGeneralApiError & Record<string, any> = IGeneralApiError &
     Record<string, any>,
 >() {
   const { getAuthConfig } = useContext(AuthContext);
-  const swrResult = useSWR<Data, Error>('transactions', fetcher);
+  const swrResult = useSWR<Data, Error>('users/me', fetcher);
 
   return {
-    transactions: swrResult.data,
+    user: swrResult.data,
     ...swrResult,
   };
 
@@ -23,8 +23,8 @@ export function useMyTransactions<
 
   async function fetcher() {
     return await api
-      .get('transactions', getAuthConfig())
-      .then(({ data: { transactions } }) => transactions)
+      .get('users/me', getAuthConfig())
+      .then(({ data: { user } }) => user)
       .catch((reason) => {
         throw { ...reason, ...reason.response?.data };
       });

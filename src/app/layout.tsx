@@ -4,7 +4,7 @@ import '@/styles/globals.css';
 import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import 'react-toastify/dist/ReactToastify.css';
-import { ReactElement } from 'react';
+import { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
   title: {
@@ -21,10 +21,10 @@ const poppins = Poppins({
   subsets: ['latin'],
 });
 
-export default function RootLayout({ children }: { children: ReactElement }) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="pt-br">
-      <body className={poppins.className}>
+    <html lang="pt-br" className={poppins.className}>
+      <body>
         <LoadingProvider>
           <AuthProvider>{children}</AuthProvider>
         </LoadingProvider>

@@ -5,7 +5,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import RequiredAsteriskTooltip from '../RequiredAsteriskTooltip/RequiredAsteriskTooltip';
 import styles from './Input.module.css';
 
-interface IInputProps<FormData extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+interface IInputProps<FormData extends FieldValues>
+  extends InputHTMLAttributes<HTMLInputElement> {
   errors: FieldErrors<FormData>;
   name: string;
   wrapperClassName?: string;
@@ -16,14 +17,16 @@ interface IInputProps<FormData extends FieldValues> extends InputHTMLAttributes<
   label?: boolean;
   labelValue?: ReactNode;
   inputEl?: (
-    props: Omit<IInputProps<FormData>, 'inputEl'> & { ref: Ref<HTMLElement> },
+    props: Omit<IInputProps<FormData>, 'inputEl' | 'containerClassName' | 'haveEye'> & {
+      ref: Ref<HTMLElement>;
+    },
   ) => ReactNode;
   haveEye?: boolean;
 }
 
 const Input = forwardRef(
   <FormData extends FieldValues>(
-    { inputEl, ...props }: IInputProps<FormData>,
+    { inputEl, containerClassName, haveEye, ...props }: IInputProps<FormData>,
     ref: Ref<HTMLInputElement>,
   ) => {
     const inputClassName = `${styles.input} ${props.errors[props.name] && styles.error} ${
@@ -43,8 +46,8 @@ const Input = forwardRef(
         <div
           className={`
               ${styles.inputContainer}
-              ${props.haveEye && styles.haveEye}
-              ${props.containerClassName}
+              ${haveEye && styles.haveEye}
+              ${containerClassName}
             `}
         >
           {inputEl ? (
@@ -57,12 +60,12 @@ const Input = forwardRef(
             <>
               <input
                 {...props}
-                type={props.haveEye ? (eyeOpen ? 'text' : props.type) : props.type}
+                type={haveEye ? (eyeOpen ? 'text' : props.type) : props.type}
                 name={props.name}
                 className={inputClassName}
                 ref={ref}
               />
-              {props.haveEye && (
+              {haveEye && (
                 <button
                   className={`${styles.eyeBtn} ${props.eyeBtnClassName}`}
                   type="button"

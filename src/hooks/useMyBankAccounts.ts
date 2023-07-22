@@ -13,19 +13,11 @@ export function useMyBankAccounts<
     Record<string, any>,
 >() {
   const { getAuthConfig } = useContext(AuthContext);
-  const { data, error, isLoading, mutate, isValidating, offMutate, refetch } = useSWR<
-    Data,
-    Error
-  >('bankaccounts/my', fetcher);
+  const swrResult = useSWR<Data, Error>('bankaccounts/my', fetcher);
 
   return {
-    bankAccounts: data,
-    isLoading,
-    error,
-    isValidating,
-    mutate,
-    offMutate,
-    refetch,
+    bankAccounts: swrResult.data,
+    ...swrResult,
   };
 
   // functions

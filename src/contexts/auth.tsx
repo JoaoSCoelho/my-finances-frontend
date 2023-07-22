@@ -1,15 +1,13 @@
 'use client';
 
 import api from '@/services/api';
-import { IClientUserObject } from '@/types/User';
+import { IUserObject } from '@/types/User';
 // eslint-disable-next-line import/named
 import { AxiosRequestConfig } from 'axios';
-import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, PropsWithChildren } from 'react';
 
 export type AuthContextType = {
-  user: IClientUserObject | null;
-  setUser: Dispatch<SetStateAction<AuthContextType['user']>>;
-  signin(accessToken: string, refreshToken: string, user?: IClientUserObject): void;
+  signin(accessToken: string, refreshToken: string, user?: IUserObject): void;
   signout(): void;
   getAccessToken(): string | null;
   getAuthConfig(): AxiosRequestConfig;
@@ -22,13 +20,9 @@ interceptRecusedByExpiredToken();
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export const AuthContext = createContext<AuthContextType>(null!);
 
-export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [user, setUser] = useState<IClientUserObject | null>(null);
-
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   return (
-    <AuthContext.Provider
-      value={{ user, setUser, signin, signout, getAccessToken, getAuthConfig }}
-    >
+    <AuthContext.Provider value={{ signin, signout, getAccessToken, getAuthConfig }}>
       {children}
     </AuthContext.Provider>
   );
@@ -41,14 +35,12 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     };
   }
 
-  function signin(accessToken: string, refreshToken: string, user?: IClientUserObject) {
+  function signin(accessToken: string, refreshToken: string) {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
-    user && setUser(user);
   }
 
   function signout() {
-    setUser(null);
     setAccessToken('');
     setRefreshToken('');
   }

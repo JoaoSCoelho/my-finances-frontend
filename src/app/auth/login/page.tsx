@@ -13,7 +13,8 @@ export default function Login() {
       <LoginForm />
 
       <Link href="/auth/register" className={layoutStyles.registerLink}>
-        Ainda não tem conta? <span className={layoutStyles.registerLinkEmphasis}>Criar conta</span>
+        Ainda não tem conta?{' '}
+        <span className={layoutStyles.registerLinkEmphasis}>Criar conta</span>
       </Link>
     </>
   );

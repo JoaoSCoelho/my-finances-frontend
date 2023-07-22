@@ -8,7 +8,7 @@ import originalUseSWR, {
   SWRConfiguration,
 } from 'swr';
 
-export const useSWR = <
+export function useSWR<
   Data = any,
   Error = any,
   SWRKey extends Key = string,
@@ -19,17 +19,21 @@ export const useSWR = <
   key: string,
   fetcher: Fetcher<Data, SWRKey> | BareFetcher<Data> | null,
   config?: SWROptions,
-) => {
+) {
   const swrResult = originalUseSWR(key, fetcher, {
-    revalidateOnMount: false,
+    revalidateIfStale: false,
     errorRetryCount: 1,
     ...(config || {}),
   });
   const { mutate } = swrResult;
 
-  return { ...swrResult, refetch, offMutate };
+  return { ...swrResult, refetch, revalidate, offMutate };
 
   async function refetch() {
+    await mutate(undefined, { revalidate: true });
+  }
+
+  async function revalidate() {
     await mutate();
   }
 
@@ -39,4 +43,4 @@ export const useSWR = <
   ) {
     return mutate(data, { ...opts, revalidate: false });
   }
-};
+}

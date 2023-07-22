@@ -1,19 +1,13 @@
-import { ITransactionObject } from '@/types/Transaction';
+import { ITransactionObject, TransactionTypes } from '@/types/Transaction';
 import { Dispatch, SetStateAction } from 'react';
-import {
-  BiArrowFromBottom,
-  BiArrowToBottom,
-  BiTransferAlt,
-} from 'react-icons/bi';
+import { BiArrowFromBottom, BiArrowToBottom, BiTransferAlt } from 'react-icons/bi';
 
 import styles from './NewTransactionBtn.module.css';
 
 interface INewTransactionBtnProps {
   newTransaction?: Omit<ITransactionObject, 'id'>;
-  buttonType: 'income' | 'expense' | 'transfer';
-  setNewTransaction: Dispatch<
-    SetStateAction<Omit<ITransactionObject, 'id'> | undefined>
-  >;
+  buttonType: TransactionTypes;
+  setNewTransaction: Dispatch<SetStateAction<Omit<ITransactionObject, 'id'> | undefined>>;
 }
 
 export default function NewTransactionBtn({

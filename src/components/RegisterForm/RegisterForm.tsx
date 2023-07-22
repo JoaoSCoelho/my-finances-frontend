@@ -9,8 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
-import { emailSchema, passwordSchema } from '../LoginForm/LoginForm';
 import AuthForm from '../AuthForm/AuthForm';
+import { emailSchema, passwordSchema } from '../LoginForm/LoginForm';
 
 const registerSchema = yup
   .object({

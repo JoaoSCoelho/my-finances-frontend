@@ -3,147 +3,87 @@
 import NewTransactionBtn from '@/components/NewTransactionBtn/NewTransactionBtn';
 import SectionHeader from '@/components/SectionHeader/SectionHeader';
 import TransactionCard from '@/components/TransactionCard/TransactionCard';
-import { AuthContext } from '@/contexts/auth';
 import { LoadingContext } from '@/contexts/loading';
-import api from '@/services/api';
-import { IBankAccountObject } from '@/types/BankAccount';
-import { IExpenseObject } from '@/types/Expense';
-import { IIncomeObject } from '@/types/Income';
-import { ITransactionObject } from '@/types/Transaction';
-import { ITransferObject } from '@/types/Transfer';
-import { useContext, useEffect, useState } from 'react';
+import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
+import { useMyTransactions } from '@/hooks/useMyTransactions';
+import { ITransactionObject, TransactionTypes } from '@/types/Transaction';
+import { useContext, useState } from 'react';
 
 import styles from './Transactions.module.css';
 
 export default function Transactions() {
-  const [transactions, setTransactions] = useState<ITransactionObject[]>([]);
-  const [bankAccounts, setBankAccounts] = useState<
-    (IBankAccountObject & { totalAmount: number })[]
-  >([]);
   const [newTransaction, setNewTransaction] = useState<Omit<ITransactionObject, 'id'>>();
-
-  const { getAccessToken } = useContext(AuthContext);
-
-  const accessToken = getAccessToken();
-
   const { setLoading } = useContext(LoadingContext);
+  const {
+    bankAccounts,
+    error: bankAccountsError,
+    isLoading: bankAccountsIsLoading,
+  } = useMyBankAccounts();
+  const {
+    transactions,
+    error: transactionsError,
+    isLoading: transactionsIsLoading,
+  } = useMyTransactions();
 
-  async function setDbTransactions() {
-    const newTransactions: ITransactionObject[] = [];
-
-    await api
-      .get('transactions/expenses', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) =>
-        newTransactions.push(
-          ...response.data.expenses.map((expense: IExpenseObject) => ({
-            ...expense,
-            type: 'expense',
-          })),
-        ),
-      );
-
-    await api
-      .get('transactions/incomes', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) =>
-        newTransactions.push(
-          ...response.data.incomes.map((income: IIncomeObject) => ({
-            ...income,
-            type: 'income',
-          })),
-        ),
-      );
-
-    await api
-      .get('transactions/transfers', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) =>
-        newTransactions.push(
-          ...response.data.transfers.map((transfer: ITransferObject) => ({
-            ...transfer,
-            type: 'transfer',
-          })),
-        ),
-      );
-
-    setTransactions(newTransactions);
+  if (
+    bankAccountsIsLoading ||
+    bankAccountsError ||
+    transactionsError ||
+    transactionsIsLoading
+  ) {
+    // Trocar por skeleton
+    setLoading('');
+    return <></>;
+  } else {
+    setLoading();
   }
 
-  useEffect(() => {
-    setLoading('', true);
-
-    api
-      .get('bankaccounts/my', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        setBankAccounts(response.data.bankAccounts);
-        setLoading();
-      });
-
-    setDbTransactions();
-  }, []);
-
-  return bankAccounts.length ? (
+  return (
     <>
       <SectionHeader title="Transferências" />
-      <div className={styles.newTransactionButtonsContainer}>
-        <NewTransactionBtn
-          buttonType="income"
-          newTransaction={newTransaction}
-          setNewTransaction={setNewTransaction}
-        />
-        <NewTransactionBtn
-          buttonType="expense"
-          newTransaction={newTransaction}
-          setNewTransaction={setNewTransaction}
-        />
-        <NewTransactionBtn
-          buttonType="transfer"
-          newTransaction={newTransaction}
-          setNewTransaction={setNewTransaction}
-        />
-      </div>
+
+      <NewTransactionsButtons_Local />
       <ul>
         {newTransaction && (
           <TransactionCard
-            bankAccounts={bankAccounts}
+            bankAccounts={bankAccounts!}
             transaction={newTransaction}
-            setTransactions={setTransactions as any}
             setNewTransaction={setNewTransaction}
-            setDbTransactions={setDbTransactions}
             editable
           />
         )}
-        {transactions
+        {transactions!
           .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
           .map((transaction) => (
             <li key={transaction.id}>
               <TransactionCard
-                bankAccounts={bankAccounts}
+                bankAccounts={bankAccounts!}
                 transaction={transaction}
-                setTransactions={setTransactions as any}
                 setNewTransaction={setNewTransaction}
                 editable={!!transaction.id}
-                setDbTransactions={setDbTransactions}
               />
             </li>
           ))}
       </ul>
     </>
-  ) : (
-    <></>
   );
+
+  // local components
+
+  function NewTransactionsButtons_Local() {
+    const buttonsTypes: TransactionTypes[] = ['income', 'expense', 'transfer'];
+
+    return (
+      <div className={styles.newTransactionButtonsContainer}>
+        {buttonsTypes.map((buttonType, idx) => (
+          <NewTransactionBtn
+            key={`new-transaction-${buttonType}-button-${idx}`}
+            buttonType={buttonType}
+            newTransaction={newTransaction}
+            setNewTransaction={setNewTransaction}
+          />
+        ))}
+      </div>
+    );
+  }
 }

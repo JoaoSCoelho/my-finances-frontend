@@ -26,7 +26,9 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<IClientUserObject | null>(null);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, signin, signout, getAccessToken, getAuthConfig }}>
+    <AuthContext.Provider
+      value={{ user, setUser, signin, signout, getAccessToken, getAuthConfig }}
+    >
       {children}
     </AuthContext.Provider>
   );

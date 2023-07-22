@@ -9,7 +9,8 @@ interface IAuthenticatedProps {
 }
 
 export default function Authenticated({ children }: IAuthenticatedProps) {
-  const { user, getAccessToken, setUser, signout, getAuthConfig } = useContext(AuthContext);
+  const { user, getAccessToken, setUser, signout, getAuthConfig } =
+    useContext(AuthContext);
   const { setLoading } = useContext(LoadingContext);
   const router = useRouter();
 

@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { useMyTransactions } from '@/hooks/useMyTransactions';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -9,7 +10,12 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Control } from 'react-hook-form/dist/types';
-import { BiArrowFromBottom, BiArrowToBottom, BiPencil, BiTransferAlt } from 'react-icons/bi';
+import {
+  BiArrowFromBottom,
+  BiArrowToBottom,
+  BiPencil,
+  BiTransferAlt,
+} from 'react-icons/bi';
 import { FiSave, FiTrash2 } from 'react-icons/fi';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { toast } from 'react-toastify';
@@ -24,11 +30,9 @@ interface ITransactionCardProps {
   transaction: Omit<ITransactionObject, 'id'> & { id?: string };
   bankAccounts: IBankAccountObject[];
   editable?: boolean;
-  setTransactions: Dispatch<SetStateAction<(Omit<ITransactionObject, 'id'> & { id?: string })[]>>;
   setNewTransaction: Dispatch<
     SetStateAction<Omit<ITransactionObject<TransactionTypes>, 'id'> | undefined>
   >;
-  setDbTransactions: () => Promise<void>;
 }
 
 interface ITransactionForm<T extends TransactionTypes = TransactionTypes> {
@@ -57,7 +61,10 @@ const noNegativeAmountSchema = yup
   .min(0, 'Minimo: 0')
   .max(999999999999, 'Máximo: 1 trilhão');
 
-const IDSchema = yup.string().required('Campo obrigatório').length(21, 'Selecione uma conta');
+const IDSchema = yup
+  .string()
+  .required('Campo obrigatório')
+  .length(21, 'Selecione uma conta');
 
 const transferSchema = yup.object({
   title: transactionTitleSchema,
@@ -81,9 +88,7 @@ const expenseSchema = yup.object({
 export default function TransactionCard({
   transaction,
   bankAccounts,
-  setTransactions,
   setNewTransaction,
-  setDbTransactions,
   editable = false,
 }: ITransactionCardProps) {
   const bankAccount = bankAccounts.find(
@@ -98,6 +103,11 @@ export default function TransactionCard({
   const { getAccessToken } = useContext(AuthContext);
   const [isNew] = useState<boolean>(!transaction.id);
   const [canEdit, setCanEdit] = useState<boolean>(isNew && editable);
+  const {
+    transactions,
+    offMutate: offMutateTransactions,
+    refetch: refetchTransactions,
+  } = useMyTransactions();
 
   const {
     register,
@@ -125,36 +135,45 @@ export default function TransactionCard({
         },
       },
     )
-      .then(() =>
+      .then(() => {
         toast.info(
           `Transação ${isNew ? 'criada' : 'modificada'} com sucesso!`,
           defaultToastOptions,
-        ),
-      )
+        );
+        refetchTransactions();
+      })
       .catch((error) => {
         console.log(error.response?.data);
         toast.error(
-          `Erro ao ${isNew ? 'criar' : 'modificar'} transação: ${error.response?.data?.error}`,
+          `Erro ao ${isNew ? 'criar' : 'modificar'} transação: ${
+            error.response?.data?.error
+          }`,
           defaultToastOptions,
         );
-        toast.info('Recarregando em 5s', defaultToastOptions);
+        // toast.info('Recarregando em 5s', defaultToastOptions);
 
-        setTimeout(() => setDbTransactions(), 5000);
+        // setTimeout(() => setDbTransactions(), 5000);
       });
 
     if (isNew) {
-      setTransactions((transactions) => [
-        ...transactions,
-        { ...data, type: transaction.type, createdTimestamp: Date.now() },
+      offMutateTransactions([
+        ...(transactions || []),
+        {
+          ...data,
+          type: transaction.type,
+          createdTimestamp: Date.now(),
+          id: undefined as any,
+        },
       ]);
       setNewTransaction(undefined);
     } else {
       setCanEdit(false);
-      setTransactions((transactions) => [
-        ...transactions.filter((t) => t.id !== transaction.id),
+      offMutateTransactions([
+        ...(transactions?.filter((t) => t.id !== transaction.id) || []),
         {
           ...transaction,
           ...data,
+          id: undefined as any,
         },
       ]);
     }
@@ -168,20 +187,25 @@ export default function TransactionCard({
         .delete(`/transactions/${transaction.type}s/${transaction.id}`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         })
-        .then(() => toast.info('Transação deletada com sucesso!', defaultToastOptions))
+        .then(() => {
+          toast.info('Transação deletada com sucesso!', defaultToastOptions);
+          refetchTransactions();
+        })
         .catch((error) => {
           console.log(error.response?.data);
           toast.error(
             `Erro ao deletar transação: ${error.response?.data?.error}`,
             defaultToastOptions,
           );
-          toast.info('Recarregando em 5s', defaultToastOptions);
+          // toast.info('Recarregando em 5s', defaultToastOptions);
 
-          setTimeout(() => setDbTransactions(), 5000);
+          // setTimeout(() => setDbTransactions(), 5000);
         });
 
       setCanEdit(false);
-      setTransactions((transactions) => [...transactions.filter((t) => t.id !== transaction.id)]);
+      offMutateTransactions([
+        ...(transactions?.filter((t) => t.id !== transaction.id) || []),
+      ]);
     }
   };
 
@@ -220,7 +244,9 @@ export default function TransactionCard({
                 autoFocus
                 placeholder="Título"
               />
-              {errors.title && <span className={styles.error}>{errors.title.message}</span>}
+              {errors.title && (
+                <span className={styles.error}>{errors.title.message}</span>
+              )}
             </>
           ) : (
             <strong className={styles.title}>{transaction.title}</strong>
@@ -248,7 +274,9 @@ export default function TransactionCard({
               />
               {(errors.gain || errors.spent || errors.amount) && (
                 <span className={styles.error}>
-                  {errors.gain?.message || errors.spent?.message || errors.amount?.message}
+                  {errors.gain?.message ||
+                    errors.spent?.message ||
+                    errors.amount?.message}
                 </span>
               )}
             </div>
@@ -269,7 +297,10 @@ export default function TransactionCard({
                   ) : (
                     <div className={styles.bankAccount}>
                       {giverBankAccount!.imageURL && (
-                        <img src={giverBankAccount!.imageURL} alt={giverBankAccount!.name} />
+                        <img
+                          src={giverBankAccount!.imageURL}
+                          alt={giverBankAccount!.name}
+                        />
                       )}
                       {giverBankAccount!.name}
                     </div>
@@ -289,7 +320,10 @@ export default function TransactionCard({
                   ) : (
                     <div className={styles.bankAccount}>
                       {receiverBankAccount!.imageURL && (
-                        <img src={receiverBankAccount!.imageURL} alt={receiverBankAccount!.name} />
+                        <img
+                          src={receiverBankAccount!.imageURL}
+                          alt={receiverBankAccount!.name}
+                        />
                       )}
                       {receiverBankAccount!.name}
                     </div>

@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -17,10 +18,6 @@ interface IExistingAccountModalProps {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
   bankAccount: IBankAccountObject & { totalAmount: number };
-  bankAccounts: (IBankAccountObject & { totalAmount: number })[] | undefined;
-  setBankAccounts: Dispatch<
-    SetStateAction<(IBankAccountObject & { totalAmount: number })[] | undefined>
-  >;
 }
 
 export default function ExistingAccountModal({
@@ -28,7 +25,6 @@ export default function ExistingAccountModal({
   setModalOpen,
   trigger,
   bankAccount,
-  setBankAccounts,
 }: IExistingAccountModalProps) {
   const form = useForm<AccountForm>({
     defaultValues: {
@@ -41,6 +37,7 @@ export default function ExistingAccountModal({
   });
   const { setError } = form;
   const auth = useContext(AuthContext);
+  const { mutate, bankAccounts } = useMyBankAccounts();
 
   const closeModal = () => {
     setModalOpen(false);
@@ -51,7 +48,8 @@ export default function ExistingAccountModal({
     const differenceBetweenInitialAmountAndOldInitialAmount =
       data.initialAmount - bankAccount.initialAmount;
     const transactionType =
-      data.totalAmount > bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount
+      data.totalAmount >
+      bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount
         ? 'income'
         : data.totalAmount <
           bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount
@@ -67,7 +65,8 @@ export default function ExistingAccountModal({
             [transactionType === 'income' ? 'gain' : 'spent']:
               transactionType === 'income'
                 ? data.totalAmount -
-                  (bankAccount.totalAmount + differenceBetweenInitialAmountAndOldInitialAmount)
+                  (bankAccount.totalAmount +
+                    differenceBetweenInitialAmountAndOldInitialAmount)
                 : bankAccount.totalAmount +
                   differenceBetweenInitialAmountAndOldInitialAmount -
                   data.totalAmount,
@@ -106,12 +105,15 @@ export default function ExistingAccountModal({
         },
       )
       .then((response) => {
-        setBankAccounts((values) =>
-          values?.map((bankAccount) => {
+        mutate(
+          bankAccounts?.map((bankAccount) => {
             return bankAccount.id === response.data.bankAccount.id
               ? response.data.bankAccount
               : bankAccount;
           }),
+          {
+            revalidate: false,
+          },
         );
         close();
       })
@@ -137,7 +139,7 @@ export default function ExistingAccountModal({
         },
       })
       .then(async () => {
-        setBankAccounts(undefined);
+        mutate([]);
         close();
       });
   };

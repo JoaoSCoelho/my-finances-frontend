@@ -1,7 +1,7 @@
 import { AuthContext } from '@/contexts/auth';
+import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
-import { IBankAccountObject } from '@/types/BankAccount';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,9 +11,6 @@ import { toast } from 'react-toastify';
 import AccountModal, { AccountForm, accountSchema } from '../AccountModal';
 
 interface INewAccountModalProps {
-  setBankAccounts: Dispatch<
-    SetStateAction<(IBankAccountObject & { totalAmount: number })[] | undefined>
-  >;
   modalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -21,9 +18,9 @@ interface INewAccountModalProps {
 export default function NewAccountModal({
   modalOpen,
   setModalOpen,
-  setBankAccounts,
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);
+  const { mutate, bankAccounts } = useMyBankAccounts();
 
   const form = useForm<AccountForm>({ resolver: yupResolver(accountSchema) });
   const { setError, reset } = form;
@@ -35,17 +32,18 @@ export default function NewAccountModal({
 
   const onSubmit = (data: AccountForm) => {
     api
-      .post('bankaccounts', data, {
-        headers: { Authorization: `Bearer ${auth.getAccessToken()}` },
-      })
+      .post('bankaccounts', data, auth.getAuthConfig())
       .then((response) => {
-        setBankAccounts((values) => [
-          ...(values || []),
-          {
-            ...response.data.bankAccount,
-            totalAmount: response.data.bankAccount.initialAmount,
-          },
-        ]);
+        mutate(
+          [
+            ...(bankAccounts || []),
+            {
+              ...response.data.bankAccount,
+              totalAmount: response.data.bankAccount.initialAmount,
+            },
+          ],
+          { revalidate: false },
+        );
         closeModal();
       })
       .catch((err) => {

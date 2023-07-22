@@ -6,3 +6,7 @@ export interface IBankAccountObject {
   initialAmount: number;
   imageURL?: string;
 }
+
+export interface ITotalBankAccountObject extends IBankAccountObject {
+  totalAmount: number;
+}

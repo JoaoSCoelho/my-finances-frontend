@@ -1,13 +1,11 @@
+'use client';
+
+import BigSquareLink from '@/components/BigSquareLink/BigSquareLink';
 import Footer from '@/components/Footer/Footer';
-import Link from 'next/link';
 import { FaInfo, FaPiggyBank } from 'react-icons/fa';
 
 import LandingImageSvg from '../components/images/LandingImageSvg/LandingImageSvg';
 import styles from './Home.module.css';
-
-export const metadata = {
-  title: 'Home',
-};
 
 export default function Home() {
   return (
@@ -45,14 +43,18 @@ export default function Home() {
   function Buttons_Local() {
     return (
       <div className={styles.buttonsContainer}>
-        <Link href="/tutorial">
-          <FaInfo />
-          <span>Tutorial</span>
-        </Link>
-        <Link href="/auth/register">
-          <FaPiggyBank />
-          <span>Começar</span>
-        </Link>
+        <BigSquareLink
+          style="white"
+          value="Tutorial"
+          href="/tutorial"
+          icon={<FaInfo />}
+        />
+        <BigSquareLink
+          style="green"
+          value="Começar"
+          href="/auth/register"
+          icon={<FaPiggyBank />}
+        />
       </div>
     );
   }

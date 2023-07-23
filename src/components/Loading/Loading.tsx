@@ -1,17 +1,11 @@
-import { MoneyLoadingSvg } from '../images/MoneyLoadingSvg/MoneyLoadingSvg';
+// eslint-disable-next-line import/named
+import { IconBaseProps } from 'react-icons';
+import { AiOutlineLoading } from 'react-icons/ai';
+
 import styles from './Loading.module.css';
 
-interface ILoadingProps {
-  text?: string;
-}
-
-export default function Loading(props: ILoadingProps) {
+export default function Loading({ className, ...props }: IconBaseProps) {
   return (
-    <div className={styles.loadingWrapper}>
-      <div className={styles.loadingContainer}>
-        <MoneyLoadingSvg />
-        <span className={styles.text}>{props.text}</span>
-      </div>
-    </div>
+    <AiOutlineLoading className={[styles.loading, className].join(' ')} {...props} />
   );
 }

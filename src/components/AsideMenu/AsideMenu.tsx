@@ -1,11 +1,13 @@
+'use client';
+
 import { AuthContext } from '@/contexts/auth';
-import { LoadingContext } from '@/contexts/loading';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useContext, ReactNode } from 'react';
+import { useContext, ReactNode, useState } from 'react';
 import { AiFillHome, AiOutlineUnorderedList } from 'react-icons/ai';
 import { FaSignOutAlt } from 'react-icons/fa';
 
+import Loading from '../Loading/Loading';
 import styles from './AsideMenu.module.css';
 
 type Button = {
@@ -14,10 +16,10 @@ type Button = {
 };
 
 export default function AsideMenu() {
+  const [loadingOn, setLoadingOn] = useState<string | null>(null);
   const auth = useContext(AuthContext);
   const router = useRouter();
   const pathname = usePathname();
-  const { setLoading } = useContext(LoadingContext);
 
   return (
     <aside className={styles.asideMenu}>
@@ -30,6 +32,8 @@ export default function AsideMenu() {
       </div>
     </aside>
   );
+
+  // functions
 
   function Buttons_Local() {
     const buttons: Button[] = [
@@ -47,12 +51,16 @@ export default function AsideMenu() {
       <>
         {buttons.map((button) => (
           <Link
-            onClick={() => (pathname !== button.href ? setLoading('') : router.refresh())}
+            onClick={() =>
+              pathname === button.href ? setLoadingOn(null) : setLoadingOn(button.href)
+            }
             key={button.href}
             href={button.href}
-            className={[styles.button, pathname === button.href && styles.active].join(' ')}
+            className={[styles.button, pathname === button.href && styles.active].join(
+              ' ',
+            )}
           >
-            {button.icon}
+            {loadingOn === button.href ? <Loading /> : button.icon}
           </Link>
         ))}
       </>
@@ -66,7 +74,7 @@ export default function AsideMenu() {
         onClick={onSignoutClick}
         className={[styles.button, styles.logout].join(' ')}
       >
-        <FaSignOutAlt />
+        {loadingOn === 'exit' ? <Loading /> : <FaSignOutAlt />}
       </button>
     );
 
@@ -76,7 +84,7 @@ export default function AsideMenu() {
     }
 
     function onSignoutClick() {
-      setLoading('Saindo...', true);
+      setLoadingOn('exit');
       signout();
     }
   }

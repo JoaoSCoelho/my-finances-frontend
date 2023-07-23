@@ -14,7 +14,13 @@ export default function LandingImageSvg() {
         ></path>
       </g>
       <g id="freepik--Shadow--inject-111">
-        <ellipse cx="250" cy="361.29" rx="193.89" ry="11.32" style={{ fill: '#f5f5f5' }}></ellipse>
+        <ellipse
+          cx="250"
+          cy="361.29"
+          rx="193.89"
+          ry="11.32"
+          style={{ fill: '#f5f5f5' }}
+        ></ellipse>
       </g>
       <g id="freepik--Coins--inject-111">
         <circle
@@ -113,12 +119,48 @@ export default function LandingImageSvg() {
         </g>
       </g>
       <g id="freepik--credit-card--inject-111">
-        <rect x="102.26" y="334.02" width="1" height="11.29" style={{ fill: '#93C96D' }}></rect>
-        <rect x="102.26" y="334.02" width="1" height="11.29" style={{ opacity: 0.1 }}></rect>
-        <rect x="396.74" y="244.57" width="1" height="15.47" style={{ fill: '#93C96D' }}></rect>
-        <rect x="396.74" y="268.16" width="1" height="8.39" style={{ fill: '#93C96D' }}></rect>
-        <rect x="396.74" y="244.57" width="1" height="15.47" style={{ opacity: 0.1 }}></rect>
-        <rect x="396.74" y="268.16" width="1" height="8.39" style={{ opacity: 0.1 }}></rect>
+        <rect
+          x="102.26"
+          y="334.02"
+          width="1"
+          height="11.29"
+          style={{ fill: '#93C96D' }}
+        ></rect>
+        <rect
+          x="102.26"
+          y="334.02"
+          width="1"
+          height="11.29"
+          style={{ opacity: 0.1 }}
+        ></rect>
+        <rect
+          x="396.74"
+          y="244.57"
+          width="1"
+          height="15.47"
+          style={{ fill: '#93C96D' }}
+        ></rect>
+        <rect
+          x="396.74"
+          y="268.16"
+          width="1"
+          height="8.39"
+          style={{ fill: '#93C96D' }}
+        ></rect>
+        <rect
+          x="396.74"
+          y="244.57"
+          width="1"
+          height="15.47"
+          style={{ opacity: 0.1 }}
+        ></rect>
+        <rect
+          x="396.74"
+          y="268.16"
+          width="1"
+          height="8.39"
+          style={{ opacity: 0.1 }}
+        ></rect>
         <rect
           x="105.76"
           y="177.49"

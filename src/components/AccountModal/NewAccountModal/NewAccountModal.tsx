@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/auth';
+import { useMe } from '@/hooks/useMe';
 import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
@@ -20,10 +21,11 @@ export default function NewAccountModal({
   setModalOpen,
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);
-  const { mutate, bankAccounts } = useMyBankAccounts();
+  const { offMutate, revalidate, bankAccounts, refetch } = useMyBankAccounts();
+  const { user } = useMe();
 
   const form = useForm<AccountForm>({ resolver: yupResolver(accountSchema) });
-  const { setError, reset } = form;
+  const { reset } = form;
 
   const closeModal = () => {
     setModalOpen(false);
@@ -33,31 +35,27 @@ export default function NewAccountModal({
   const onSubmit = (data: AccountForm) => {
     api
       .post('bankaccounts', data, auth.getAuthConfig())
-      .then((response) => {
-        mutate(
-          [
-            ...(bankAccounts || []),
-            {
-              ...response.data.bankAccount,
-              totalAmount: response.data.bankAccount.initialAmount,
-            },
-          ],
-          { revalidate: false },
-        );
-        closeModal();
-      })
+      .then(() => revalidate())
       .catch((err) => {
-        console.error(err);
-
-        const error = err.response?.data;
-        if (!error) return toast.error('Erro inesperado!');
-
-        if (error.reason === 'invalid characters')
-          setError(error.paramName, { message: 'Caracteres inválidos' });
-        if (error.reason === 'incorrect structure')
-          setError(error.paramName, { message: 'Estrutura incorreta' });
-        toast.error(error.error, defaultToastOptions);
+        refetch();
+        toast.error(
+          `Erro ao criar conta bancária: ${err.response?.data || 'Erro inesperado!'}`,
+          defaultToastOptions,
+        );
       });
+
+    offMutate([
+      ...(bankAccounts || []),
+      {
+        ...data,
+        imageURL: data.imageURL || undefined,
+        id: 'new-bank-account',
+        userId: user?.id || 'default-user-id',
+        createdTimestamp: Date.now(),
+        totalAmount: data.initialAmount,
+      },
+    ]);
+    closeModal();
   };
 
   return (

@@ -27,11 +27,11 @@ import ControlledBRLFormat from '../BRLFormat/ControlledBRLFormat';
 import styles from './TransactionCard.module.css';
 
 interface ITransactionCardProps {
-  transaction: Omit<ITransactionObject, 'id'> & { id?: string };
+  transaction: ITransactionObject;
   bankAccounts: IBankAccountObject[];
   editable?: boolean;
   setNewTransaction: Dispatch<
-    SetStateAction<Omit<ITransactionObject<TransactionTypes>, 'id'> | undefined>
+    SetStateAction<ITransactionObject<TransactionTypes> | undefined>
   >;
 }
 
@@ -101,11 +101,12 @@ export default function TransactionCard({
     (bankAccount) => bankAccount.id === transaction.receiverBankAccountId,
   );
   const { getAccessToken } = useContext(AuthContext);
-  const [isNew] = useState<boolean>(!transaction.id);
+  const [isNew] = useState<boolean>(transaction.id === 'new-transaction');
   const [canEdit, setCanEdit] = useState<boolean>(isNew && editable);
   const {
     transactions,
     offMutate: offMutateTransactions,
+    revalidate: revalidateTransactions,
     refetch: refetchTransactions,
   } = useMyTransactions();
 
@@ -135,45 +136,32 @@ export default function TransactionCard({
         },
       },
     )
-      .then(() => {
-        toast.info(
-          `Transação ${isNew ? 'criada' : 'modificada'} com sucesso!`,
-          defaultToastOptions,
-        );
-        refetchTransactions();
-      })
+      .then(() => revalidateTransactions())
       .catch((error) => {
-        console.log(error.response?.data);
+        refetchTransactions();
         toast.error(
           `Erro ao ${isNew ? 'criar' : 'modificar'} transação: ${
-            error.response?.data?.error
+            error.response?.data?.error || 'Erro inesperado'
           }`,
           defaultToastOptions,
         );
-        // toast.info('Recarregando em 5s', defaultToastOptions);
-
-        // setTimeout(() => setDbTransactions(), 5000);
       });
 
     if (isNew) {
       offMutateTransactions([
         ...(transactions || []),
         {
+          ...transaction,
           ...data,
-          type: transaction.type,
-          createdTimestamp: Date.now(),
-          id: undefined as any,
         },
       ]);
       setNewTransaction(undefined);
     } else {
-      setCanEdit(false);
       offMutateTransactions([
         ...(transactions?.filter((t) => t.id !== transaction.id) || []),
         {
           ...transaction,
           ...data,
-          id: undefined as any,
         },
       ]);
     }
@@ -187,22 +175,17 @@ export default function TransactionCard({
         .delete(`/transactions/${transaction.type}s/${transaction.id}`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         })
-        .then(() => {
-          toast.info('Transação deletada com sucesso!', defaultToastOptions);
-          refetchTransactions();
-        })
+        .then(() => revalidateTransactions())
         .catch((error) => {
-          console.log(error.response?.data);
+          refetchTransactions();
           toast.error(
-            `Erro ao deletar transação: ${error.response?.data?.error}`,
+            `Erro ao deletar transação: ${
+              error.response?.data?.error || 'Erro inesperado'
+            }`,
             defaultToastOptions,
           );
-          // toast.info('Recarregando em 5s', defaultToastOptions);
-
-          // setTimeout(() => setDbTransactions(), 5000);
         });
 
-      setCanEdit(false);
       offMutateTransactions([
         ...(transactions?.filter((t) => t.id !== transaction.id) || []),
       ]);
@@ -296,13 +279,13 @@ export default function TransactionCard({
                     </select>
                   ) : (
                     <div className={styles.bankAccount}>
-                      {giverBankAccount!.imageURL && (
+                      {giverBankAccount?.imageURL && (
                         <img
-                          src={giverBankAccount!.imageURL}
-                          alt={giverBankAccount!.name}
+                          src={giverBankAccount?.imageURL}
+                          alt={giverBankAccount?.name}
                         />
                       )}
-                      {giverBankAccount!.name}
+                      {giverBankAccount?.name}
                     </div>
                   )}
                   <HiArrowNarrowRight className={styles.transferDirectionArrow} />
@@ -319,13 +302,13 @@ export default function TransactionCard({
                     </select>
                   ) : (
                     <div className={styles.bankAccount}>
-                      {receiverBankAccount!.imageURL && (
+                      {receiverBankAccount?.imageURL && (
                         <img
-                          src={receiverBankAccount!.imageURL}
-                          alt={receiverBankAccount!.name}
+                          src={receiverBankAccount?.imageURL}
+                          alt={receiverBankAccount?.name}
                         />
                       )}
-                      {receiverBankAccount!.name}
+                      {receiverBankAccount?.name}
                     </div>
                   )}
                 </>
@@ -342,10 +325,10 @@ export default function TransactionCard({
                 </select>
               ) : (
                 <div className={styles.bankAccount}>
-                  {bankAccount!.imageURL && (
-                    <img src={bankAccount!.imageURL} alt={bankAccount!.name} />
+                  {bankAccount?.imageURL && (
+                    <img src={bankAccount?.imageURL} alt={bankAccount?.name} />
                   )}
-                  {bankAccount!.name}
+                  {bankAccount?.name}
                 </div>
               )}
               {(errors.bankAccountId ||

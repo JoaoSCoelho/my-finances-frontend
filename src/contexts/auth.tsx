@@ -47,17 +47,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 };
 
 function getAccessToken() {
-  return localStorage.getItem('accessToken');
+  if (typeof window !== 'undefined') return localStorage?.getItem('accessToken');
+  else return '';
 }
 function getRefreshToken() {
-  return localStorage.getItem('refreshToken');
+  if (typeof window !== 'undefined') return localStorage?.getItem('refreshToken');
 }
 
 function setAccessToken(token: string) {
-  localStorage.setItem('accessToken', token);
+  if (typeof window !== 'undefined') localStorage?.setItem('accessToken', token);
 }
 function setRefreshToken(token: string) {
-  localStorage.setItem('refreshToken', token);
+  if (typeof window !== 'undefined') localStorage?.setItem('refreshToken', token);
 }
 
 async function makeRefreshToken(refreshToken: string) {

@@ -1,10 +1,11 @@
+'use client';
+
 import { AuthContext } from '@/contexts/auth';
-import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -48,14 +49,15 @@ const loginSchema = yup
 type LoginForm = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm() {
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
+
   const auth = useContext(AuthContext);
   const router = useRouter();
   const form = useForm<LoginForm>({ resolver: yupResolver(loginSchema) });
   const { setError } = form;
-  const { setLoading } = useContext(LoadingContext);
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
-    setLoading('Autenticando...');
+    setSubmitIsLoading(true);
 
     api
       .post('login', data)
@@ -75,12 +77,18 @@ export default function LoginForm() {
         if (error.name === 'Invalid credentials')
           return toast.error('Email ou senha inválidos', defaultToastOptions);
         toast.error(error.error, defaultToastOptions);
+        setSubmitIsLoading(false);
       });
   };
 
   return (
     <>
-      <AuthForm form={form} type="login" onFormSubmit={onSubmit} />
+      <AuthForm
+        submitIsLoading={submitIsLoading}
+        form={form}
+        type="login"
+        onFormSubmit={onSubmit}
+      />
     </>
   );
 }

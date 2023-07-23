@@ -112,7 +112,9 @@ export default function AccountModal({
   useEffect(() => {
     const watched = watch();
     setData(watched);
-    setDifferenceBetweenTotalAmountAndInitialAmount(watched.totalAmount - watched.initialAmount);
+    setDifferenceBetweenTotalAmountAndInitialAmount(
+      watched.totalAmount - watched.initialAmount,
+    );
   }, []);
 
   return (
@@ -145,7 +147,8 @@ export default function AccountModal({
 
             <form
               onSubmit={(e) => {
-                const onSubmitClose: SubmitHandler<AccountForm> = (data) => onSubmit(data, close);
+                const onSubmitClose: SubmitHandler<AccountForm> = (data) =>
+                  onSubmit(data, close);
                 return handleSubmit(onSubmitClose)(e);
               }}
               className={styles.accountForm}
@@ -188,7 +191,8 @@ export default function AccountModal({
                           ? (v) =>
                               setValue(
                                 'totalAmount',
-                                v.floatValue! + differenceBetweenTotalAmountAndInitialAmount,
+                                v.floatValue! +
+                                  differenceBetweenTotalAmountAndInitialAmount,
                               )
                           : (v) => setValue('totalAmount', v.floatValue!)
                       }
@@ -225,7 +229,8 @@ export default function AccountModal({
                           v.floatValue &&
                           data?.initialAmount !== undefined &&
                           setDifferenceBetweenTotalAmountAndInitialAmount(
-                            v.floatValue - (isNaN(data.initialAmount) ? 0 : data.initialAmount),
+                            v.floatValue -
+                              (isNaN(data.initialAmount) ? 0 : data.initialAmount),
                           )
                         }
                       />

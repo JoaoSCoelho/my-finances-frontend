@@ -1,0 +1,35 @@
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .75em;
+  height: 9em;
+  font-size: 1.5em;
+  transition: .15s;
+}
+
+.link.white {
+  border: 1px solid var(--project-color);
+  color: var(--project-color);
+}
+
+.link.white:hover {
+  color: var(--project-light-color);
+  border: none;
+  box-shadow: 0 0 .5em #00000022;
+}
+
+.link.green {
+  background-color: var(--project-color);
+  color: white;
+}
+
+.link.green:hover {
+  background-color: var(--project-light-color);
+  box-shadow: inset 0 0 .5em var(--project-color);
+}
+
+.link svg {
+  font-size: 1.5em;
+  transition: .15s;
+}

@@ -81,9 +81,7 @@ export default function Dashboard() {
       );
     }
 
-    if (isLoading || error) return <AccountsSkeleton_Local />;
-
-    console.log(swrBankAccounts);
+    if (isLoading || error || !bankAccounts) return <AccountsSkeleton_Local />;
 
     return (
       <div className={styles.sliderContainer}>
@@ -105,9 +103,9 @@ export default function Dashboard() {
         >
           <AccountCard
             isTotal
-            amount={bankAccounts!.reduce((prev, curr) => prev + curr.totalAmount, 0)}
+            amount={bankAccounts.reduce((prev, curr) => prev + curr.totalAmount, 0)}
           />
-          {bankAccounts!.map((bankAccount) => (
+          {bankAccounts.map((bankAccount) => (
             <ExistingAccountModal
               trigger={
                 <button type="button" onClick={openExistingAccountModal}>

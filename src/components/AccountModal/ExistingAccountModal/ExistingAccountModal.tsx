@@ -1,5 +1,6 @@
 import { AuthContext } from '@/contexts/auth';
 import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
+import { useMyTransactions } from '@/hooks/useMyTransactions';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
@@ -35,16 +36,15 @@ export default function ExistingAccountModal({
     },
     resolver: yupResolver(accountSchema),
   });
-  const { setError } = form;
   const auth = useContext(AuthContext);
-  const { mutate, bankAccounts } = useMyBankAccounts();
+  const { offMutate, bankAccounts, revalidate, refetch } = useMyBankAccounts();
+  const { revalidate: revalidateTransactions } = useMyTransactions();
 
   const closeModal = () => {
     setModalOpen(false);
   };
 
   const onSubmit = async (data: AccountForm, close: () => any) => {
-    const accessToken = auth.getAccessToken();
     const differenceBetweenInitialAmountAndOldInitialAmount =
       data.initialAmount - bankAccount.initialAmount;
     const transactionType =
@@ -56,9 +56,9 @@ export default function ExistingAccountModal({
         ? 'expense'
         : undefined;
 
-    transactionType &&
-      (await api
-        .post(
+    try {
+      if (transactionType) {
+        await api.post(
           `/transactions/${transactionType}s`,
           {
             bankAccountId: bankAccount.id,
@@ -72,76 +72,65 @@ export default function ExistingAccountModal({
                   data.totalAmount,
             title: '-- REAJUSTE --',
           },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        )
-        .then(() =>
-          toast.info(
-            'Uma nova transação foi criada para suprir o reajuste monetário',
-            defaultToastOptions,
-          ),
-        )
-        .catch((err) => {
-          console.error(err);
-          toast.error('Erro inesperado!');
-          close();
-        }));
+          auth.getAuthConfig(),
+        );
+        revalidateTransactions();
+        toast.info(
+          'Uma nova transação foi criada para suprir o reajuste monetário',
+          defaultToastOptions,
+        );
+      }
 
-    await api
-      .put(
+      await api.put(
         `bankaccounts/${bankAccount.id}`,
         {
           ...data,
           imageURL: data.imageURL || null,
           totalAmount: undefined,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
-      .then((response) => {
-        mutate(
-          bankAccounts?.map((bankAccount) => {
-            return bankAccount.id === response.data.bankAccount.id
-              ? response.data.bankAccount
-              : bankAccount;
-          }),
-          {
-            revalidate: false,
-          },
-        );
-        close();
-      })
-      .catch((err) => {
-        console.error(err);
+        auth.getAuthConfig(),
+      );
 
-        const error = err.response?.data;
-        if (!error) return toast.error('Erro inesperado!');
+      revalidate();
+    } catch (error: any) {
+      refetch();
+      toast.error(
+        `Erro ao atualizar conta bancária: ${
+          error.response?.data?.error || 'Erro inesperado!'
+        }`,
+        defaultToastOptions,
+      );
+    }
 
-        if (error.reason === 'invalid characters')
-          setError(error.paramName, { message: 'Caracteres inválidos' });
-        if (error.reason === 'incorrect structure')
-          setError(error.paramName, { message: 'Estrutura incorreta' });
-        toast.error(error.error, defaultToastOptions);
-      });
+    offMutate(
+      bankAccounts?.map((ba) => {
+        return bankAccount.id === ba.id
+          ? { ...bankAccount, ...data, imageURL: data.imageURL ?? undefined }
+          : ba;
+      }),
+    );
+    close();
   };
 
   const deleteBankAccount = (close: () => any) => {
     api
-      .delete(`bankaccounts/${bankAccount.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.getAccessToken()}`,
-        },
+      .delete(`bankaccounts/${bankAccount.id}`, auth.getAuthConfig())
+      .then(() => {
+        revalidate();
+        revalidateTransactions();
       })
-      .then(async () => {
-        mutate([]);
-        close();
+      .catch((error) => {
+        refetch();
+        toast.error(
+          `Erro ao atualizar conta bancária: ${
+            error.response?.data?.error || 'Erro inesperado!'
+          }`,
+          defaultToastOptions,
+        );
       });
+
+    offMutate(undefined);
+    close();
   };
 
   return (

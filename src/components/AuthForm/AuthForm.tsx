@@ -8,11 +8,13 @@ import {
 } from 'react-hook-form';
 import { FaArrowRight } from 'react-icons/fa';
 
+import Loading from '../Loading/Loading';
 import styles from './AuthForm.module.css';
 
 export interface IAuthFormProps<FormData extends FieldValues> {
   form: UseFormReturn<FormData>;
   type: 'login' | 'register';
+  submitIsLoading: boolean;
   onFormSubmit: SubmitHandler<FormData>;
   onFormSubmitError?: SubmitErrorHandler<FormData>;
 }
@@ -24,6 +26,7 @@ export default function AuthForm<FormData extends FieldValues>({
     formState: { errors },
   },
   type,
+  submitIsLoading,
   onFormSubmit: onSubmit,
   onFormSubmitError: onSubmitError,
 }: IAuthFormProps<FormData>) {
@@ -72,7 +75,7 @@ export default function AuthForm<FormData extends FieldValues>({
           />
         </div>
         <button className={styles.submitBtn} type="submit">
-          <FaArrowRight />
+          {submitIsLoading ? <Loading /> : <FaArrowRight />}
         </button>
       </form>
     </>

@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable import/named */
 import originalUseSWR, {
   BareFetcher,
@@ -21,7 +23,6 @@ export function useSWR<
   config?: SWROptions,
 ) {
   const swrResult = originalUseSWR(key, fetcher, {
-    revalidateIfStale: false,
     errorRetryCount: 1,
     ...(config || {}),
   });
@@ -29,14 +30,17 @@ export function useSWR<
 
   return { ...swrResult, refetch, revalidate, offMutate };
 
+  /** Seta `data = undefined` e revalida com o `fetcher()` */
   async function refetch() {
     await mutate(undefined, { revalidate: true });
   }
 
+  /** Mantém os dados até revalidar com o `fetcher()` */
   async function revalidate() {
     await mutate();
   }
 
+  /** Igual ao `mutate()` mas com `revalidate: false` */
   function offMutate(
     data?: Data | Promise<Data | undefined> | MutatorCallback<Data>,
     opts?: MutatorOptions<Data>,

@@ -5,9 +5,9 @@ import { BiArrowFromBottom, BiArrowToBottom, BiTransferAlt } from 'react-icons/b
 import styles from './NewTransactionBtn.module.css';
 
 interface INewTransactionBtnProps {
-  newTransaction?: Omit<ITransactionObject, 'id'>;
+  newTransaction?: ITransactionObject;
   buttonType: TransactionTypes;
-  setNewTransaction: Dispatch<SetStateAction<Omit<ITransactionObject, 'id'> | undefined>>;
+  setNewTransaction: Dispatch<SetStateAction<ITransactionObject | undefined>>;
 }
 
 export default function NewTransactionBtn({
@@ -20,6 +20,7 @@ export default function NewTransactionBtn({
       className={`${styles.button} ${styles[buttonType]}`}
       onClick={() =>
         setNewTransaction({
+          id: 'new-transaction',
           type: buttonType,
           amount: undefined,
           createdTimestamp: Date.now(),

@@ -1,10 +1,11 @@
+'use client';
+
 import { AuthContext } from '@/contexts/auth';
-import { LoadingContext } from '@/contexts/loading';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -31,19 +32,21 @@ const registerSchema = yup
 type RegisterForm = yup.InferType<typeof registerSchema>;
 
 export default function RegisterForm() {
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
+
   const auth = useContext(AuthContext);
   const router = useRouter();
   const form = useForm<RegisterForm>({ resolver: yupResolver(registerSchema) });
   const { setError } = form;
-  const { setLoading } = useContext(LoadingContext);
 
   const onSubmit: SubmitHandler<RegisterForm> = (data) => {
-    setLoading('Criando novo usuário');
+    setSubmitIsLoading(true);
 
     api
       .post('users', data)
       .then(({ data: resData }) => {
         auth.signin(resData.accessToken, resData.refreshToken, resData.user);
+
         router.push('/dashboard');
       })
       .catch((err) => {
@@ -56,13 +59,18 @@ export default function RegisterForm() {
         if (error.reason === 'incorrect structure')
           setError(error.paramName, { message: 'Estrutura incorreta' });
         toast.error(error.error, defaultToastOptions);
-      })
-      .finally(() => setLoading());
+        setSubmitIsLoading(false);
+      });
   };
 
   return (
     <>
-      <AuthForm form={form} type="register" onFormSubmit={onSubmit} />
+      <AuthForm
+        submitIsLoading={submitIsLoading}
+        form={form}
+        type="register"
+        onFormSubmit={onSubmit}
+      />
     </>
   );
 }

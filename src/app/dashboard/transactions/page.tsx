@@ -3,39 +3,21 @@
 import NewTransactionBtn from '@/components/NewTransactionBtn/NewTransactionBtn';
 import SectionHeader from '@/components/SectionHeader/SectionHeader';
 import TransactionCard from '@/components/TransactionCard/TransactionCard';
-import { LoadingContext } from '@/contexts/loading';
 import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import { useMyTransactions } from '@/hooks/useMyTransactions';
 import { ITransactionObject, TransactionTypes } from '@/types/Transaction';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './Transactions.module.css';
 
 export default function Transactions() {
-  const [newTransaction, setNewTransaction] = useState<Omit<ITransactionObject, 'id'>>();
-  const { setLoading } = useContext(LoadingContext);
-  const {
-    bankAccounts,
-    error: bankAccountsError,
-    isLoading: bankAccountsIsLoading,
-  } = useMyBankAccounts();
-  const {
-    transactions,
-    error: transactionsError,
-    isLoading: transactionsIsLoading,
-  } = useMyTransactions();
+  const [newTransaction, setNewTransaction] = useState<ITransactionObject>();
+  const { bankAccounts } = useMyBankAccounts();
+  const { transactions } = useMyTransactions();
 
-  if (
-    bankAccountsIsLoading ||
-    bankAccountsError ||
-    transactionsError ||
-    transactionsIsLoading
-  ) {
+  if (!bankAccounts || !transactions) {
     // Trocar por skeleton
-    setLoading('');
     return <></>;
-  } else {
-    setLoading();
   }
 
   return (
@@ -55,12 +37,12 @@ export default function Transactions() {
         {transactions!
           .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
           .map((transaction) => (
-            <li key={transaction.id}>
+            <li key={transaction.id || 'new-transaction'}>
               <TransactionCard
                 bankAccounts={bankAccounts!}
                 transaction={transaction}
                 setNewTransaction={setNewTransaction}
-                editable={!!transaction.id}
+                editable={transaction.id !== 'new-transaction'}
               />
             </li>
           ))}

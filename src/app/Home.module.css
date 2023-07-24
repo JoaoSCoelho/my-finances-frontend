@@ -11,20 +11,6 @@
   width: 100%;
 }
 
-.appName {
-  font-size: 4em;
-  color: white;
-  text-align: center;
-  font-weight: 500;
-  line-height: 1.5em;
-  display: block;
-  width: fit-content;
-  padding: 0 .5em;
-  margin: 0 auto;
-  background-color: var(--project-color);
-  box-shadow: .25em .25em 0 var(--project-light-color);
-}
-
 .contentContainer {
   display: grid;
   grid-template-columns: 450px 1fr;
@@ -45,20 +31,18 @@
   font-size: 1.5em;
 }
 
-.buttonsContainer {
-  display: grid;
-  gap: 2em;
-  grid-template-columns: repeat(2, 1fr);
-}
+@media (max-width: 1220px) {
+  .contentContainer {
+    width: 450px;
+    margin: 5em auto 0;
+  }
 
-.artAttribution {
-  text-align: center;
-  display: block;
-  font-size: .8em;
-  color: var(--project-light-color);
-  transition: .15s;
-}
+  .caller {
+    color: var(--font-color);
+    font-size: 2em;
+  }
 
-.artAttribution:hover {
-  color: var(--project-color);
+  .artContainer {
+    display: none;
+  }
 }

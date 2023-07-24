@@ -1,9 +1,10 @@
 import { AuthProvider } from '@/contexts/auth';
-import '@/styles/globals.css';
 import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import 'react-toastify/dist/ReactToastify.css';
 import { PropsWithChildren } from 'react';
+
+import '@/styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: {

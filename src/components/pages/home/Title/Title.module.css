@@ -1,0 +1,13 @@
+.appName {
+  font-size: 4em;
+  color: white;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.5em;
+  display: block;
+  width: fit-content;
+  padding: 0 .5em;
+  margin: 0 auto;
+  background-color: var(--project-color);
+  box-shadow: .25em .25em 0 var(--project-light-color);
+}

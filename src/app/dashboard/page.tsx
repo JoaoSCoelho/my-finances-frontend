@@ -16,10 +16,6 @@ import { toast } from 'react-toastify';
 
 import styles from './Dashboard.module.css';
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import 'react-loading-skeleton/dist/skeleton.css';
-
 export default function Dashboard() {
   const [newAccountModalOpen, setNewAccountModalOpen] = useState<boolean>(false);
   const [existingAccountModalOpen, setExistingAccountModalOpen] =

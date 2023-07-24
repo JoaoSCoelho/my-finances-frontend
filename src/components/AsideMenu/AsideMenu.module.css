@@ -15,8 +15,7 @@
   grid-row-end: 2;
 }
 
-.asideMenu .buttons .button,
-.asideMenu .bottomButtons .button {
+.button {
   width: 100%;
   height: 80px;
   display: flex;
@@ -25,29 +24,20 @@
 }
 
 
-.asideMenu .buttons .button svg,
-.asideMenu .bottomButtons .button svg {
+.button svg {
   color: var(--light-gray);
   font-size: 2em;
   transition: .15s;
 }
 
-.asideMenu .buttons .button:hover svg,
-.asideMenu .bottomButtons .button:hover svg {
+.button:hover svg {
   color: var(--gray);
 }
 
-.asideMenu .buttons .button.active svg {
+.button.active svg {
   color: var(--project-light-color);
 }
 
-.asideMenu .buttons .button.active:hover svg {
+.button.active:hover svg {
   color: var(--project-color);
-}
-
-.asideMenu .bottomButtons .button.logout svg {
-  color: var(--error);
-}
-.asideMenu .bottomButtons .button.logout:hover svg {
-  color: var(--error-dark);
 }

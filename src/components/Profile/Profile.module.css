@@ -1,0 +1,20 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  max-width: 100%;
+}
+
+.profileImage {
+  border-radius: 9999px;
+}
+
+.username {
+  font-weight: 500;
+  color: var(--font-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 172px;
+}

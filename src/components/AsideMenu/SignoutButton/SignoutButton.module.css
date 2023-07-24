@@ -1,0 +1,7 @@
+.button.signout svg {
+  color: var(--error);
+}
+
+.button.signout:hover svg {
+  color: var(--error-dark);
+}

@@ -5,10 +5,20 @@ import { useMe } from '@/hooks/useMe';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, ReactElement, useContext } from 'react';
 
-export default function Authenticated({ children }: PropsWithChildren): ReactElement {
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
+
+interface IAuthenticatedProps extends PropsWithChildren {
+  onLoadingComponent?: ReactElement | false;
+}
+
+export default function Authenticated({
+  children,
+  onLoadingComponent,
+}: IAuthenticatedProps): ReactElement {
   const { getAccessToken, signout } = useContext(AuthContext);
-  const router = useRouter();
   const { user, isLoading, error } = useMe();
+  const router = useRouter();
+
   const accessToken = getAccessToken();
 
   if (!accessToken || error) {
@@ -17,9 +27,7 @@ export default function Authenticated({ children }: PropsWithChildren): ReactEle
   }
 
   if (isLoading || !user) {
-    return <></>;
-  } else {
-    close();
+    if (onLoadingComponent !== false) return onLoadingComponent ?? <LoadingScreen />;
   }
 
   return children as ReactElement;

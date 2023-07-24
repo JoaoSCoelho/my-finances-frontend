@@ -9,7 +9,7 @@ import styles from './Template.module.css';
 
 export default function DashboardTemplate({ children }: PropsWithChildren) {
   return (
-    <Authenticated>
+    <Authenticated onLoadingComponent={false}>
       <div className={styles.container}>
         <AsideMenu />
 

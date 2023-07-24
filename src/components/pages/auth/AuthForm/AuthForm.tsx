@@ -77,6 +77,7 @@ export default function AuthForm<FormData extends FieldValues = FieldValues>({
                   className={styles.input}
                   containerClassName={styles.inputContainer}
                   haveEye={formInput.haveEye}
+                  key={`auth-form-input-${formInput.name}`}
                 />
               ),
           )}

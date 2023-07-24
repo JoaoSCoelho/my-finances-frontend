@@ -27,6 +27,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     </AuthContext.Provider>
   );
 
+  // ------ functions ------
+
   function getAuthConfig(): AxiosRequestConfig {
     return {
       headers: {
@@ -46,6 +48,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }
 };
 
+// ------ functions ------
+
 function getAccessToken() {
   if (typeof window !== 'undefined') return localStorage?.getItem('accessToken');
   else return '';
@@ -61,6 +65,7 @@ function setRefreshToken(token: string) {
   if (typeof window !== 'undefined') localStorage?.setItem('refreshToken', token);
 }
 
+/** Faz refresh do `accessToken` */
 async function makeRefreshToken(refreshToken: string) {
   try {
     const response = await api.post('/auth/refreshToken', { refreshToken });
@@ -87,6 +92,7 @@ function interceptRecusedByExpiredToken() {
 
         const newAccessToken = getAccessToken();
 
+        // Refaz solicitação que falhou por conta do accessToken
         return await api.request({
           ...error.config,
           headers: {

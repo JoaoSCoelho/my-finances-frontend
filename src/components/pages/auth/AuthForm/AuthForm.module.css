@@ -12,8 +12,12 @@
 }
 
 .form .inputContainer {
+  padding: 0;
+}
+
+.form .input {
   height: 68px;
-  padding: 1em;
+  padding: 0 1em;
 }
 
 .submitBtn {

@@ -1,6 +1,6 @@
 'use client';
 
-import RegisterForm from '@/components/RegisterForm/RegisterForm';
+import RegisterForm from '@/components/pages/auth/register/RegisterForm/RegisterForm';
 import Link from 'next/link';
 
 import layoutStyles from '../Layout.module.css';

@@ -1,0 +1,10 @@
+.input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: .5em;
+}
+
+.input.haveEye ~ .eyeBtn {
+  margin-right: .5em;
+}

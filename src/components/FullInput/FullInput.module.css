@@ -1,0 +1,14 @@
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputContainer {
+  border: 1px solid var(--gray);
+  display: flex;
+  align-items: center;
+}
+
+.inputContainer.error {
+  border-color: var(--error);
+}

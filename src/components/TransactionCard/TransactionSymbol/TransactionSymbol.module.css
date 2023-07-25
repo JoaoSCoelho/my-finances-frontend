@@ -1,0 +1,18 @@
+.transactionSymbol {
+  font-size: 1.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transactionSymbol.income {
+  color: var(--project-light-color);
+}
+
+.transactionSymbol.expense {
+  color: var(--error);
+}
+
+.transactionSymbol.transfer {
+  color: var(--transfer-color);
+}

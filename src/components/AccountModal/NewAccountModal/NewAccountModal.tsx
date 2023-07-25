@@ -3,8 +3,9 @@ import { useMe } from '@/hooks/useMe';
 import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -13,13 +14,11 @@ import AccountModal, { AccountForm } from '../AccountModal';
 import { accountSchema } from '../yup';
 
 interface INewAccountModalProps {
-  modalIsOpen: boolean;
-  setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+  modalIsOpenState: UseStateReturn<boolean>;
 }
 
 export default function NewAccountModal({
-  modalIsOpen,
-  setModalIsOpen,
+  modalIsOpenState: [modalIsOpen, setModalIsOpen],
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);
 

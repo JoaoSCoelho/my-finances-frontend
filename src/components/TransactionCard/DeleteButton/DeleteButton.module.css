@@ -1,0 +1,14 @@
+.container {
+  margin-right: -10px;
+  background-color: var(--error);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.container:hover {
+  background-color: var(--error-dark);
+}
+
+.container button {
+  padding: 0 calc(.5em + 10px) 0 .5em;
+}

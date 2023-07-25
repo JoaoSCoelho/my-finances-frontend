@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import { AiFillPlusCircle } from 'react-icons/ai';
 
 import styles from './NewAccountCard.module.css';
 
 interface INewAccountCardProps {
-  newAccountModalIsOpenState: [boolean, Dispatch<SetStateAction<boolean>>];
+  newAccountModalIsOpenState: UseStateReturn<boolean>;
 }
 
 export default function NewAccountCard({

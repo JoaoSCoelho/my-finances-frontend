@@ -1,23 +1,21 @@
 import { ITransactionObject, TransactionTypes } from '@/types/Transaction';
-import { Dispatch, SetStateAction } from 'react';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import { BiArrowFromBottom, BiArrowToBottom, BiTransferAlt } from 'react-icons/bi';
 
-import styles from './NewTransactionBtn.module.css';
+import styles from './NewTransactionButton.module.css';
 
-interface INewTransactionBtnProps {
-  newTransaction?: ITransactionObject;
+interface INewTransactionButtonProps {
+  newTransactionState: UseStateReturn<ITransactionObject | undefined>;
   buttonType: TransactionTypes;
-  setNewTransaction: Dispatch<SetStateAction<ITransactionObject | undefined>>;
 }
 
-export default function NewTransactionBtn({
-  newTransaction,
+export default function NewTransactionButton({
+  newTransactionState: [newTransaction, setNewTransaction],
   buttonType,
-  setNewTransaction,
-}: INewTransactionBtnProps) {
+}: INewTransactionButtonProps) {
   return (
     <button
-      className={`${styles.button} ${styles[buttonType]}`}
+      className={[styles.button, styles[buttonType]].join(' ')}
       onClick={() =>
         setNewTransaction({
           id: 'new-transaction',

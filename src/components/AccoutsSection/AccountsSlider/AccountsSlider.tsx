@@ -2,7 +2,8 @@ import AccountCard from '@/components/AccountCard/AccountCard';
 import ExistentAccountModal from '@/components/AccountModal/ExistentAccountModal/ExistentAccountModal';
 import { useMyBankAccounts } from '@/hooks/useMyBankAccounts';
 import { defaultToastOptions } from '@/services/toast';
-import { Dispatch, SetStateAction, useRef } from 'react';
+import { UseStateReturn } from '@/types/UseStateReturn';
+import { useRef } from 'react';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 
@@ -12,17 +13,16 @@ import NewAccountCard from './NewAccountCard/NewAccountCard';
 import SkeletonSlider from './SkeletonSlider/SkeletonSlider';
 
 interface IAccountsSliderProps {
-  newAccountModalIsOpenState: [boolean, Dispatch<SetStateAction<boolean>>];
-  existentAccountModalIsOpenState: [boolean, Dispatch<SetStateAction<boolean>>];
+  newAccountModalIsOpenState: UseStateReturn<boolean>;
+  existentAccountModalIsOpenState: UseStateReturn<boolean>;
 }
 
 export default function AccountsSlider({
   newAccountModalIsOpenState,
-  existentAccountModalIsOpenState: [
-    existentAccountModalIsOpen,
-    setExistentAccountModalIsOpen,
-  ],
+  existentAccountModalIsOpenState,
 }: IAccountsSliderProps) {
+  const [, setExistentAccountModalIsOpen] = existentAccountModalIsOpenState;
+
   const swrBankAccounts = useMyBankAccounts();
   const { bankAccounts, error } = swrBankAccounts;
 
@@ -71,8 +71,7 @@ export default function AccountsSlider({
                 />
               </button>
             }
-            modalIsOpen={existentAccountModalIsOpen}
-            setModalIsOpen={setExistentAccountModalIsOpen}
+            modalIsOpenState={existentAccountModalIsOpenState}
             key={bankAccount.id}
             bankAccount={bankAccount}
           />

@@ -4,10 +4,12 @@ import { useMyTransactions } from '@/hooks/useMyTransactions';
 import api from '@/services/api';
 import { defaultToastOptions } from '@/services/toast';
 import { IBankAccountObject } from '@/types/BankAccount';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
+import { BiSolidSave } from 'react-icons/bi';
+import { BsFillTrashFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
 import Button from '../../Button/Button';
@@ -16,15 +18,13 @@ import { accountSchema } from '../yup';
 import styles from './ExistentAccountModal.module.css';
 
 interface IExistentAccountModalProps {
-  modalIsOpen: boolean;
-  setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+  modalIsOpenState: UseStateReturn<boolean>;
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
   bankAccount: IBankAccountObject & { totalAmount: number };
 }
 
 export default function ExistentAccountModal({
-  modalIsOpen,
-  setModalIsOpen,
+  modalIsOpenState: [modalIsOpen, setModalIsOpen],
   trigger,
   bankAccount,
 }: IExistentAccountModalProps) {
@@ -143,7 +143,7 @@ export default function ExistentAccountModal({
       modalTitle="Editar conta"
       submitButton={{
         value: 'Salvar',
-        symbol: <BsPencilFill />,
+        symbol: <BiSolidSave />,
       }}
       modalIsOpen={modalIsOpen}
       trigger={trigger}

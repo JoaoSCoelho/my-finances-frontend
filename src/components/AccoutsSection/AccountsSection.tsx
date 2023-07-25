@@ -10,16 +10,13 @@ import AccountsSlider from './AccountsSlider/AccountsSlider';
 export default function AccountsSection() {
   const newAccountModalIsOpenState = useState(false);
   const existentAccountModalIsOpenState = useState(false);
-  const [newAccountModalIsOpen, setNewAccountModalIsOpen] = newAccountModalIsOpenState;
+  const [, setNewAccountModalIsOpen] = newAccountModalIsOpenState;
 
   // ------ Return ------
 
   return (
     <div>
-      <NewAccountModal
-        modalIsOpen={newAccountModalIsOpen}
-        setModalIsOpen={setNewAccountModalIsOpen}
-      />
+      <NewAccountModal modalIsOpenState={newAccountModalIsOpenState} />
 
       <section className={styles.accountsSection}>
         <SectionHeader

@@ -1,7 +1,8 @@
 import Loading from '@/components/Loading/Loading';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode, Dispatch, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import { AiFillHome, AiOutlineUnorderedList } from 'react-icons/ai';
 
 type Button = {
@@ -10,7 +11,7 @@ type Button = {
 };
 
 interface IButtonsProps {
-  loadingOnState: [string | null, Dispatch<SetStateAction<string | null>>];
+  loadingOnState: UseStateReturn<string | null>;
   buttonClassName?: string | ((isActive: boolean, href: string) => string);
 }
 

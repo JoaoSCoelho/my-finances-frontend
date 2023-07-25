@@ -1,13 +1,14 @@
 import Loading from '@/components/Loading/Loading';
 import { AuthContext } from '@/contexts/auth';
+import { UseStateReturn } from '@/types/UseStateReturn';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { useContext } from 'react';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 import styles from './SignoutButton.module.css';
 
 interface ISignoutButtonProps {
-  loadingOnState: [string | null, Dispatch<SetStateAction<string | null>>];
+  loadingOnState: UseStateReturn<string | null>;
   buttonClassName?: string;
 }
 

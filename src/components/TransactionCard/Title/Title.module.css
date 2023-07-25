@@ -1,0 +1,8 @@
+.title {
+  font-size: 1.15em;
+}
+
+.title.input {
+  border-bottom: 1px solid var(--light-silver);
+  width: 100%;
+}

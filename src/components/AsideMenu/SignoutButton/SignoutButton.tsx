@@ -22,6 +22,7 @@ export default function SignoutButton({
     <button
       type="button"
       onClick={onSignoutClick}
+      title="Sair"
       className={[buttonClassName, styles.button, styles.signout].join(' ')}
     >
       {loadingOn === 'exit' ? <Loading /> : <FaSignOutAlt />}

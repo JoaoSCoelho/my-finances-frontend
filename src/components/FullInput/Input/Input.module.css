@@ -5,6 +5,10 @@
   padding: .5em;
 }
 
+.eyeBtn:focus {
+  outline: 1px solid black
+}
+
 .input.haveEye ~ .eyeBtn {
   margin-right: .5em;
 }

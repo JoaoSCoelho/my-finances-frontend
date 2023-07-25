@@ -10,17 +10,21 @@ interface IControlledBRLFormatProps extends IBRLFormatProps {
   onValueChangeExec?: (values: NumberFormatValues) => any;
 }
 
-export default function ControlledBRLFormat(props: IControlledBRLFormatProps) {
+export default function ControlledBRLFormat({
+  control,
+  onValueChangeExec,
+  ...props
+}: IControlledBRLFormatProps) {
   return (
     <Controller
       name={props.name}
-      control={props.control}
+      control={control}
       render={({ field: { onChange, value } }) => (
         <BRLFormat
           value={value}
           onValueChange={(values) => {
             onChange(values.floatValue || NaN);
-            props.onValueChangeExec?.(values);
+            onValueChangeExec?.(values);
           }}
           type="text"
           displayType="input"

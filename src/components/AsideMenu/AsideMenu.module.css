@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   position: fixed;
-  z-index: 2;
+  z-index: 11;
   left: 0;
   top: 0;
   background-color: white;
@@ -23,6 +23,9 @@
   justify-content: center;
 }
 
+.button:focus {
+  outline: 2px solid black;
+}
 
 .button svg {
   color: var(--light-gray);

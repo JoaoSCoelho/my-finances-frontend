@@ -24,7 +24,7 @@ type FormInput = {
   type: string;
   placeholder: string;
   haveEye?: boolean;
-  shouldAppear?: (formType: IAuthFormProps<FormData>['type']) => boolean;
+  shouldAppear?: ((formType: IAuthFormProps['type']) => boolean) | boolean;
 };
 
 export default function AuthForm<FormData extends FieldValues = FieldValues>({
@@ -67,7 +67,9 @@ export default function AuthForm<FormData extends FieldValues = FieldValues>({
         <div className={styles.inputsContainer}>
           {formInputs.map(
             (formInput) =>
-              (formInput.shouldAppear ? formInput.shouldAppear(type) : true) && (
+              (typeof formInput.shouldAppear === 'function'
+                ? formInput.shouldAppear(type)
+                : formInput.shouldAppear ?? true) && (
                 <FullInput
                   {...register(formInput.name as Path<FormData>)}
                   type={formInput.type}

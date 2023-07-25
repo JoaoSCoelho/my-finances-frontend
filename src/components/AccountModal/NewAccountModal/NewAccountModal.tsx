@@ -9,30 +9,33 @@ import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-import AccountModal, { AccountForm, accountSchema } from '../AccountModal';
+import AccountModal, { AccountForm } from '../AccountModal';
+import { accountSchema } from '../yup';
 
 interface INewAccountModalProps {
-  modalOpen: boolean;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  modalIsOpen: boolean;
+  setModalIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function NewAccountModal({
-  modalOpen,
-  setModalOpen,
+  modalIsOpen,
+  setModalIsOpen,
 }: INewAccountModalProps) {
   const auth = useContext(AuthContext);
+
   const { offMutate, revalidate, bankAccounts, refetch } = useMyBankAccounts();
   const { user } = useMe();
 
   const form = useForm<AccountForm>({ resolver: yupResolver(accountSchema) });
-  const { reset } = form;
 
-  const closeModal = () => {
-    setModalOpen(false);
-    reset();
-  };
+  // ------------ Functions ------------
 
-  const onSubmit = (data: AccountForm) => {
+  function closeModal() {
+    setModalIsOpen(false);
+    form.reset();
+  }
+
+  function onSubmit(data: AccountForm) {
     api
       .post('bankaccounts', data, auth.getAuthConfig())
       .then(() => revalidate())
@@ -56,7 +59,9 @@ export default function NewAccountModal({
       },
     ]);
     closeModal();
-  };
+  }
+
+  // ------------ Return ------------
 
   return (
     <AccountModal
@@ -68,7 +73,7 @@ export default function NewAccountModal({
         value: 'Criar',
         symbol: <AiFillPlusCircle />,
       }}
-      modalOpen={modalOpen}
+      modalIsOpen={modalIsOpen}
     />
   );
 }

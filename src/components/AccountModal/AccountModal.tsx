@@ -1,29 +1,28 @@
 import useDebounce from '@/hooks/useDebounce';
-import { ReactNode, useEffect, useState } from 'react';
-import { Control, SubmitHandler, UseFormReturn } from 'react-hook-form';
-import { IoClose } from 'react-icons/io5';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { Popup } from 'reactjs-popup';
 import * as yup from 'yup';
 
 import AccountCard from '../AccountCard/AccountCard';
-import ControlledBRLFormat from '../BRLFormat/ControlledBRLFormat';
 import Button from '../Button/Button';
-import Input from '../Input/Input';
-import styles from './AccountModal.module.css';
-
 import './AccountModal.css';
+import styles from './AccountModal.module.css';
+import Header from './Header/Header';
+import Inputs from './Inputs/Inputs';
+import { accountSchema } from './yup';
 
 interface IAccountModalProps {
-  modalOpen: boolean;
+  modalIsOpen: boolean;
   closeModal: () => void;
   popupClassName?: string;
   onSubmit: (data: AccountForm, close: () => any) => any;
   form: UseFormReturn<AccountForm>;
   modalTitle: string;
   inputNameLabel?: string;
+  inputInitialAmountLabel?: string;
   inputTotalAmountLabel?: string;
   inputTotalAmountVisible?: boolean;
-  inputInitialAmountLabel?: string;
   inputImageURLLabel?: string;
   submitButton: {
     value: string;
@@ -33,52 +32,14 @@ interface IAccountModalProps {
   trigger?: JSX.Element | ((isOpen: boolean) => JSX.Element);
 }
 
-export const accountSchema = yup
-  .object({
-    name: yup
-      .string()
-      .required('Campo obrigatório')
-      .min(3, 'Mínimo de 3 caracteres')
-      .max(30, 'Máximo de 30 caracteres')
-      .matches(
-        /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
-        'Pode ter apenas caracteres alfanuméricos (alguns deles acentuados), espaços, underlines e alguns caracteres especiais',
-      ),
-    totalAmount: yup
-      .number()
-      .required('Campo obrigatório')
-      .min(-999999999999, 'Mínimo: -1 trilhão')
-      .max(999999999999, 'Máximo: 1 trilhão'),
-    initialAmount: yup
-      .number()
-      .required('Campo obrigatório')
-      .min(-999999999999, 'Mínimo: -1 trilhão')
-      .max(999999999999, 'Máximo: 1 trilhão'),
-    imageURL: yup
-      .string()
-      .matches(/^((http)|(https)):\/\/.+\..+(\/.+)?$/gi, {
-        excludeEmptyString: true,
-        message: 'URL inválida',
-      })
-      .notRequired(),
-  })
-  .required();
-
 export type AccountForm = yup.InferType<typeof accountSchema>;
 
 export default function AccountModal({
-  modalOpen,
+  modalIsOpen,
   closeModal,
   popupClassName = 'account-popup',
   onSubmit,
-  form: {
-    handleSubmit,
-    register,
-    formState: { errors },
-    control,
-    watch,
-    setValue,
-  },
+  form,
   modalTitle,
   inputTotalAmountLabel = 'Montante total',
   inputInitialAmountLabel = 'Montante inicial',
@@ -89,45 +50,32 @@ export default function AccountModal({
   trigger,
   inputTotalAmountVisible,
 }: IAccountModalProps) {
+  const { handleSubmit, watch } = form;
+
   const [data, setData] = useState<Partial<AccountForm>>();
-  const [
-    differenceBetweenTotalAmountAndInitialAmount,
-    setDifferenceBetweenTotalAmountAndInitialAmount,
-  ] = useState<number>(0);
 
   const debounce = useDebounce();
+
+  // Set data on first rendering
+  useEffect(() => {
+    const formData = watch();
+    setData(formData);
+  }, []);
 
   // Set data when formData changes
   useEffect(() => {
     const subscription = watch((data) => {
-      debounce(() => {
-        setData(data);
-      });
+      debounce(() => setData(data));
     });
 
     return subscription.unsubscribe;
   }, [watch()]);
 
-  // Set data on first rendering
-  useEffect(() => {
-    const watched = watch();
-    setData(watched);
-    setDifferenceBetweenTotalAmountAndInitialAmount(
-      watched.totalAmount - watched.initialAmount,
-    );
-  }, []);
-
   return (
     <Popup
-      open={modalOpen}
+      open={modalIsOpen}
       onClose={closeModal}
-      onOpen={() => {
-        (
-          document.querySelector('.account-modal form input#account-name') as
-            | HTMLInputElement
-            | undefined
-        )?.focus();
-      }}
+      onOpen={focusFirstInput}
       modal
       nested
       lockScroll
@@ -137,124 +85,23 @@ export default function AccountModal({
       {
         ((close: () => any) => (
           <div className={`account-modal ${styles.accountModal}`}>
-            <header className={styles.modalHeader}>
-              <button className={styles.closeBtn} type="button" onClick={close}>
-                <IoClose />
-              </button>
-            </header>
+            <Header close={close} />
 
             <strong className={styles.modalTitle}>{modalTitle}</strong>
 
             <form
-              onSubmit={(e) => {
-                const onSubmitClose: SubmitHandler<AccountForm> = (data) =>
-                  onSubmit(data, close);
-                return handleSubmit(onSubmitClose)(e);
-              }}
+              onSubmit={handleSubmit((data) => onSubmit(data, close))}
               className={styles.accountForm}
             >
               <div className={styles.inputsContainer}>
-                <Input
-                  {...register('name', { required: true })}
-                  errors={errors}
-                  required
-                  type="text"
-                  id="account-name"
-                  placeholder="Ex: Banco do Brasil"
-                  label
-                  labelValue={inputNameLabel}
-                  name="name"
-                  wrapperClassName={styles.inputWrapper}
-                  containerClassName={styles.inputContainer}
-                  className={styles.input}
-                />
-                <Input
-                  errors={errors}
-                  required
-                  inputEl={({
-                    type: _type,
-                    value: _value,
-                    defaultValue: _defaultValue,
-                    ...props
-                  }) => (
-                    <ControlledBRLFormat
-                      {...props}
-                      control={control as unknown as Control}
-                      name="initialAmount"
-                      id="initial-account-amount"
-                      placeholder="R$ 0,00"
-                      max={1000000000000}
-                      min={-1000000000000}
-                      maxLength={24}
-                      onValueChangeExec={
-                        inputTotalAmountVisible
-                          ? (v) =>
-                              setValue(
-                                'totalAmount',
-                                v.floatValue! +
-                                  differenceBetweenTotalAmountAndInitialAmount,
-                              )
-                          : (v) => setValue('totalAmount', v.floatValue!)
-                      }
-                    />
-                  )}
-                  id="initial-account-amount"
-                  label
-                  labelValue={inputInitialAmountLabel}
-                  name="initialAmount"
-                  wrapperClassName={styles.inputWrapper}
-                  containerClassName={styles.inputContainer}
-                  className={styles.input}
-                />
-                {inputTotalAmountVisible && (
-                  <Input
-                    errors={errors}
-                    required
-                    inputEl={({
-                      type: _type,
-                      value: _value,
-                      defaultValue: _defaultValue,
-                      ...props
-                    }) => (
-                      <ControlledBRLFormat
-                        {...props}
-                        control={control as unknown as Control}
-                        name="totalAmount"
-                        id="total-account-amount"
-                        placeholder="R$ 0,00"
-                        max={1000000000000}
-                        min={-1000000000000}
-                        maxLength={24}
-                        onValueChangeExec={(v) =>
-                          v.floatValue &&
-                          data?.initialAmount !== undefined &&
-                          setDifferenceBetweenTotalAmountAndInitialAmount(
-                            v.floatValue -
-                              (isNaN(data.initialAmount) ? 0 : data.initialAmount),
-                          )
-                        }
-                      />
-                    )}
-                    id="total-account-amount"
-                    label
-                    labelValue={inputTotalAmountLabel}
-                    name="total-amount"
-                    wrapperClassName={styles.inputWrapper}
-                    containerClassName={styles.inputContainer}
-                    className={styles.input}
-                  />
-                )}
-                <Input
-                  {...register('imageURL')}
-                  errors={errors}
-                  type="text"
-                  id="account-imageURL"
-                  label
-                  labelValue={inputImageURLLabel}
-                  name="imageURL"
-                  wrapperClassName={styles.inputWrapper}
-                  containerClassName={styles.inputContainer}
-                  className={styles.input}
+                <Inputs
+                  data={data}
+                  form={form}
+                  inputImageURLLabel={inputImageURLLabel}
+                  inputInitialAmountLabel={inputInitialAmountLabel}
+                  inputNameLabel={inputNameLabel}
+                  inputTotalAmountLabel={inputTotalAmountLabel}
+                  inputTotalAmountVisible={inputTotalAmountVisible}
                 />
               </div>
 
@@ -267,7 +114,7 @@ export default function AccountModal({
             </form>
 
             <AccountCard
-              amount={data?.totalAmount || 0}
+              amount={data?.totalAmount ?? 0}
               name={data?.name || 'Nome da conta'}
               imageSrc={data?.imageURL}
             />
@@ -276,4 +123,14 @@ export default function AccountModal({
       }
     </Popup>
   );
+
+  // ---------- Functions ----------
+
+  function focusFirstInput() {
+    const inputElement: HTMLInputElement | null = document.querySelector(
+      '.account-modal form input#account-name',
+    );
+
+    inputElement?.focus();
+  }
 }

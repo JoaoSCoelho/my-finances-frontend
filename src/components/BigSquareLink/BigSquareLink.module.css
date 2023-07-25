@@ -5,7 +5,12 @@
   gap: .75em;
   height: 9em;
   font-size: 1.5em;
-  transition: .15s;
+  transition-property: border, color, box-shadow, background-color;
+  transition-duration: .15s;
+}
+
+.link:focus {
+  outline: 2px solid black;
 }
 
 .link.white {

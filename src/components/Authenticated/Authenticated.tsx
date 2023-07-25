@@ -16,12 +16,12 @@ export default function Authenticated({
   onLoadingComponent,
 }: IAuthenticatedProps): ReactElement {
   const { getAccessToken, signout } = useContext(AuthContext);
-  const { user, isLoading, error } = useMe();
+  const { user, isLoading, isValidating, error } = useMe();
   const router = useRouter();
 
   const accessToken = getAccessToken();
 
-  if (!accessToken || error) {
+  if (!accessToken || (error && !isValidating)) {
     signout();
     typeof location !== 'undefined' && router.push('/auth/login');
   }

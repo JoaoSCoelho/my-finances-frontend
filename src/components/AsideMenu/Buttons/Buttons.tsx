@@ -42,6 +42,7 @@ export default function Buttons({
 
         return (
           <Link
+            title={`Ir para ${button.href}`}
             onClick={() => (isActive ? setLoadingOn(null) : setLoadingOn(button.href))}
             key={button.href}
             href={button.href}

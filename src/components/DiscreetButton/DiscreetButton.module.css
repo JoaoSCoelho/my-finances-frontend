@@ -4,11 +4,16 @@
   font-weight: 500;
   color: var(--project-color);
   gap: .5em;
-  transition: .15s;
+  transition-property: color;
+  transition-duration: .15s;
 }
 
 .button:hover {
   color: var(--project-light-color);
+}
+
+.button:focus {
+  outline: 2px solid black;
 }
 
 .button > svg {

@@ -10,7 +10,7 @@ interface IDiscreetButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function DiscreetButton(props: IDiscreetButtonProps) {
   return (
     <div className={`${styles.buttonWrapper} ${props.wrapperClassName}`}>
-      <button {...props} className={`${styles.button} ${props.className}`}>
+      <button type="button" {...props} className={`${styles.button} ${props.className}`}>
         {props.symbol}
         {props.children}
       </button>

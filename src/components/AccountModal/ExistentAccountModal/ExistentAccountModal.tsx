@@ -11,22 +11,23 @@ import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
 import Button from '../../Button/Button';
-import AccountModal, { AccountForm, accountSchema } from '../AccountModal';
-import styles from './ExistingAccountModal.module.css';
+import AccountModal, { AccountForm } from '../AccountModal';
+import { accountSchema } from '../yup';
+import styles from './ExistentAccountModal.module.css';
 
-interface IExistingAccountModalProps {
-  modalOpen: boolean;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+interface IExistentAccountModalProps {
+  modalIsOpen: boolean;
+  setModalIsOpen: Dispatch<SetStateAction<boolean>>;
   trigger: JSX.Element | ((isOpen: boolean) => JSX.Element);
   bankAccount: IBankAccountObject & { totalAmount: number };
 }
 
-export default function ExistingAccountModal({
-  modalOpen,
-  setModalOpen,
+export default function ExistentAccountModal({
+  modalIsOpen,
+  setModalIsOpen,
   trigger,
   bankAccount,
-}: IExistingAccountModalProps) {
+}: IExistentAccountModalProps) {
   const form = useForm<AccountForm>({
     defaultValues: {
       totalAmount: bankAccount.totalAmount,
@@ -41,7 +42,7 @@ export default function ExistingAccountModal({
   const { revalidate: revalidateTransactions } = useMyTransactions();
 
   const closeModal = () => {
-    setModalOpen(false);
+    setModalIsOpen(false);
   };
 
   const onSubmit = async (data: AccountForm, close: () => any) => {
@@ -144,7 +145,7 @@ export default function ExistingAccountModal({
         value: 'Salvar',
         symbol: <BsPencilFill />,
       }}
-      modalOpen={modalOpen}
+      modalIsOpen={modalIsOpen}
       trigger={trigger}
       otherButtons={(close) => [
         <Button

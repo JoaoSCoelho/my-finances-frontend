@@ -11,12 +11,17 @@
   align-items: center;
   justify-content: center;
   padding: 1em 0;
-  transition: .15s;
+  transition-duration: .15s;
+  transition-property: background-color;
   gap: .5em;
 }
 
 .button:hover {
   background-color: var(--project-color);
+}
+
+.button:focus {
+  outline: 2px solid black;
 }
 
 .button > svg {

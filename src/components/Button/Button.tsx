@@ -7,12 +7,18 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   wrapperClassName?: string;
 }
 
-export default function Button(props: IButtonProps) {
+export default function Button({
+  wrapperClassName,
+  className,
+  symbol,
+  children,
+  ...props
+}: IButtonProps) {
   return (
-    <div className={`${styles.buttonWrapper} ${props.wrapperClassName}`}>
-      <button type="button" {...props} className={`${styles.button} ${props.className}`}>
-        {props.symbol}
-        {props.children}
+    <div className={[styles.buttonWrapper, wrapperClassName].join(' ')}>
+      <button type="button" {...props} className={`${styles.button} ${className}`}>
+        {symbol}
+        {children}
       </button>
     </div>
   );

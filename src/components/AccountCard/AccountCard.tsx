@@ -1,7 +1,6 @@
 import { FaHandHoldingUsd } from 'react-icons/fa';
 import { ImLibrary } from 'react-icons/im';
 
-import defaultBankImage from '../../assets/building-columns-solid.svg';
 import BRLFormat from '../BRLFormat/BRLFormat';
 import styles from './AccountCard.module.css';
 
@@ -21,17 +20,17 @@ export default function AccountCard({
   return (
     <div className={styles.accountCardWrapper}>
       <div
-        className={`
-          ${styles.accountCard}
-          ${isTotal && styles.total}
-          ${amount < 0 && styles.negative}
-        `}
+        className={[
+          styles.accountCard,
+          isTotal && styles.total,
+          amount < 0 && styles.negative,
+        ].join(' ')}
       >
         <div className={styles.accountImage}>
           {isTotal ? (
             <FaHandHoldingUsd />
           ) : imageSrc ? (
-            <img src={imageSrc || defaultBankImage} alt={name + ' logo'} />
+            <img src={imageSrc} alt={`${name} logo`} />
           ) : (
             <ImLibrary />
           )}

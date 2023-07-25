@@ -24,6 +24,10 @@
   background-color: var(--project-color);
 }
 
+.submitBtn:focus {
+  outline: 2px solid black
+}
+
 .submitBtn svg {
   color: white;
   font-size: 2em;

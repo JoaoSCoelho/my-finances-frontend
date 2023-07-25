@@ -6,20 +6,6 @@
   width: 500px;
 }
 
-.accountModal .modalHeader {
-  text-align: right;
-}
-
-.accountModal .modalHeader .closeBtn {
-  font-size: 1.5em;
-  color: var(--gray);
-  transition: .15s;
-}
-
-.accountModal .modalHeader .closeBtn:hover {
-  color: var(--light-gray);
-}
-
 .accountModal .modalTitle {
   font-size: 1.5em;
   color: var(--font-color);
@@ -31,10 +17,6 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
-}
-
-.accountModal .inputWrapper .inputContainer {
-  background-color: white;
 }
 
 .accountModal .buttonsContainer {

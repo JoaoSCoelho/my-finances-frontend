@@ -6,7 +6,7 @@ import styles from './FullInput.module.css';
 import Input, { IInputProps } from './Input/Input';
 import Label from './Label/Label';
 
-interface IFullInputProps<FormData extends FieldValues>
+export interface IFullInputProps<FormData extends FieldValues = FieldValues>
   extends InputHTMLAttributes<HTMLInputElement>,
     IInputProps {
   errors: FieldErrors<FormData>;

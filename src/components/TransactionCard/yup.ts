@@ -4,7 +4,7 @@ export const transactionTitleSchema = yup
   .string()
   .required('Campo obrigatório')
   .min(3, 'Mínimo de 3 caracteres')
-  .max(50, 'Máximo de 50 caracteres')
+  .max(100, 'Máximo de 100 caracteres')
   .matches(
     /^[\dA-Za-záàâãäéèêëíïìîóôõöòúùûüçñÁÀÂÃÄÉÈÊËÍÏÌÎÓÔÕÖÒÚÙÛÜÇÑ !@#$%¨&*_()+=\-:/'",§<>.|`´^~ºª?°]+$/gi,
     'Pode ter apenas caracteres alfanuméricos (alguns deles acentuados), espaços, underlines e alguns caracteres especiais',

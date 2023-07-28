@@ -1,19 +1,15 @@
 'use client';
 
-import Authenticated from '@/components/Authenticated';
-import AsideMenu from '@/components/pages/dashboard/AsideMenu';
-import Header from '@/components/pages/dashboard/Header';
-import { ReactNode } from 'react';
+import AsideMenu from '@/components/AsideMenu/AsideMenu';
+import Authenticated from '@/components/Authenticated/Authenticated';
+import Header from '@/components/Header/Header';
+import { PropsWithChildren } from 'react';
 
 import styles from './Template.module.css';
 
-export default function DashboardTemplate({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function DashboardTemplate({ children }: PropsWithChildren) {
   return (
-    <Authenticated>
+    <Authenticated onLoadingComponent={false}>
       <div className={styles.container}>
         <AsideMenu />
 

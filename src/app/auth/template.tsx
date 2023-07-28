@@ -1,27 +1,14 @@
 'use client';
-import { LoadingContext } from '@/contexts/loading';
-import { useRouter } from 'next/navigation';
-import { ReactElement, useContext } from 'react';
-import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
+
+import BackButton from '@/components/BackButton/BackButton';
+import { PropsWithChildren } from 'react';
 
 import styles from './Template.module.css';
 
-export default function AuthTemplate({ children }: { children: ReactElement }) {
-  const router = useRouter();
-  const { setLoading } = useContext(LoadingContext);
-
+export default function AuthTemplate({ children }: PropsWithChildren) {
   return (
     <>
-      <button
-        className={styles.backBtn}
-        type="button"
-        onClick={() => {
-          router.back();
-          setLoading('');
-        }}
-      >
-        <HiOutlineArrowNarrowLeft />
-      </button>
+      <BackButton className={styles.backButton} />
       {children}
     </>
   );

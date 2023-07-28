@@ -1,0 +1,7 @@
+.moneyValue {
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.1em;
+}

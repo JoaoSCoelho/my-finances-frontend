@@ -1,0 +1,10 @@
+.bankAccountInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.bankAccountInfo .transferDirectionArrow {
+  color: var(--light-gray);
+  font-size: 1.2em;
+}

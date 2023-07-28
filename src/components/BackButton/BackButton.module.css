@@ -1,0 +1,8 @@
+.backButton {
+  font-size: 2em;
+  color: var(--font-color);
+}
+
+.backButton:focus {
+  outline: 2px solid black;
+}

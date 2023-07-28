@@ -1,0 +1,8 @@
+.container {
+  position: relative;
+  width: calc(100% - 24px);
+}
+
+.accountCardWrapper {
+  padding: 1em;
+}

@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  margin: .5em 0;
+}
+
+.container.income .contentContainer {
+  box-shadow: 0 4px #93C96D20;
+}
+.container.expense .contentContainer {
+  box-shadow: 0 4px #da565d20;
+}
+.container.transfer .contentContainer {
+  box-shadow: 0 4px #634c8120;
+}
+
+.contentContainer {
+  width: 100%;
+  padding: .5em;
+  border-radius: 8px;
+  color: var(--font-color);
+  background-color: white;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  z-index: 1;
+}
+
+.container .contentInfo {
+  margin-top: .5em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.date {
+  font-size: .8em;
+  text-align: right;
+  color: var(--gray);
+  display: flex;
+  align-items: end;
+  justify-content: right;
+}
+
+.saveButtonContainer, .deleteButtonContainer, .editButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  transition: .2s;
+}
+
+.saveButtonContainer button, .deleteButtonContainer button, .editButtonContainer button {
+  height: 100%;
+}
+
+.saveButtonContainer button, .editButtonContainer button {
+  padding: 0 .5em 0 calc(.5em + 10px);
+}
+
+.saveButtonContainer svg, .deleteButtonContainer svg, .editButtonContainer button {
+  color: white;
+}

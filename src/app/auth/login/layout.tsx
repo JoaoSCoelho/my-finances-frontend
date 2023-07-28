@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
 export const metadata = {
   title: 'Login',
 };
 
-export default function LoginLayout({ children }: { children: ReactNode }) {
+export default function LoginLayout({ children }: PropsWithChildren) {
   return <>{children}</>;
 }

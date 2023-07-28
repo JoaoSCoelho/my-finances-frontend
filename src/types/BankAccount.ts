@@ -3,6 +3,10 @@ export interface IBankAccountObject {
   userId: string;
   createdTimestamp: number;
   name: string;
-  amount: number;
+  initialAmount: number;
   imageURL?: string;
+}
+
+export interface ITotalBankAccountObject extends IBankAccountObject {
+  totalAmount: number;
 }

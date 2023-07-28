@@ -1,0 +1,13 @@
+.bankAccountTag {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  padding: 0.2em .3em;
+  background-color: #00000010;
+  border-radius: 4px;
+}
+
+.bankAccountTag img {
+  height: 1em;
+  border-radius: 2px;
+}

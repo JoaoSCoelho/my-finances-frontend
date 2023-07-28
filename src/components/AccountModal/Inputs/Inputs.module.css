@@ -1,0 +1,10 @@
+.inputContainer {
+  background-color: white;
+}
+
+.brlInput {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: .5em;
+}

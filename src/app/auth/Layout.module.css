@@ -6,8 +6,12 @@
   margin: 0 auto;
 }
 
+.formSide {
+  padding: 2em 0;
+}
+
 .title {
-  margin: 2.5em auto;
+  margin: 1.5em auto;
   text-align: center;
   font-size: 3.75em;
   font-weight: 500;
@@ -16,7 +20,8 @@
 
 .imageSide {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;

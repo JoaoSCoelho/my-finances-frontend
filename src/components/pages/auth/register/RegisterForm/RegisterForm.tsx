@@ -41,7 +41,7 @@ export default function RegisterForm() {
       .catch((error) => {
         toast.error(
           `Ocorreu um erro ao criar sua conta: ${
-            error.response?.data || 'Erro inesperado!'
+            error.response?.data?.error || 'Erro inesperado!'
           }`,
           defaultToastOptions,
         );

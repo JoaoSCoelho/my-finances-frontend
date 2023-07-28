@@ -41,7 +41,9 @@ export default function NewAccountModal({
       .catch((err) => {
         refetch();
         toast.error(
-          `Erro ao criar conta bancária: ${err.response?.data || 'Erro inesperado!'}`,
+          `Erro ao criar conta bancária: ${
+            err.response?.data?.error || 'Erro inesperado!'
+          }`,
           defaultToastOptions,
         );
       });

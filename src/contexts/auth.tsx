@@ -82,9 +82,9 @@ function interceptRecusedByExpiredToken() {
     const refreshToken = getRefreshToken();
 
     if (
-      error.response?.data.code === 100 &&
-      error.response?.data.paramName === 'accessToken' &&
-      error.response?.data.reason === 'expired' &&
+      error.response?.data?.code === 100 &&
+      error.response?.data?.paramName === 'accessToken' &&
+      error.response?.data?.reason === 'expired' &&
       refreshToken
     ) {
       try {

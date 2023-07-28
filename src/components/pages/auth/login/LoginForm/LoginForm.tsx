@@ -39,7 +39,9 @@ export default function LoginForm() {
       })
       .catch((error) => {
         toast.error(
-          `Ocorreu um erro ao fazer login: ${error.response?.data || 'Erro inesperado!'}`,
+          `Ocorreu um erro ao fazer login: ${
+            error.response?.data?.error || 'Erro inesperado!'
+          }`,
           defaultToastOptions,
         );
         setSubmitIsLoading(false);

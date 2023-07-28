@@ -1,0 +1,10 @@
+
+.loading {
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}

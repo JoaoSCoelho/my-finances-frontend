@@ -1,55 +1,31 @@
-import Footer from '@/components/Footer';
-import Link from 'next/link';
-import { FaInfo, FaPiggyBank } from 'react-icons/fa';
+'use client';
 
-import LandingImageSvg from '../components/pages/home/LandingImageSvg';
+import Footer from '@/components/Footer/Footer';
+import Art from '@/components/pages/home/Art/Art';
+import Buttons from '@/components/pages/home/Buttons/Buttons';
+import Title from '@/components/pages/home/Title/Title';
+
 import styles from './Home.module.css';
-
-export const metadata = {
-  title: 'Home',
-};
 
 export default function Home() {
   return (
     <>
       <div className={styles.wrapper}>
         <main className={styles.main}>
-          <div className={styles.titleContainer}>
-            <h1 className={styles.appName}>My Finances</h1>
-          </div>
+          <Title />
+
           <div className={styles.contentContainer}>
             <div className={styles.callerAndButtonsContainer}>
-              <p className={styles.caller}>
-                Organize-se financeiramente e evite apertos
-              </p>
+              <p className={styles.caller}>Organize-se financeiramente e evite apertos</p>
 
-              <div className={styles.buttonsContainer}>
-                <Link href="/tutorial">
-                  <FaInfo />
-                  <span>Tutorial</span>
-                </Link>
-                <Link href="/auth/register">
-                  <FaPiggyBank />
-                  <span>Começar</span>
-                </Link>
-              </div>
+              <Buttons />
             </div>
 
-            <div className={styles.artContainer}>
-              <div className={styles.art}>
-                <LandingImageSvg />
-              </div>
-              <a
-                className={styles.artAttribution}
-                target="_blank"
-                href="https://storyset.com/business"
-              >
-                Business illustrations by Storyset
-              </a>
-            </div>
+            <Art containerClassName={styles.artContainer} />
           </div>
         </main>
       </div>
+
       <Footer />
     </>
   );

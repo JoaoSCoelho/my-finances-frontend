@@ -1,0 +1,10 @@
+.container {
+  margin-left: -10px;
+  background-color: var(--project-light-color);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.container:hover {
+  background-color: var(--project-color);
+}

@@ -1,0 +1,11 @@
+.artAttribution {
+  text-align: center;
+  display: block;
+  font-size: .8em;
+  color: var(--project-light-color);
+  transition: .15s;
+}
+
+.artAttribution:hover {
+  color: var(--project-color);
+}

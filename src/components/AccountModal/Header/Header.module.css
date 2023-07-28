@@ -1,0 +1,13 @@
+.header {
+  text-align: right;
+}
+
+.header .closeBtn {
+  font-size: 1.5em;
+  color: var(--gray);
+  transition: .15s;
+}
+
+.header .closeBtn:hover {
+  color: var(--light-gray);
+}

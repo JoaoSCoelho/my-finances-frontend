@@ -1,0 +1,18 @@
+.arrowButton {
+  position: absolute;
+  top: 50%;
+}
+
+.arrowButton.prev {
+  transform: translate(-100%, -50%);
+}
+
+.arrowButton.next {
+  transform: translate(calc(100% + 16px), -50%);
+  right: 0;
+}
+
+.arrow {
+  color: var(--gray);
+  font-size: 1.5em;
+}

@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
 export const metadata = {
   title: 'Dashboard',
 };
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children }: PropsWithChildren) {
   return <>{children}</>;
 }

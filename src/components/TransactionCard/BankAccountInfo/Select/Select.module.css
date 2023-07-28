@@ -1,0 +1,9 @@
+.select {
+  border-radius: 4px;
+  padding: 0 .1em;
+  background-color: #00000010;
+}
+
+.select:invalid {
+  color: var(--gray);
+}

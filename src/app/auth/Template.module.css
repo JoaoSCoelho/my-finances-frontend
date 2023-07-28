@@ -1,5 +1,3 @@
-.backBtn {
-  margin: 1em 0 0 1em;
-  font-size: 2em;
-  color: var(--font-color);
+.backButton {
+  margin-left: 1em;
 }

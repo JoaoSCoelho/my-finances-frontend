@@ -1,0 +1,24 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 80px;
+  height: 80px;
+  z-index: 10;
+  box-shadow: 0 0 4px #00000040;
+  background-color: white;
+  width: fit-content;
+  display: grid;
+  width: calc(100% - 80px);
+  grid-template-columns: 1fr 270px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.header .profileField {
+  border-left: 1px solid var(--light-gray);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  grid-column: 2;
+  padding: 0 1em;
+}

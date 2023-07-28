@@ -1,0 +1,5 @@
+.errorText {
+  color: var(--error);
+  font-size: .75em;
+  font-weight: 300;
+}

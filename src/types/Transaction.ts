@@ -1,8 +1,15 @@
+import { IExpenseObject } from './Expense';
+import { IIncomeObject } from './Income';
+import { ITransferObject } from './Transfer';
+
 export type TransactionTypes = 'expense' | 'income' | 'transfer';
 
-export interface ITransactionObject<
-  T extends TransactionTypes = TransactionTypes,
-> {
+export type TransactionObject =
+  | (IExpenseObject & { type: 'expense' })
+  | (IIncomeObject & { type: 'income' })
+  | (ITransferObject & { type: 'transfer' });
+
+export interface ITransactionObject<T extends TransactionTypes = TransactionTypes> {
   type: T;
   id: string;
   bankAccountId: T extends 'transfer' ? undefined : string;

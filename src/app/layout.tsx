@@ -1,10 +1,13 @@
 import { AuthProvider } from '@/contexts/auth';
-import { LoadingProvider } from '@/contexts/loading';
-import '@/styles/globals.css';
 import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import { PropsWithChildren } from 'react';
+
+import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ReactElement } from 'react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export const metadata: Metadata = {
   title: {
@@ -21,13 +24,11 @@ const poppins = Poppins({
   subsets: ['latin'],
 });
 
-export default function RootLayout({ children }: { children: ReactElement }) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="pt-br">
-      <body className={poppins.className}>
-        <LoadingProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </LoadingProvider>
+    <html lang="pt-br" className={poppins.className}>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 # Documentação do código
 
-[PT](#pt-br) - <a href="#pt-br" disable style="cursor: default; color: gray;">EN</a>
+[PT](#pt-br) - <a href="#pt-br" title="English is not available yet" disable style="cursor: default; color: gray;">EN</a>
 
 #### PT-BR
 
@@ -13,6 +13,7 @@ Tabela de conteúdos
     * [useDebouce](#→-usedebounce)
     * [useSWR](#→-useswr)
     * [useMy, useMyBankAccounts e useMyTransactions](#→-useme-usemybankaccounts-e-usemytransactions)
+  * [Fazendo requisições na API](#fazendo-requisições-na-api)
 
 
 ## Mapa de navegação
@@ -26,7 +27,7 @@ Tabela de conteúdos
 ### → [useDebounce](src/hooks/useDebounce.ts)
 
 Esse hook serve para criar um "delay" entre o momento em que a função `debounce` é chamada e o momento em que a função `func` é executada.
-Diferente de um `setTimout` pois ao ser chamado novamente a função `debounce`, a contagem do tempo reinicia.
+Diferente de um `setTimeout` pois ao ser chamado novamente a função `debounce`, a contagem do tempo reinicia.
 
 Exemplo de uso:
 

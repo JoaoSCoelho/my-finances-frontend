@@ -2,7 +2,7 @@
   <img src="resources/logo.png" />
 </div>
 
-[PT](#pt-br) - <a href="#pt-br" disable style="cursor: default; color: gray;">EN</a>
+[PT](#pt-br) - <a href="#pt-br" title="English is not available yet" disable style="cursor: default; color: gray;">EN</a>
 
 #### PT-BR
 O My Finances é um site para controle de finanças pessoais open source e com objetivo de ser de fácil utilização e bem otimizado.
@@ -23,7 +23,7 @@ O My Finances é um site para controle de finanças pessoais open source e com o
 
 ## 🔌 Instalação
 
-Você precisa do [Git](https://git-scm.com) e do [Node.JS](https://nodejs.org/) instalados na sua máquina(recomendo Node >=18.0.0).
+Você precisa do [Git](https://git-scm.com) e do [Node.JS](https://nodejs.org/) instalados na sua máquina (recomendo Node >=18.0.0).
 
 ```bash
 # Clone este repositório
@@ -38,8 +38,8 @@ $ npm install
 
 ## ⌨ Como usar
 
-<p style="background-color: #ff450030; padding: 1em; font-style: italic; font-weight: bold;">❗❕ Antes de iniciar o site, você precisar iniciar o servidor, para isso clone o repositório <a style="font-style: initial;" href="https://github.com/JoaoSCoelho/my-finances-frontend"><code>&lt;https://github.com/JoaoSCoelho/my-finances-frontend&gt;</code></a> e siga os passos para inicialização.</p>
--
+<p style="background-color: #ff450030; padding: 1em; font-style: italic; font-weight: bold;">❗❕ Antes de iniciar o site, você precisa iniciar o servidor, para isso clone o repositório <a style="font-style: initial;" href="https://github.com/JoaoSCoelho/my-finances-backend"><code>&lt;https://github.com/JoaoSCoelho/my-finances-backend&gt;</code></a> e siga os passos para inicialização.</p>
+
 
 ```bash
 # Execute a aplicação em modo de desenvolvimento
@@ -55,8 +55,7 @@ o site irá rodar por padrão em `localhost:3000`, para visualizar abra [`http:/
 ![Home](resources/usage-gif.gif)
 
 ## 🚧 Status
-🚧 Em construção... 🚧
-v1.0.1
+> **🚧 Em construção... 🚧 v1.0.1**
 
 ### ✨ Features
 
